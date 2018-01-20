@@ -1,0 +1,28 @@
+# 开发环境
+.idea/*
+.project
+
+# 缓存
+runtime/*
+
+# 扩展
+vendor/*
+
+# 日志
+log/*
+*.log
+
+# 配置文件
+application/config.php
+application/database.php
+application/extra/*
+!application/extra/*.php.simple
+
+# 框架信息
+composer.lock
+
+# macOS template
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
