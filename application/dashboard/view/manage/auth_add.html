@@ -1,0 +1,97 @@
+{extend name="layout::notmenu"}
+{block name="htmlTitle"}Dashboard Control | 添加 auth{/block}
+{block name="htmlContent"}
+<div class="page-container">
+    <form action="" method="post" class="form form-horizontal" id="form-article-add">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>名称：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="名称" id="name" name="name"  required>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>controller：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="controller" id="controller" name="controller" required>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>action：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="action" id="action" name="action" required>
+            </div>
+        </div>
+
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>是否菜单：</label>
+            <div class="formControls col-xs-8 col-sm-9 skin-minimal">
+                <div class="radio-box">
+                    <div class="iradio-blue checked">
+                        <input name="sex" type="radio" id="sex-1" checked="" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
+                    <label for="sex-1" class="">设为菜单</label>
+                </div>
+                <div class="radio-box">
+                    <div class="iradio-blue">
+                        <input type="radio" id="sex-2" name="sex" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
+                    <label for="sex-2" class="">隐藏</label>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>是否菜单：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="radio" class="radio-box" value="y" placeholder="是否菜单" id="is_menu_y" name="is_menu" required><label for="is_menu_y" >设为菜单</label>
+                <input type="radio" class="radio-box" value="y" placeholder="是否菜单" id="is_menu_n" name="is_menu" checked required><label for="is_menu_n">隐藏</label>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">排序：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="排序" id="action_sort" name="action_sort" required>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>上级菜单：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <select class="select-box" name="module_id" id="module_id" required>
+                    <option value="">请选择上级菜单</option>
+                    {volist name="module" id="vo"}
+                    <option value="{$vo.id}">{$vo.module_name}</option>
+                    {/volist}
+                </select>
+            </div>
+        </div>
+
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                <button onClick="auth_save_submit();" class="btn btn-primary radius" type="submit"><i
+                        class="Hui-iconfont">&#xe632;</i> 提交
+                </button>
+                <button onClick="layer_close();" class="btn btn-default radius" type="button">
+                    &nbsp;&nbsp;取消&nbsp;&nbsp;
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+{/block}
+{block name="htmlJS"}
+    <!--请在下方写此页面业务相关的脚本-->
+    <script type="text/javascript" src="__STATIC__/hui/lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+    <script type="text/javascript" src="__STATIC__/hui/lib/jquery.validation/1.14.0/validate-methods.js"></script>
+    <script type="text/javascript" src="__STATIC__/hui/lib/jquery.validation/1.14.0/messages_zh.js"></script>
+    <script type="text/javascript" src="__STATIC__/hui/lib/webuploader/0.1.5/webuploader.min.js"></script>
+    <script type="text/javascript">
+        $.validator.setDefaults({
+            submitHandler: function() {
+                alert("提交事件!");
+            }
+        });
+        $().ready(function() {
+            $("#commentForm").validate();
+        });
+    </script>
+    <!--/请在上方写此页面业务相关的脚本-->
+{/block}

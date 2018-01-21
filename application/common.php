@@ -10,3 +10,14 @@
 // +----------------------------------------------------------------------
 
 // 应用公共文件
+
+function return_data( $msg, $data=[], $code){
+    $tmp_data = [ 'code' => $code, 'msg' => $msg, 'data' => $data];
+    return json($tmp_data);
+}
+function success($msg = '', $data = [], $code = 1){
+    return return_data($msg, $data, $code);
+}
+function error($msg = '', $data = [], $code = 0){
+    return return_data($msg, $data, $code);
+}

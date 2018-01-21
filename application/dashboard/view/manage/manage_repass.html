@@ -1,0 +1,97 @@
+{extend name="layout::layout"}
+{block name="htmlTitle"}Dashboard Control{/block}
+{block name="htmlContent"}
+<div class="content-wrapper" style="min-height: 946px;">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            修改密码
+            <small></small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i>Dashboard</a></li>
+            <li><a href="#">管理权限设置</a></li>
+            <li class="active">修改密码</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <!-- right column -->
+            <div class="col-md-12">
+                <!-- Horizontal Form -->
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">修改密码</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <!-- form start -->
+                    <form class="form-horizontal" method="post">
+                        <input type="hidden" name="manage_id" value="{:input('get.manage_id',0,'intval')}">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-2 control-label">新密码：</label>
+
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control"  name="password" id="inputEmail3" placeholder="NewPassword" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputPassword3" class="col-sm-2 control-label">确认新密码：</label>
+
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="password_confirm" id="inputPassword3" placeholder="ConfirmPassword" required>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        <button type="button" class="btn btn-default" onclick="javascript:window.history.back()">取消</button>
+                        <button type="button" class="btn btn-info pull-right" onclick="submit()">修改</button>
+                    </div>
+                    <!-- /.box-footer -->
+                </div>
+                <!-- /.box -->
+
+            </div>
+            <!--/.col (right) -->
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>
+{/block}
+{block name="htmlJS"}
+<script type="text/javascript">
+    function submit()
+    {
+        if( $('input[name=password]').val() == '' || $('input[name=password_confirm]').val() == '' ){
+            msg('请正确填写新的帐号密码！');return;
+        }
+        if( $('input[name=password]').val()  != $('input[name=password_confirm]').val() ){
+            msg('两次输入的帐号密码不一致！');return;
+        }
+        $.ajax({
+            url:"{:url()}",
+            data:$('form').serialize(),
+            dataType:'json',
+            type:'post',
+            success:function (resp) {
+                msg(resp.msg);
+                if(resp.code == '1'){
+                    setTimeout( 'window.location.href = "{:url('manage_list')}"',1000);
+                }
+            },
+            error:function (e) {
+                msg('修改失败');
+            }
+        })
+    }
+</script>
+<!--/请在上方写此页面业务相关的脚本-->
+{/block}
+
+

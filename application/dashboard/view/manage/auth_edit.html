@@ -1,0 +1,116 @@
+{extend name="layout::layout"}
+{block name="htmlTitle"}Dashboard Control{/block}
+{block name="htmlContent"}
+<div class="content-wrapper" style="min-height: 946px;">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            修改信息
+            <small></small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i>Dashboard</a></li>
+            <li><a href="#">管理权限设置</a></li>
+            <li class="active">修改权限</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <!-- column -->
+            <div class="col-md-12">
+                <!-- /.box -->
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">修改权限信息</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <form role="form">
+                            <input type="hidden" name="action_id" value="{:input('get.auth_id',0,'intval')}">
+                            <!-- text input -->
+                            <div class="form-group col-md-6">
+                                <label>Name: </label>
+                                <input type="text" class="form-control" value="{$action_info.name}" placeholder="请设置权限名称"  name="name">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>controller: </label>
+                                <input type="text" class="form-control" value="{$action_info.controller}" placeholder="请设置controller"  name="controller">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>action: </label>
+                                <input type="text" class="form-control" value="{$action_info.action}" placeholder="请设置action"  name="action">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>隶属模块: </label>
+                                <div class="box-group">
+                                    <div class="checkbox">
+                                        <div class="radio">
+                                            {foreach name="moduleRows" id="row"}
+                                                <label>
+                                                    <input type="radio" name="module_id" value="{$row.id}" {if condition="$action_info.module_id eq $row.id"}checked{/if}>{$row.module_name}
+                                                </label>
+                                            {/foreach}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-12">
+                                <label>是否菜单：</label>
+                                <div class=box-group>
+                                    <div class="checkbox ">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="is_menu" value="y" {if condition="$action_info.is_menu eq 'y'"}checked{/if} >
+                                                启用
+                                            </label>
+
+                                            <label>
+                                                <input type="radio" name="is_menu"  value="n" {if condition="$action_info.is_menu eq 'n'"}checked{/if} >
+                                                禁用
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        <button type="button" class="btn btn-default" onclick="javascript:window.history.back()">取消</button>
+                        <button type="button" class="btn btn-info pull-right" onclick="submit()">修改</button>
+                    </div>
+                </div>
+            </div>
+            <!--/.col (right) -->
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>
+{/block}
+{block name="htmlJS"}
+<script type="text/javascript">
+    function submit()
+    {
+        $.ajax({
+            url:"{:url()}",
+            data:$('form').serialize(),
+            dataType:'json',
+            type:'post',
+            success:function (resp) {
+                msg(resp.msg);
+                if(resp.code == '1'){
+                    setTimeout( 'window.location.reload()',1000);
+                }
+            },
+            error:function (e) {
+                msg('修改失败');
+            }
+        })
+    }
+</script>
+<!--/请在上方写此页面业务相关的脚本-->
+{/block}
