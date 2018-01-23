@@ -1,4 +1,4 @@
-{extend name="layout::layout"}
+    {extend name="layout::layout"}
 {block name="htmlTitle"}Dashboard Control{/block}
 {block name="htmlContent"}
 <div class="content-wrapper" style="min-height: 916px;">
@@ -21,7 +21,10 @@
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title">Data Table</h3>
+                        <button type="button" class="btn bg-navy btn-flat margin" onclick=jump_url("{:url('manage_add')}")>
+                            <i class="fa fa-fw fa-plus"></i>
+                            添加管理员
+                        </button>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">

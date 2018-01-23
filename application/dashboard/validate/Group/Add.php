@@ -9,16 +9,10 @@ namespace app\dashboard\validate\Group;
 
 use think\Validate;
 
-class Edit extends Validate
+class Add extends Validate
 {
-    public function __construct(array $rules = [], array $message = [], array $field = [])
-    {
-        parent::__construct($rules, $message, $field);
-    }
-
     // 规则
     protected $rule = [
-        'group_id'     =>  'require|number',
         'group_actions'     =>  'require|checkGroupActions',
         'group_status'    =>  'require',
         'group_name'    =>  'require',
@@ -26,9 +20,9 @@ class Edit extends Validate
 
     // 错误提示
     protected $message  =   [
-        'group_id.require'  =>  'group_id 不存在',
+        'group_actions.require'     =>  '请选择组的权限',
         'group_status.require'        =>  '请填写组是否启用',
-        'group_name.require'    =>  '请填写用户组名字'
+        'group_name.require'    =>  '请设置组名字'
     ];
 
     protected function checkGroupActions($val)

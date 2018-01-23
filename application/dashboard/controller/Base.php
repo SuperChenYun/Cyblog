@@ -23,7 +23,7 @@ class Base extends Init
     protected $auth_moduel = [];
 
     // 请求排除的固定url 登录授权除外 需要全部小写 需要人工设置
-    protected $auth_request_url = [
+    protected static $auth_request_url = [
         'index/welcome',
         'index/index'
     ];
@@ -125,42 +125,7 @@ class Base extends Init
 
         if (!$this -> auth_module) {
             jump_check:
-            // 授权组
-            if( session('Manage')['administrator'] == 1 ){
-                $ManageGroup = Db::name('sys_group')->field('group_actions')->select();
-
-            }else {
-                $ManageGroup = Db::name('sys_group')->field('group_actions')->where(['id' => ['in', session('Manage')['auth_group']]])->select();
-            }
-
-            // 整理组列表
-            $actions = '';
-            foreach ($ManageGroup AS $k => $v){
-                $actions .= $v['group_actions'] . ',';
-            }
-
-            // 整理授权的模块 作为后台左侧菜单
-            $auth_module = Db::name('sys_action') -> alias('sa') -> join('__SYS_MODULE__ smd', 'smd.id = sa.module_id') -> where(['sa.id' => ['in', $actions], 'is_menu' => 'y']) -> order( 'module_sort asc, action_sort asc') -> select();
-
-            // 整理数据为二维数组
-            $authArr = [];
-            foreach ($auth_module AS $k => $v){
-                $authArr[ $v['module_id'] ]['module_id']= $v['module_id'];
-                $authArr[ $v['module_id'] ]['module_name'] = $v['module_name'];
-                $authArr[ $v['module_id'] ]['module_controller'] = $v['module_controller'];
-                $authArr[ $v['module_id'] ]['module_iconfount'] = $v['module_iconfount'];
-                $authArr[ $v['module_id'] ]['actions'][] = $v;
-            }
-
-            // 整理授权访问的模块
-            $auth_request_url = $this -> auth_request_url;
-            foreach($authArr AS $amk => $amv){
-                foreach ($amv['actions'] AS $ak => $av){
-                    $auth_request_url[]  = strtolower($av['controller']) . '/' . strtolower($av['action']);
-                }
-            }
-            session('auth_request_url', $auth_request_url);
-            session('auth_module', $authArr);
+            self::flushAuthCache();
         }
     }
 
@@ -188,6 +153,45 @@ class Base extends Init
     private function assign_authModuleAndManage(){
         $this -> assign('Manage', session('Manage'));
         $this -> assign('auth_module', session('auth_module'));
+    }
+
+    public static function flushAuthCache()
+    {
+        // 授权组
+        if( session('Manage')['administrator'] == 1 ){
+            $ManageGroup = Db::name('sys_group')->field('group_actions')->select();
+
+        }else {
+            $ManageGroup = Db::name('sys_group')->field('group_actions')->where(['id' => ['in', session('Manage')['auth_group']]])->select();
+        }
+        // 整理组列表
+        $actions = '';
+        foreach ($ManageGroup AS $k => $v){
+            $actions .= $v['group_actions'] . ',';
+        }
+
+        // 整理授权的模块 作为后台左侧菜单
+        $auth_module = Db::name('sys_action') -> alias('sa') -> join('__SYS_MODULE__ smd', 'smd.id = sa.module_id') -> where(['sa.id' => ['in', $actions], 'is_menu' => 'y']) -> order( 'module_sort asc, action_sort asc') -> select();
+
+        // 整理数据为二维数组
+        $authArr = [];
+        foreach ($auth_module AS $k => $v){
+            $authArr[ $v['module_id'] ]['module_id']= $v['module_id'];
+            $authArr[ $v['module_id'] ]['module_name'] = $v['module_name'];
+            $authArr[ $v['module_id'] ]['module_controller'] = $v['module_controller'];
+            $authArr[ $v['module_id'] ]['module_iconfount'] = $v['module_iconfount'];
+            $authArr[ $v['module_id'] ]['actions'][] = $v;
+        }
+
+        // 整理授权访问的模块
+        $auth_request_url = self::$auth_request_url;
+        foreach($authArr AS $amk => $amv){
+            foreach ($amv['actions'] AS $ak => $av){
+                $auth_request_url[]  = strtolower($av['controller']) . '/' . strtolower($av['action']);
+            }
+        }
+        session('auth_request_url', $auth_request_url);
+        session('auth_module', $authArr);
     }
 
 }

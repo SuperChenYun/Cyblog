@@ -9,17 +9,11 @@ namespace app\dashboard\validate\Auth;
 
 use think\Validate;
 
-class Edit extends Validate
+class Add extends Validate
 {
-    public function __construct(array $rules = [], array $message = [], array $field = [])
-    {
-        parent::__construct($rules, $message, $field);
-    }
-
     // 规则
     protected $rule = [
-        'action_id'     =>  ['require', 'number'],
-        'name'          =>  ['require'],
+        'name'     =>  ['require'],
         'controller'    =>  ['require'],
         'action'        =>  ['require'],
         'action_sort'   =>  ['require','number'],
@@ -30,7 +24,7 @@ class Edit extends Validate
     // 错误提示
     protected $message  =   [
         'action_id.require'  =>  'action_id 不存在',
-        'name'  =>  '请填写name',
+        'name.require'  =>  '请填写 name',
         'controller.require'        =>  '请填写controller',
         'action.require'        =>  '请填写 action',
         'action_sort.require'   =>  '请填写排序数字',

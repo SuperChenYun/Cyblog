@@ -104,16 +104,191 @@ class Manage extends Base
     public function auth_add()
     {
         if(Request::instance() -> isGet()){
-            $this -> assign('module', Db::name('sys_module') -> select());
+            $this -> assign('moduleRows', Db::name('sys_module') -> where([]) -> select());
             return $this -> fetch();
         }else if(Request::instance() -> isPost()){
+            $validate = Loader::validate('Auth.add');
+            $result = $validate -> check($_POST);
+            if ($result) {
+                $data['name'] = input('post.name', '', 'trim');
+                $data['controller'] = input('post.controller', '', 'trim');
+                $data['action'] = input('post.action', '', 'trim');
+                $data['action_sort'] = input('post.action_sort',0,'trim');
+                $data['module_id'] = input('post.module_id', '', 'trim');
+                $data['is_menu'] = input('post.is_menu', '', 'trim');
+                if( Db('sys_action') -> insert($data) ){
+                    Base::flushAuthCache();
+                    return success('添加成功', ['url'   =>  url('auth_list')]);
+                }else{
+                    return error('添加失败');
+                }
+            } else {
+                return error($validate -> getError());
+            }
             // post提交过来数据
         }else{
             return error('请求类型错误 只允许get post 请求');
         }
     }
 
+    public function manage_add()
+    {
+        if (Request::instance() -> isGet()) {
+            $this -> assign('group_list', Db::name('sys_group') -> select());
+            return $this -> fetch();
+        }else{
+            $validate = Loader::validate('Manage.add');
+            $result = $validate -> check($_POST);
+            if($result){
+                $data['username'] = input('post.username', '', 'trim');
+                $data['truename'] = input('post.truename', '', 'trim');
+                $data['telphone'] = input('post.telphone', '', 'trim');
+                $data['password_salt'] = mt_rand(0, 9) . mt_rand(0, 9) . mt_rand(0, 9) . mt_rand(0, 9);
+                $data['password'] = md5(input('post.password', '', 'trim') . $data['password_salt']);
+                $data['email'] = input('post.email', '', 'trim');
+                $data['auth_group'] = implode(',',$_POST['auth_group'] );
+                $data['status'] = input('post.status', '', 'trim');
+                $data['remarks'] = input('post.remarks', '', 'trim');
+                if( Db('sys_manage') -> insert($data) ){
+                    return success('添加成功', ['url' => url('manage_list')]);
+                }else{
+                    return error('添加失败');
+                }
+            }else{
+                return error($validate -> getError());
+            }
+        }
+
+    }
+
+    public function group_add()
+    {
+        if (Request::instance() -> isGet()) {
+            $this -> assign('actionRows', Db::name('sys_action') -> where([]) -> select());
+            return $this -> fetch();
+        }else{
+            $validate = Loader::validate('Group.add');
+            $result = $validate -> check($_POST);
+            if ($result) {
+                $data['group_name'] = input('post.group_name', '', 'trim');
+                $data['group_actions'] = implode(',', is_array($_POST['group_actions']) ? $_POST['group_actions'] : []);
+                $data['group_status'] = input('post.group_status', 1, 'intval');
+                $data['group_remarks'] = input('post.group_remarks', 'htmlspecialchars');
+                if (Db::name('sys_group') -> insert($data)) {
+                    return success('添加成功', ['url' => url('group_list')]);
+                } else {
+                    return error('添加失败');
+                }
+            } else {
+                return error($validate -> getError());
+            }
+        }
+
+    }
+
+    /****************************** 编辑 ******************************/
+
+    /**
+     * 编辑用户信息
+     */
+    public function manage_edit()
+    {
+        if( Request::instance() -> isGet() ){
+            $this -> assign('group_list', Db::name('sys_group') -> select());
+            $this -> assign('manage_info', Db::name('sys_manage') -> where(['id' => input('get.manage_id', 0 , 'intval')]) -> find() );
+            return $this -> fetch();
+        }elseif( Request::instance() -> isPost() ) {
+            $validate = Loader::validate('Manage.edit');
+            $result = $validate -> check($_POST);
+            if($result){
+                $data['username'] = input('post.username', '', 'trim');
+                $data['truename'] = input('post.truename', '', 'trim');
+                $data['telphone'] = input('post.telphone', '', 'trim');
+                $data['email'] = input('post.email', '', 'trim');
+                $data['auth_group'] = implode(',',$_POST['auth_group'] );
+                $data['status'] = input('post.status', '', 'trim');
+                $data['remarks'] = input('post.remarks', '', 'trim');
+                if( Db('sys_manage') -> where(['id' => input('post.manage_id')]) -> update($data) ){
+                    return success('修改成功');
+                }else{
+                    return error('修改失败');
+                }
+            }else{
+                return error($validate -> getError());
+            }
+        }else{
+            return error( '操作方式有误');
+        }
+    }
+
+    /**
+     * 编辑组
+     * @return mixed|\think\response\Json
+     */
+    public function group_edit()
+    {
+        if( Request::instance() -> isGet() ){
+            $this -> assign('actionRows', Db::name('sys_action') -> where([]) -> select());
+            $this -> assign('group_info', Db::name('sys_group') -> where(['id' => input('get.group_id', 0 , 'intval')]) -> find() );
+            return $this -> fetch();
+        }elseif( Request::instance() -> isPost() ) {
+            $validate = Loader::validate('Group.edit');
+            $result = $validate -> check($_POST);
+            if($result){
+                $data['group_name'] = input('post.group_name', '', 'trim');
+                $data['group_actions'] = implode(',', is_array($_POST['group_actions']) ? $_POST['group_actions'] : []);
+                $data['group_status'] = input('post.group_status', 1, 'intval');
+                $data['group_remarks'] = input('post.group_remarks', 'htmlspecialchars');
+                if( Db('sys_group') -> where(['id' => input('post.group_id')]) -> update($data) ){
+                    return success('修改成功');
+                }else{
+                    return error('修改失败');
+                }
+            }else{
+                return error($validate -> getError());
+            }
+        }else{
+            return error( '操作方式有误');
+        }
+    }
+
+    /**
+     * 编辑权限信息
+     *
+     * @return mixed|\think\response\Json
+     */
+    public function auth_edit(){
+        if( Request::instance() -> isGet() ){
+            $this -> assign('moduleRows', Db::name('sys_module') -> where([]) -> select());
+            $this -> assign('action_info', Db::name('sys_action') -> where(['id' => input('get.auth_id', 0 , 'intval')]) -> find() );
+            return $this -> fetch();
+        }elseif( Request::instance() -> isPost() ) {
+            $validate = Loader::validate('Auth.edit');
+            $result = $validate -> check($_POST);
+
+            if($result){
+                $data['name'] = input('post.name', '', 'trim');
+                $data['controller'] = input('post.controller', '', 'trim');
+                $data['action'] = input('post.action', '', 'trim');
+                $data['action_sort'] = input('post.action_sort',0,'trim');
+                $data['module_id'] = input('post.module_id', '', 'trim');
+                $data['is_menu'] = input('post.is_menu', '', 'trim');
+                if( Db('sys_action') -> where(['id' => input('post.action_id')]) -> update($data) ){
+                    Base::flushAuthCache();
+                    return success('修改成功', ['url'   => url('auth_list')]);
+                }else{
+                    return error('修改失败');
+                }
+            }else{
+                return error($validate -> getError());
+            }
+        }else{
+            return error( '操作方式有误');
+        }
+    }
+
     /****************************** 操作 ******************************/
+
     /**
      * 启用停用
      */
@@ -181,39 +356,6 @@ class Manage extends Base
     }
 
     /**
-     * 编辑用户信息
-     */
-    public function manage_edit()
-    {
-        if( Request::instance() -> isGet() ){
-            $this -> assign('group_list', Db::name('sys_group') -> select());
-            $this -> assign('manage_info', Db::name('sys_manage') -> where(['id' => input('get.manage_id', 0 , 'intval')]) -> find() );
-            return $this -> fetch();
-        }elseif( Request::instance() -> isPost() ) {
-            $validate = Loader::validate('Manage.edit');
-            $result = $validate -> check($_POST);
-            if($result){
-                $data['username'] = input('post.username', '', 'trim');
-                $data['truename'] = input('post.truename', '', 'trim');
-                $data['telphone'] = input('post.telphone', '', 'trim');
-                $data['email'] = input('post.email', '', 'trim');
-                $data['auth_group'] = implode(',',$_POST['auth_group'] );
-                $data['status'] = input('post.status', '', 'trim');
-                $data['remarks'] = input('post.remarks', '', 'trim');
-                if( Db('sys_manage') -> where(['id' => input('post.manage_id')]) -> update($data) ){
-                    return success('修改成功');
-                }else{
-                    return error('修改失败');
-                }
-            }else{
-                return error($validate -> getError());
-            }
-        }else{
-            return error( '操作方式有误');
-        }
-    }
-
-    /**
      * 删除
      */
     public function manage_del()
@@ -233,33 +375,6 @@ class Manage extends Base
             }
         }else{
             return success('操作方式有误');
-        }
-    }
-
-    public function group_edit()
-    {
-        if( Request::instance() -> isGet() ){
-            $this -> assign('actionRows', Db::name('sys_action') -> where([]) -> select());
-            $this -> assign('group_info', Db::name('sys_group') -> where(['id' => input('get.group_id', 0 , 'intval')]) -> find() );
-            return $this -> fetch();
-        }elseif( Request::instance() -> isPost() ) {
-            $validate = Loader::validate('Group.edit');
-            $result = $validate -> check($_POST);
-            if($result){
-                $data['group_name'] = input('post.group_name', '', 'trim');
-                $data['group_actions'] = implode(',', is_array($_POST['group_actions']) ? $_POST['group_actions'] : []);
-                $data['group_status'] = input('post.group_status', 1, 'intval');
-                $data['group_remarks'] = input('post.group_remarks', 'htmlspecialchars');
-                if( Db('sys_group') -> where(['id' => input('post.group_id')]) -> update($data) ){
-                    return success('修改成功');
-                }else{
-                    return error('修改失败');
-                }
-            }else{
-                return error($validate -> getError());
-            }
-        }else{
-            return error( '操作方式有误');
         }
     }
 
@@ -291,39 +406,6 @@ class Manage extends Base
              return error('操作失败');
          }
 
-    }
-
-    /**
-     * 编辑权限信息
-     *
-     * @return mixed|\think\response\Json
-     */
-    public function auth_edit(){
-        if( Request::instance() -> isGet() ){
-            $this -> assign('moduleRows', Db::name('sys_module') -> where([]) -> select());
-            $this -> assign('action_info', Db::name('sys_action') -> where(['id' => input('get.auth_id', 0 , 'intval')]) -> find() );
-            return $this -> fetch();
-        }elseif( Request::instance() -> isPost() ) {
-            $validate = Loader::validate('Auth.edit');
-            $result = $validate -> check($_POST);
-
-            if($result){
-                $data['name'] = input('post.name', '', 'trim');
-                $data['controller'] = input('post.controller', '', 'trim');
-                $data['action'] = input('post.action', '', 'trim');
-                $data['module_id'] = input('post.module_id', '', 'trim');
-                $data['is_menu'] = input('post.is_menu', '', 'trim');
-                if( Db('sys_action') -> where(['id' => input('post.action_id')]) -> update($data) ){
-                    return success('修改成功');
-                }else{
-                    return error('修改失败');
-                }
-            }else{
-                return error($validate -> getError());
-            }
-        }else{
-            return error( '操作方式有误');
-        }
     }
 
     /**

@@ -11,7 +11,7 @@
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i>Dashboard</a></li>
             <li><a href="#">管理权限设置</a></li>
-            <li class="active">修改权限</li>
+            <li class="active">添加信息</li>
         </ol>
     </section>
 
@@ -23,68 +23,78 @@
                 <!-- /.box -->
                 <div class="box box-info">
                     <div class="box-header with-border">
-                        <h3 class="box-title">修改权限信息</h3>
+                        <h3 class="box-title">修改人员信息</h3>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
                         <form role="form">
-                            <input type="hidden" name="action_id" value="{:input('get.auth_id',0,'intval')}">
                             <!-- text input -->
                             <div class="form-group col-md-6">
-                                <label>Name: </label>
-                                <input type="text" class="form-control" value="{$action_info.name}" placeholder="请设置权限名称"  name="name">
+                                <label>用户名: </label>
+                                <input type="text" class="form-control" value="" placeholder="请设置用户名"  name="username">
                             </div>
                             <div class="form-group col-md-6">
-                                <label>controller: </label>
-                                <input type="text" class="form-control" value="{$action_info.controller}" placeholder="请设置controller"  name="controller">
+                                <label>真实姓名: </label>
+                                <input type="text" class="form-control" value="" placeholder="请填写真实姓名"  name="truename">
                             </div>
                             <div class="form-group col-md-6">
-                                <label>action: </label>
-                                <input type="text" class="form-control" value="{$action_info.action}" placeholder="请设置action"  name="action">
+                                <label>手机: </label>
+                                <input type="tel" class="form-control" value="" placeholder="请填写手机号"  name="telphone">
                             </div>
                             <div class="form-group col-md-6">
-                                <label>排序（数字越大菜单中排序越靠后）: </label>
-                                <input type="text" class="form-control" value="{$action_info.action_sort|default=0}" placeholder="排序数组 数字越大菜单中排序越靠后"  name="action_sort">
+                                <label>邮箱: </label>
+                                <input type="email" class="form-control" value="" placeholder="example@domain.com"  name="email">
                             </div>
                             <div class="form-group col-md-6">
-                                <label>隶属模块: </label>
-                                <div class="box-group">
-                                    <div class="checkbox">
-                                        <div class="radio">
-                                            {foreach name="moduleRows" id="row"}
-                                                <label>
-                                                    <input type="radio" name="module_id" value="{$row.id}" {if condition="$action_info.module_id eq $row.id"}checked{/if}>{$row.module_name}
-                                                </label>
-                                            {/foreach}
-                                        </div>
-                                    </div>
-                                </div>
+                                <label>密码: </label>
+                                <input type="text" class="form-control" value="" placeholder="请设置新用户的密码"  name="password">
                             </div>
 
                             <div class="form-group col-md-12">
-                                <label>是否菜单：</label>
+                                <label>授权组：</label>
+                                <div class=box-group>
+                                    <div class="checkbox ">
+                                        {volist name="$group_list" id="row"}
+                                        <label>
+                                            <input type="checkbox" name="auth_group[]" value="{$row.id}" id="auth_group_{$row.id}">
+                                            {$row.group_name}
+                                        </label>
+                                        {/volist}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label>是否启用：</label>
                                 <div class=box-group>
                                     <div class="checkbox ">
                                         <div class="radio">
                                             <label>
-                                                <input type="radio" name="is_menu" value="y" {if condition="$action_info.is_menu eq 'y'"}checked{/if} >
+                                                <input type="radio" name="status" value="1" checked>
                                                 启用
                                             </label>
 
                                             <label>
-                                                <input type="radio" name="is_menu"  value="n" {if condition="$action_info.is_menu eq 'n'"}checked{/if} >
+                                                <input type="radio" name="status"  value="0" >
                                                 禁用
                                             </label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- textarea -->
+                            <div class="form-group  col-md-12">
+                                <label>备注:</label>
+                                <textarea class="form-control" rows="5" name="remarks"  placeholder="说点什么...最少输入10个字符"  ></textarea>
+                                <!--<p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>-->
+                            </div>
+
                         </form>
                     </div>
                     <!-- /.box-body -->
                     <div class="box-footer">
                         <button type="button" class="btn btn-default" onclick="javascript:window.history.back()">取消</button>
-                        <button type="button" class="btn btn-info pull-right" onclick="submit()">修改</button>
+                        <button type="button" class="btn btn-info pull-right" onclick="submit()">添加</button>
                     </div>
                 </div>
             </div>
