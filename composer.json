@@ -25,6 +25,10 @@
         "topthink/think-migration": "1.*",
         "topthink/think-oracle": "1.*"
     },
+    "require-dev": {
+        "phpunit/phpunit": "~6.0",
+        "overtrue/phplint": "dev-master"
+    },
     "autoload": {
         "psr-4": {
             "app\\": "application"
