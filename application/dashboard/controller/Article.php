@@ -32,6 +32,10 @@ class Article extends Base
         return $this -> fetch();
     }
 
+    /**
+     * 文章展示或者隐藏
+     * @return \think\response\Json
+     */
     public function art_enable_or_disable()
     {
         if (Request::instance() -> isAjax()) {
@@ -42,4 +46,14 @@ class Article extends Base
         }
     }
 
+    public function art_add(Request $request)
+    {
+        if ($request -> isGet()) {
+            return $this -> fetch();
+        } elseif ($request -> isPost()) {
+
+        } else {
+            return '';
+        }
+    }
 }

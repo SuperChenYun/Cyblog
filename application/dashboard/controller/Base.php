@@ -25,7 +25,8 @@ class Base extends Init
     // 请求排除的固定url 登录授权除外 需要全部小写 需要人工设置
     protected static $auth_request_url = [
         'index/welcome',
-        'index/index'
+        'index/index',
+        'neditor/controller'
     ];
 
     // 404模板位置view文件夹下

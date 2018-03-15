@@ -1,0 +1,102 @@
+{extend name="layout::layout"}
+{block name="htmlTitle"}Dashboard Control{/block}
+{block name="htmlContent"}
+<div class="content-wrapper" _vimium-has-onclick-listener="" style="min-height: 990px;">
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            添加文章
+            <small>ADD ARTICLE</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+            <li><a href="#">文章管理</a></li>
+            <li class="active">添加文章</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <form role="form">
+
+                <!-- column left-->
+                <div class="col-md-9">
+                    <!-- general form elements disabled -->
+                    <div class="box box-warning" _vimium-has-onclick-listener="">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">编辑文章</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                                <!-- text input -->
+                                <div class="form-group">
+                                    <label>标题：</label>
+                                    <input type="text" class="form-control" placeholder="Enter ...">
+                                </div>
+                                <div class="form-group">
+                                    <label>摘要</label>
+                                    <textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <!--<label>文章内容</label>-->
+                                    <textarea class="form-control" rows="3" placeholder="Enter ..." disabled=""></textarea>
+                                </div>
+
+                                <!-- input states -->
+                                <div class="form-group has-success">
+                                    <label class="control-label" for="inputSuccess"><i class="fa fa-check"></i> Input with success</label>
+                                    <input type="text" class="form-control" id="inputSuccess" placeholder="Enter ...">
+                                    <span class="help-block">Help block with success</span>
+                                </div>
+                                <div class="form-group has-warning">
+                                    <label class="control-label" for="inputWarning"><i class="fa fa-bell-o"></i> Input with
+                                        warning</label>
+                                    <input type="text" class="form-control" id="inputWarning" placeholder="Enter ...">
+                                    <span class="help-block">Help block with warning</span>
+                                </div>
+                                <div class="form-group has-error">
+                                    <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> Input with
+                                        error</label>
+                                    <input type="text" class="form-control" id="inputError" placeholder="Enter ...">
+                                    <span class="help-block">Help block with error</span>
+                                </div>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                    <!-- /.box -->
+                </div>
+                <!--/.col -->
+                <!-- column right-->
+                <div class="col-md-3">
+                    <div class="box box-warning">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">相关设置</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label>分类设置</label>
+                            </div>
+                        </div>
+                        <div class="box-footer">
+                            SETTINGS
+                        </div>
+                    </div>
+                </div>
+                <!--/.col -->
+            </form>
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>
+{/block}
+{block name="htmlJS"}
+
+{/block}
