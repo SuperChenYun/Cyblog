@@ -2,7 +2,6 @@
 {block name="htmlTitle"}Dashboard Control{/block}
 {block name="htmlContent"}
 <div class="content-wrapper" _vimium-has-onclick-listener="" style="min-height: 990px;">
-
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
@@ -43,27 +42,10 @@
 
                                 <div class="form-group">
                                     <!--<label>文章内容</label>-->
-                                    <textarea class="form-control" rows="3" placeholder="Enter ..." disabled=""></textarea>
+                                    <textarea name="content" id="editor" style="width:100%;height: 500px;"></textarea>
+
                                 </div>
 
-                                <!-- input states -->
-                                <div class="form-group has-success">
-                                    <label class="control-label" for="inputSuccess"><i class="fa fa-check"></i> Input with success</label>
-                                    <input type="text" class="form-control" id="inputSuccess" placeholder="Enter ...">
-                                    <span class="help-block">Help block with success</span>
-                                </div>
-                                <div class="form-group has-warning">
-                                    <label class="control-label" for="inputWarning"><i class="fa fa-bell-o"></i> Input with
-                                        warning</label>
-                                    <input type="text" class="form-control" id="inputWarning" placeholder="Enter ...">
-                                    <span class="help-block">Help block with warning</span>
-                                </div>
-                                <div class="form-group has-error">
-                                    <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> Input with
-                                        error</label>
-                                    <input type="text" class="form-control" id="inputError" placeholder="Enter ...">
-                                    <span class="help-block">Help block with error</span>
-                                </div>
                         </div>
                         <!-- /.box-body -->
                     </div>
@@ -84,6 +66,11 @@
                                 <label>分类设置</label>
                             </div>
                         </div>
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label>文章缩略图</label>
+                            </div>
+                        </div>
                         <div class="box-footer">
                             SETTINGS
                         </div>
@@ -98,5 +85,14 @@
 </div>
 {/block}
 {block name="htmlJS"}
-
+<script type="text/javascript" charset="utf-8" src="__CDN_STATIC__/neditor/neditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__CDN_STATIC__/neditor/neditor.all.min.js"> </script>
+<!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
+<!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
+<script type="text/javascript" charset="utf-8" src="__CDN_STATIC__/neditor/i18n/zh-cn/zh-cn.js"></script>
+<script>
+    //实例化编辑器
+    //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+    var ue = UE.getEditor('editor');
+</script>
 {/block}
