@@ -18,7 +18,7 @@
     <!-- Main content -->
     <section class="content">
         <div class="row">
-            <form role="form">
+            <form role="form" method="post">
 
                 <!-- column left-->
                 <div class="col-md-9">
@@ -32,25 +32,23 @@
                                 <!-- text input -->
                                 <div class="form-group">
                                     <label>标题：</label>
-                                    <input type="text" class="form-control" placeholder="Enter ...">
+                                    <input type="text" name="art_title" class="form-control" placeholder="Enter ...">
                                 </div>
                                 <div class="form-group">
                                     <label>摘要</label>
-                                    <textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>
+                                    <textarea name="art_desc" class="form-control" rows="3" placeholder="Enter ..."></textarea>
                                 </div>
-
-
                                 <div class="form-group">
                                     <!--<label>文章内容</label>-->
-                                    <textarea name="content" id="editor" style="width:100%;height: 500px;"></textarea>
+                                    <textarea name="art_content" id="editor" style="width:100%;height: 500px;"></textarea>
 
                                 </div>
 
                         </div>
                         <!-- /.box-body -->
-                    </div>
-                    <div class="box-footer">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <div class="box-footer">
+                            <div onclick="article_submit()" class="btn btn-primary">Submit</div>
+                        </div>
                     </div>
                     <!-- /.box -->
                 </div>
@@ -94,5 +92,33 @@
     //实例化编辑器
     //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
     var ue = UE.getEditor('editor');
+
+    function article_submit()
+    {
+        var formData = new Object();
+        formData['art_title'] = $('input[name=art_title]').val();   // 标题
+        formData['art_desc'] = $('textarea[name=art_desc]').val();  // 描述
+        formData['art_content'] = ue.getContent();  // 带标签的内容
+        formData['art_content_text'] = ue.getPlainTxt(); //不带标签的内容
+        // 分类
+        // 缩略图
+
+        console.log(formData);
+        $.ajax({
+            "url":"{:url('')}",
+            'type':'post',
+            'data':formData,
+            'dataType':'json',
+            'success': function (resp) {
+                msg(resp.msg);
+                if(resp.code == 1) {
+                    setTimeout('window.location.href = "{:url('article/index')}"', 2000);
+                }
+            },
+            'error':function (e) {
+                msg('添加失败，再试一次吧！');
+            }
+        })
+    }
 </script>
 {/block}

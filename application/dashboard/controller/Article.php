@@ -9,8 +9,8 @@
 namespace app\dashboard\controller;
 
 use think\Db;
+use think\Loader;
 use think\Request;
-use think\Response;
 
 class Article extends Base
 {
@@ -51,6 +51,16 @@ class Article extends Base
         if ($request -> isGet()) {
             return $this -> fetch();
         } elseif ($request -> isPost()) {
+            $validate = Loader::validate('Article.add');
+            $result = $validate -> check($request -> post());
+            if ($result) {
+                $insId = model('article') -> add($request -> post());
+                if ($insId) {
+                    return success('添加成功',['insId' => $insId]);
+                }
+            } else {
+                return error($validate -> getError());
+            }
 
         } else {
             return '';
