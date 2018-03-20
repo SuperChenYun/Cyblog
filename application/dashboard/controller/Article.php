@@ -24,7 +24,7 @@ class Article extends Base
             'query' => ['search' => input('get.search', '', 'trim')]
         ];
         $where = [];
-        $article = Db::name('article') -> where($where) -> order('art_id', 'asc') -> paginate('','', $searchConfig);
+        $article = Db::name('article') -> where($where) -> order('art_id', 'desc') -> paginate('','', $searchConfig);
         $this -> assign('article', $article);
         $this -> assign('totalRows', Db::name('article') -> count());
         $this -> assign('page', $article -> render());
