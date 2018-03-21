@@ -115,7 +115,7 @@
                 url:"{:url('art_enable_or_disable')}",
                 type:'post',
                 dateType:'json',
-                data:{g_id:id},
+                data:{art_id:id},
                 success:function (resp) {
                     layer.msg(resp.msg);
                     if(resp.code == '1') {
@@ -137,7 +137,7 @@
                     url:"{:url('art_del')}",
                     type:'post',
                     dataType:'json',
-                    data:{m_id:id},
+                    data:{art_id:id},
                     success:function (resp) {
                         layer.msg(resp.msg);
                         if(resp.code == '1') {

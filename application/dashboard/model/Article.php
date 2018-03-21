@@ -18,6 +18,8 @@ use think\Request;
  */
 class Article extends Model
 {
+    const SHOW = 1;
+    const HIDE = 2;
     public function add($data)
     {
         $this -> data($data);
@@ -30,6 +32,27 @@ class Article extends Model
         $state = $this -> save($data);
         if ($state) {
             return $this -> getLastInsID();
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 修改文章
+     * @param $data
+     * @return bool
+     */
+    public function edit($data)
+    {
+        $this -> data($data);
+        $this -> setAttr('art_update_at', time());
+        //$this -> setAttr('art_author_id', $this -> getArtAutherId());
+        //$this -> setAttr('art_author_name', $this -> getArtAutherName());
+        $this -> setAttr('art_class_id', $this -> getArtClassId());
+        $this -> setAttr('art_class_name', $this -> getArtClassName());
+        $state = $this -> update($data);
+        if ($state) {
+            return true;
         } else {
             return false;
         }

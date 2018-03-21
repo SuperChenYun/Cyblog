@@ -1,17 +1,17 @@
 {extend name="layout::layout"}
-{block name="htmlTitle"}Dashboard Control{/block}
+{block name="htmlTitle"}编辑文章 | Dashboard Control{/block}
 {block name="htmlContent"}
 <div class="content-wrapper" _vimium-has-onclick-listener="" style="min-height: 990px;">
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            添加文章
-            <small>ADD ARTICLE</small>
+            编辑文章
+            <small>EDIT ARTICLE</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
             <li><a href="#">文章管理</a></li>
-            <li class="active">添加文章</li>
+            <li class="active">编辑文章</li>
         </ol>
     </section>
 
@@ -30,17 +30,18 @@
                         <!-- /.box-header -->
                         <div class="box-body">
                                 <!-- text input -->
+                                <input type="hidden" name="art_id" value="{$article -> art_id|default=0}">
                                 <div class="form-group">
                                     <label>标题：</label>
-                                    <input type="text" name="art_title" class="form-control" placeholder="Enter ...">
+                                    <input type="text" name="art_title" class="form-control" placeholder="Enter ..." value="{$article -> art_title|default=''}">
                                 </div>
                                 <div class="form-group">
                                     <label>摘要</label>
-                                    <textarea name="art_desc" class="form-control" rows="3" placeholder="Enter ..."></textarea>
+                                    <textarea name="art_desc" class="form-control" rows="3" placeholder="Enter ...">{$article -> art_desc|default=''}</textarea>
                                 </div>
                                 <div class="form-group">
                                     <!--<label>文章内容</label>-->
-                                    <textarea name="art_content" id="editor" style="width:100%;height: 500px;"></textarea>
+                                    <textarea name="art_content" id="editor" style="width:100%;height: 500px;">{$article -> art_content|default=''}</textarea>
 
                                 </div>
 
@@ -104,6 +105,7 @@
     function article_submit()
     {
         var formData = new Object();
+        // formData['art_id'] = $('input[name=art_id]').val();   // ID
         formData['art_title'] = $('input[name=art_title]').val();   // 标题
         formData['art_desc'] = $('textarea[name=art_desc]').val();  // 描述
         formData['art_content'] = ue.getContent();  // 带标签的内容

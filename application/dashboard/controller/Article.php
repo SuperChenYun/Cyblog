@@ -11,6 +11,7 @@ namespace app\dashboard\controller;
 use think\Db;
 use think\Loader;
 use think\Request;
+use app\dashboard\model\Article as ArticleModel;
 
 class Article extends Base
 {
@@ -36,16 +37,31 @@ class Article extends Base
      * 文章展示或者隐藏
      * @return \think\response\Json
      */
-    public function art_enable_or_disable()
+    public function art_enable_or_disable(Request $request)
     {
         if (Request::instance() -> isAjax()) {
-            $article = Db::name('article') -> getByArtId(input('get.art_id',0,'intval'));
-            dump($article);
+            $article = model('article') -> getByArtId($request -> param('art_id', '0'));
+            if ($article -> art_status == ArticleModel::SHOW) {
+                $article->art_status = ArticleModel::HIDE;
+            } elseif ($article -> art_status == ArticleModel::HIDE) {
+                $article -> art_status = ArticleModel::SHOW;
+            }
+            $state = $article -> save();
+            if ($state) {
+                return success('操作成功');
+            } else {
+                return error('操作失败');
+            }
         } else {
             return error('Method Error');
         }
     }
 
+    /**
+     * 添加文章
+     * @param Request $request
+     * @return mixed|string|\think\response\Json
+     */
     public function art_add(Request $request)
     {
         if ($request -> isGet()) {
@@ -64,6 +80,49 @@ class Article extends Base
 
         } else {
             return '';
+        }
+    }
+
+    /**
+     * 编辑文章
+     * @param int $art_id
+     * @param Request $request
+     * @return mixed|string|\think\response\Json
+     */
+    public function art_edit(int $art_id, Request $request)
+    {
+        if ($request -> isGet()) {
+            $this -> assign('article', model('article') -> getByArtId($art_id));
+            return $this -> fetch();
+        } elseif ($request -> isPost()) {
+            $validate = Loader::validate('Article.edit');
+            $result = $validate -> check($request -> param());
+            if ($result) {
+                $state = model('article') -> edit($request -> param());
+                if ($state) {
+                    return success('添加成功');
+                }
+            } else {
+                return error($validate -> getError());
+            }
+        } else {
+            return '';
+        }
+    }
+
+    /**
+     * 删除文章
+     * @param int $art_id
+     * @return \think\response\Json
+     */
+    public function art_del(int $art_id)
+    {
+        $article = model('article') -> getByArtId($art_id);
+        $state = $article -> delete();
+        if ($state) {
+            return success('删除成功');
+        } else {
+            return error('删除失败');
         }
     }
 }
