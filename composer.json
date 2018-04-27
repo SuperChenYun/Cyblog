@@ -23,7 +23,8 @@
         "topthink/think-image": "1.*",
         "topthink/think-queue": "1.*",
         "topthink/think-migration": "1.*",
-        "topthink/think-oracle": "1.*"
+        "topthink/think-oracle": "1.*",
+        "overtrue/wechat": "~4.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~6.0",

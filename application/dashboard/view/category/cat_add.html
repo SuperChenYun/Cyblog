@@ -1,0 +1,79 @@
+{extend name="layout::layout"}
+{block name="htmlTitle"}Dashboard Control{/block}
+{block name="htmlContent"}
+<div class="content-wrapper" _vimium-has-onclick-listener="" style="min-height: 990px;">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            添加分类
+            <small>ADD CATEGORY</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+            <li><a href="#">分类管理</a></li>
+            <li class="active">添加分类</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <form role="form" method="post">
+
+                <!-- column left-->
+                <div class="col-md-12">
+                    <!-- general form elements disabled -->
+                    <div class="box box-warning" _vimium-has-onclick-listener="">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">添加分类</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <!-- text input -->
+                            <div class="form-group">
+                                <label>分类名称：</label>
+                                <input type="text" name="cat_class_name" class="form-control" placeholder="Enter ...">
+                            </div>
+
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <div onclick="category_submit()" class="btn btn-primary">Submit</div>
+                        </div>
+                    </div>
+                    <!-- /.box -->
+                </div>
+                <!--/.col -->
+            </form>
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>
+{/block}
+{block name="htmlJS"}
+<script>
+    function category_submit()
+    {
+        var formData = new Object();
+        formData['cat_class_name'] = $('input[name=cat_class_name]').val();   // 标题
+
+        console.log(formData);
+        $.ajax({
+            "url": window.location.href,
+            'type':'post',
+            'data':formData,
+            'dataType':'json',
+            'success': function (resp) {
+                msg(resp.msg);
+                if(resp.code == 1) {
+                    setTimeout('window.location.href = "{:url('index')}"', 2000);
+                }
+            },
+            'error':function (e) {
+                msg('添加失败，再试一次吧！');
+            }
+        })
+    }
+</script>
+{/block}

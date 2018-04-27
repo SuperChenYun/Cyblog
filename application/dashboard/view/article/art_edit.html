@@ -64,11 +64,10 @@
                             <div class="form-group">
                                 <label>分类设置</label>
                                 <select name="art_class_id" class="form-control">
-                                    <option value="1">option 1</option>
-                                    <option value="1">option 2</option>
-                                    <option value="1">option 3</option>
-                                    <option value="1">option 4</option>
-                                    <option value="1">option 5</option>
+                                    <option value="0">请选择分类</option>
+                                    {volist name="category" id="vo"}
+                                        <option {if condition="$vo.cat_id eq $article.art_class_id"}selected{/if} value="{$vo -> cat_id|default=''}">{$vo -> cat_class_name|default='读取失败'}</option>
+                                    {/volist}
                                 </select>
                             </div>
 

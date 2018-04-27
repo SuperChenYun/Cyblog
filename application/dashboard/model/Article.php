@@ -45,11 +45,12 @@ class Article extends Model
     public function edit($data)
     {
         $this -> data($data);
-        $this -> setAttr('art_update_at', time());
-        //$this -> setAttr('art_author_id', $this -> getArtAutherId());
-        //$this -> setAttr('art_author_name', $this -> getArtAutherName());
-        $this -> setAttr('art_class_id', $this -> getArtClassId());
-        $this -> setAttr('art_class_name', $this -> getArtClassName());
+        $data['art_update_at'] =  time();
+        //$data['art_author_id'] = $this -> getArtAutherId();
+        //$data['art_author_name'] = $this -> getArtAutherName();
+        $data['art_update_at'] =  time();
+        $data['art_class_id'] =  $this -> getArtClassId();
+        $data['art_class_name'] =  $this -> getArtClassName();
         $state = $this -> update($data);
         if ($state) {
             return true;
@@ -92,9 +93,12 @@ class Article extends Model
     protected function getArtClassName()
     {
         if ($this -> getAttr('art_class_id') == 0) {
-            return 'not class';
+            return '未分类';
         }
-        $res = $this -> hasOne('Category','art_class_id','cat_id') ->field('cat_class_name') -> find();
+        $res = \model('Category')
+            -> field('cat_class_name')
+            -> where(['cat_id' => $this -> getArtClassId()])
+            -> find();
         return $res -> cat_class_name ?: '';
     }
 

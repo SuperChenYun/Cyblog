@@ -65,6 +65,8 @@ class Article extends Base
     public function art_add(Request $request)
     {
         if ($request -> isGet()) {
+            $category = model('category') -> getAll();
+            $this -> assign('category', $category);
             return $this -> fetch();
         } elseif ($request -> isPost()) {
             $validate = Loader::validate('Article.add');
@@ -92,6 +94,8 @@ class Article extends Base
     public function art_edit(int $art_id, Request $request)
     {
         if ($request -> isGet()) {
+            $category = model('category') -> getAll();
+            $this -> assign('category', $category);
             $this -> assign('article', model('article') -> getByArtId($art_id));
             return $this -> fetch();
         } elseif ($request -> isPost()) {

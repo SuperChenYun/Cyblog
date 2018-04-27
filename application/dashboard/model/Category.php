@@ -18,5 +18,27 @@ use think\Model;
  */
 class Category extends Model
 {
+    public function getAll()
+    {
+        return $this->select();
+    }
+
+    public function add($postData)
+    {
+        $data['cat_class_name'] = $postData['cat_class_name'];
+        $data['create_at'] = time();
+        return $this->insertGetId($data);
+    }
+
+    public function edit($data)
+    {
+        $data['update_at'] = time();
+        $state = $this -> update($data);
+        if ($state) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 }
