@@ -29,6 +29,7 @@ class Article extends Model
         $this -> setAttr('art_author_name', $this -> getArtAutherName());
         $this -> setAttr('art_class_id', $this -> getArtClassId());
         $this -> setAttr('art_class_name', $this -> getArtClassName());
+        $this -> setAttr('art_banner_url', $this -> getArtBannerUrl());
         $state = $this -> save($data);
         if ($state) {
             return $this -> getLastInsID();
@@ -51,6 +52,7 @@ class Article extends Model
         $data['art_update_at'] =  time();
         $data['art_class_id'] =  $this -> getArtClassId();
         $data['art_class_name'] =  $this -> getArtClassName();
+        $data['art_banner_url'] = $this -> getArtBannerUrl();
         $state = $this -> update($data);
         if ($state) {
             return true;
@@ -100,6 +102,15 @@ class Article extends Model
             -> where(['cat_id' => $this -> getArtClassId()])
             -> find();
         return $res -> cat_class_name ?: '';
+    }
+
+    private function getArtBannerUrl()
+    {
+        if (empty($this -> getAttr('art_banner_url'))) {
+            $defaultBannerUrl = \model('SysConfig') -> getOne('article_default_banner_url');
+            return !empty($defaultBannerUrl) ? $defaultBannerUrl : '';
+        }
+        return $this -> getAttr('art_banner_url');
     }
 
 }

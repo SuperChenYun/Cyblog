@@ -67,6 +67,8 @@ class Article extends Base
         if ($request -> isGet()) {
             $category = model('category') -> getAll();
             $this -> assign('category', $category);
+            $defaultBannerUrl = model('SysConfig') -> getOne('article_default_banner_url');
+            $this -> assign('defaultBannerUrl',$defaultBannerUrl);
             return $this -> fetch();
         } elseif ($request -> isPost()) {
             $validate = Loader::validate('Article.add');
@@ -96,6 +98,8 @@ class Article extends Base
         if ($request -> isGet()) {
             $category = model('category') -> getAll();
             $this -> assign('category', $category);
+            $defaultBannerUrl = model('SysConfig') -> getOne('article_default_banner_url');
+            $this -> assign('defaultBannerUrl',$defaultBannerUrl);
             $this -> assign('article', model('article') -> getByArtId($art_id));
             return $this -> fetch();
         } elseif ($request -> isPost()) {
@@ -104,7 +108,7 @@ class Article extends Base
             if ($result) {
                 $state = model('article') -> edit($request -> param());
                 if ($state) {
-                    return success('添加成功');
+                    return success('编辑成功');
                 }
             } else {
                 return error($validate -> getError());

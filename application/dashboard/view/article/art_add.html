@@ -74,8 +74,16 @@
                         <div class="box-body">
                             <div class="form-group">
                                 <label>文章缩略图</label>
-                                <div class="box-body text-center">
-                                    <i class="fa fa-fw fa-upload  "></i>
+                                <div class="box-group" onclick="setBanner(this)">
+                                    <img class="img-bordered img-thumbnail banner-show" name="banner_name" src="{$defaultBannerUrl}" alt="home-banner">
+                                    <input type="hidden" class="banner-value" value="">
+                                </div>
+                                <div class="box-footer">
+                                    <div class="hidden">
+                                        <input type="file" id="upfile" name="upfile">
+                                    </div>
+                                    <div class="btn btn-dropbox" onclick="setBanner(this)">设置Banner</div>
+                                    <div class="btn btn-danger" onclick="removeBanner(this)">移除Banner</div>
                                 </div>
                             </div>
                         </div>
@@ -98,6 +106,41 @@
 <!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
 <!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
 <script type="text/javascript" charset="utf-8" src="__CDN_STATIC__/neditor/i18n/zh-cn/zh-cn.js"></script>
+<script src="https://cdn.bootcss.com/jquery.form/3.20/jquery.form.min.js"></script>
+<script>
+    // 写form表单
+    $('#upfile').wrap('<form id="bannerUpForm" action="{:url("neditor/controller")}?action=uploadimage&encode=utf-8" method="post" enctype="multipart/form-data"></form>');
+
+    $('#upfile').change(function(e) {
+        $("#bannerUpForm").ajaxSubmit({
+            dataType: 'json',
+            beforeSend: function () {
+            },
+            success: function (resp) {
+                if(resp.state == 'SUCCESS') {
+                    // 上传成功
+                    $('.banner-show').attr('src',resp.url);
+                    $('.banner-value').val(resp.url);
+                }
+            },
+            error: function (xhr) {
+            }
+        });
+
+    });
+
+    function setBanner(ele)
+    {
+        $('#upfile').click()
+    }
+
+    function removeBanner(ele)
+    {
+        var defaultBanner = "{$defaultBannerUrl}";
+        $('.banner-show').attr('src', defaultBanner);
+        $('.banner-value').val('');
+    }
+</script>
 <script>
     //实例化编辑器
     //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
@@ -111,6 +154,7 @@
         formData['art_content'] = ue.getContent();  // 带标签的内容
         formData['art_content_text'] = ue.getPlainTxt(); //不带标签的内容
         formData['art_class_id'] = $('select[name=art_class_id]').val(); //classid
+        formData['art_banner_url'] = $('.banner-value').val(); //classid
         // 分类
         // 缩略图
 

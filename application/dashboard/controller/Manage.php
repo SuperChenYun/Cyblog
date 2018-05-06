@@ -86,7 +86,7 @@ class Manage extends Base
     public function auth_list()
     {
         $actionTotalRows = Db::name('sys_action') -> count();
-        $actionRows = Db::name('sys_action') -> alias('sa') -> join('__SYS_MODULE__ sm', 'sm.id = sa.module_id') -> field('sa.id said,sm.id smid,sa.*,sm.*') -> paginate();
+        $actionRows = Db::name('sys_action') -> alias('sa') -> join('__SYS_MODULE__ sm', 'sm.id = sa.module_id') -> field(['sa.id' => 'said','sm.id' => 'smid','sa.*','sm.*']) -> paginate();
 
         $this -> assign('actionTotalRows', $actionTotalRows);
         $this -> assign('actionRows', $actionRows -> items());
