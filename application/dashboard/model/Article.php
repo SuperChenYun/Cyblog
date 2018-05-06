@@ -23,6 +23,7 @@ class Article extends Model
     public function add($data)
     {
         $this -> data($data);
+        $this -> setAttr('art_desc', $this -> getArtDesc());
         $this -> setAttr('art_create_at', time());
         $this -> setAttr('art_update_at', time());
         $this -> setAttr('art_author_id', $this -> getArtAutherId());
@@ -46,6 +47,7 @@ class Article extends Model
     public function edit($data)
     {
         $this -> data($data);
+        $data['art_desc'] = $this -> getArtDesc();
         $data['art_update_at'] =  time();
         //$data['art_author_id'] = $this -> getArtAutherId();
         //$data['art_author_name'] = $this -> getArtAutherName();
@@ -111,6 +113,15 @@ class Article extends Model
             return !empty($defaultBannerUrl) ? $defaultBannerUrl : '';
         }
         return $this -> getAttr('art_banner_url');
+    }
+
+    private function getArtDesc()
+    {
+        $str=$this -> getAttr('art_content_text');
+        $start=0;
+        $length= 140;
+        $encoding = 'utf-8';
+        return mb_substr($str, $start, $length, $encoding);
     }
 
 }
