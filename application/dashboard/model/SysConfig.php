@@ -42,6 +42,11 @@ class SysConfig extends Model
         return $this -> cacheValue;
     }
 
+    public function getDbAll()
+    {
+        return $this -> select();
+    }
+
     public function getOne($k)
     {
         $this -> getCache();
@@ -50,14 +55,25 @@ class SysConfig extends Model
 
     public function change($k, $v)
     {
-        $this -> getCache();
-        $cacheValue = $this -> cacheValue;
-        $cacheValue[$k] = $v;
+//        $this -> getCache();
+//        $cacheValue = $this -> cacheValue;
+//        $cacheValue[$k] = $v;
         $res = $this -> where(['k' => $k]) -> update(['v' => $v, 'update_at' => time()]);
         if ($res) {
-            $state = Cache::set('sys_config', $cacheValue);
-            $this -> flushCache();
+//            $state = Cache::set('sys_config', $cacheValue);
+            $this -> getCache();
             return $res;
         }
     }
+
+    public function changeDb($id, $data)
+    {
+        $data['update_at'] = time();
+        $res = $this -> where(['s_id' => $id]) -> update($data);
+        if ($res) {
+            $this -> getCache();
+            return $res;
+        }
+    }
+
 }
