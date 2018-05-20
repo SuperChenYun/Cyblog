@@ -2,15 +2,43 @@
 <head>
     <title>Cyblog Dashboard | Log in</title>
     {include file="layout:meta" /}
+    <style>
+        .login_bg{
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top:0;
+            left:0;
+            z-index: -1;
+            background: url('__CDN_STATIC__/app/images/photo{:mt_rand(1,8)}.jpg') no-repeat;
+            background-size: cover;
+        }
+        .login-logo a {
+            color:#fff !important;
+        }
+        .login-box-body{
+            background: #ffffffb8
+        }
+        .login-box, .register-box{
+            margin: auto;
+            position: absolute;
+            left: 50%;
+            top: 36%;
+            transform: translateX(-50%) translateY(-50%);
+            -webkit-transform: translateX(-50%) translateY(-50%);
+            -moz-transform: translateX(-50%) translateY(-50%);
+            -o-transform: translateX(-50%) translateY(-50%);            
+        }
+    </style>
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
     <div class="login-logo">
-        <a href="__CDN_STATIC__/lte/index2.html"><b>Admin</b>LTE</a>
+        <a href="#"><b>Cyblog </b> LOGIN</a>
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
-        <p class="login-box-msg">Sign in to start your session</p>
+        <p class="login-box-msg"></p>
 
         <form id="login-form" action="" method="post">
             <div class="form-group has-feedback">
@@ -24,29 +52,12 @@
         </form>
 
         <div class="row">
-                <!--<div class="col-xs-8">-->
-                    <!--<div class="checkbox icheck">-->
-                        <!--<label>-->
-                            <!--<input name="rememberMe" type="checkbox"> Remember Me-->
-                        <!--</label>-->
-                    <!--</div>-->
-                <!--</div>-->
                 <!-- /.col -->
                 <div class="col-xs-12">
                     <button type="submit" onclick="login()" class="btn btn-primary btn-block btn-flat">Sign In</button>
                 </div>
                 <!-- /.col -->
             </div>
-
-        <!--<div class="social-auth-links text-center">-->
-            <!--<p>- OR -</p>-->
-            <!--<a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in using-->
-                <!--Facebook</a>-->
-            <!--<a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign in using-->
-                <!--Google+</a>-->
-        <!--</div>-->
-        <!-- /.social-auth-links -->
-
         <a href="{:url('forgot')}">I forgot my password</a><br>
         <!--<a href="register.html" class="text-center">Register a new membership</a>-->
 
@@ -54,9 +65,8 @@
     <!-- /.login-box-body -->
 </div>
 <!-- /.login-box -->
-
+<div class="login_bg"></div>
 {include file="layout:footer_script" /}
-
 
 </body>
 </html>
