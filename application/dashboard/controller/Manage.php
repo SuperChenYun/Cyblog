@@ -20,7 +20,7 @@ class Manage extends Base
     /**
      * 用户列表
      */
-    public function manage_list()
+    public function manageList()
     {
         $searchUserOrEmailOrPhone = input('get.search', '', 'trim');
         $searchConfig = [
@@ -56,7 +56,7 @@ class Manage extends Base
     /**
      * 用户组列表
      */
-    public function group_list()
+    public function groupList()
     {
         $groupTotalRows = Db::name('sys_group') -> count();
         $groupRows = Db::name('sys_group') -> paginate();
@@ -83,7 +83,7 @@ class Manage extends Base
     /**
      * 权限列表
      */
-    public function auth_list()
+    public function authList()
     {
         $actionTotalRows = Db::name('sys_action') -> count();
         $actionRows = Db::name('sys_action') -> alias('sa') -> join('__SYS_MODULE__ sm', 'sm.id = sa.module_id') -> field(['sa.id' => 'said','sm.id' => 'smid','sa.*','sm.*']) -> paginate();
@@ -101,7 +101,7 @@ class Manage extends Base
     /**
      * 添加auth
      */
-    public function auth_add()
+    public function authAdd()
     {
         if(Request::instance() -> isGet()){
             $this -> assign('moduleRows', Db::name('sys_module') -> where([]) -> select());
@@ -131,7 +131,7 @@ class Manage extends Base
         }
     }
 
-    public function manage_add()
+    public function manageAdd()
     {
         if (Request::instance() -> isGet()) {
             $this -> assign('group_list', Db::name('sys_group') -> select());
@@ -161,7 +161,7 @@ class Manage extends Base
 
     }
 
-    public function group_add()
+    public function groupAdd()
     {
         if (Request::instance() -> isGet()) {
             $this -> assign('actionRows', Db::name('sys_action') -> where([]) -> select());
@@ -191,7 +191,7 @@ class Manage extends Base
     /**
      * 编辑用户信息
      */
-    public function manage_edit()
+    public function manageEdit()
     {
         if( Request::instance() -> isGet() ){
             $this -> assign('group_list', Db::name('sys_group') -> select());
@@ -225,7 +225,7 @@ class Manage extends Base
      * 编辑组
      * @return mixed|\think\response\Json
      */
-    public function group_edit()
+    public function groupEdit()
     {
         if( Request::instance() -> isGet() ){
             $this -> assign('actionRows', Db::name('sys_action') -> where([]) -> select());
@@ -257,7 +257,7 @@ class Manage extends Base
      *
      * @return mixed|\think\response\Json
      */
-    public function auth_edit(){
+    public function authEdit(){
         if( Request::instance() -> isGet() ){
             $this -> assign('moduleRows', Db::name('sys_module') -> where([]) -> select());
             $this -> assign('action_info', Db::name('sys_action') -> where(['id' => input('get.auth_id', 0 , 'intval')]) -> find() );
@@ -292,7 +292,7 @@ class Manage extends Base
     /**
      * 启用停用
      */
-    public function manage_enable_or_disable()
+    public function manageEnableOrDisable()
     {
         if( Request::instance() -> isGet() ){
 
@@ -326,7 +326,7 @@ class Manage extends Base
     /**
      * 重置密码
      */
-    public function  manage_repass()
+    public function  manageRepass()
     {
         if( Request::instance() -> isGet() ){
             $m_id = input('get.id', 0 ,'intval');
@@ -358,7 +358,7 @@ class Manage extends Base
     /**
      * 删除
      */
-    public function manage_del()
+    public function manageDel()
     {
         if( Request::instance() -> isGet() ){
 
@@ -383,7 +383,7 @@ class Manage extends Base
      *
      * @return \think\response\Json
      */
-    public function group_enable_or_disable()
+    public function groupEnableOrDisable()
     {
         $g_id = input('post.g_id','','trim');
         if(empty($g_id)){
@@ -413,7 +413,7 @@ class Manage extends Base
      *
      * @return \think\response\Json
      */
-    public function auth_del()
+    public function authDel()
     {
         if (Request::instance() -> isAjax() && Request::instance() -> isPost()) {
             $a_id = input('post.a_id', 0, 'intval');

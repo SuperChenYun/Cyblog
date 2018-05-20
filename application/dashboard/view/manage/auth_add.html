@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            修改信息
+            添加信息
             <small></small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i>Dashboard</a></li>
             <li><a href="#">管理权限设置</a></li>
-            <li class="active">修改权限</li>
+            <li class="active">添加权限</li>
         </ol>
     </section>
 
@@ -23,7 +23,7 @@
                 <!-- /.box -->
                 <div class="box box-info">
                     <div class="box-header with-border">
-                        <h3 class="box-title">修改权限信息</h3>
+                        <h3 class="box-title">添加权限信息</h3>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
@@ -99,7 +99,7 @@
     function submit()
     {
         $.ajax({
-            url:"{:url()}",
+            url:"{:url('auth_add')}",
             data:$('form').serialize(),
             dataType:'json',
             type:'post',

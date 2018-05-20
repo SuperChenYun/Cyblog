@@ -37,7 +37,7 @@ class Article extends Base
      * 文章展示或者隐藏
      * @return \think\response\Json
      */
-    public function art_enable_or_disable(Request $request)
+    public function artEnableOrDisable(Request $request)
     {
         if (Request::instance() -> isAjax()) {
             $article = model('article') -> getByArtId($request -> param('art_id', '0'));
@@ -62,7 +62,7 @@ class Article extends Base
      * @param Request $request
      * @return mixed|string|\think\response\Json
      */
-    public function art_add(Request $request)
+    public function artAdd(Request $request)
     {
         if ($request -> isGet()) {
             $category = model('category') -> getAll();
@@ -93,7 +93,7 @@ class Article extends Base
      * @param Request $request
      * @return mixed|string|\think\response\Json
      */
-    public function art_edit(int $art_id, Request $request)
+    public function artEdit(int $art_id, Request $request)
     {
         if ($request -> isGet()) {
             $category = model('category') -> getAll();
@@ -123,7 +123,7 @@ class Article extends Base
      * @param int $art_id
      * @return \think\response\Json
      */
-    public function art_del(int $art_id)
+    public function artDel(int $art_id)
     {
         $article = model('article') -> getByArtId($art_id);
         $state = $article -> delete();

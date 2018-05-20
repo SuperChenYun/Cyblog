@@ -24,7 +24,7 @@ class Category extends Base
         return $this -> fetch();
     }
 
-    public function cat_add(Request $request)
+    public function catAdd(Request $request)
     {
         if($request -> isGet()) {
             return $this -> fetch();
@@ -53,7 +53,7 @@ class Category extends Base
         }
     }
 
-    public function cat_edit(int $cat_id, Request $request)
+    public function catEdit(int $cat_id, Request $request)
     {
         if ($request -> isGet()) {
             $category = model('category') -> getByCatId($cat_id);
@@ -81,7 +81,7 @@ class Category extends Base
         }
     }
 
-    public function cat_del(int $cat_id, Request $request)
+    public function catDel(int $cat_id, Request $request)
     {
         $article = model('category') -> getByCatId($cat_id);
         $article -> status = 0;

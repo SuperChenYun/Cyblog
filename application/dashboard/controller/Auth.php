@@ -23,15 +23,15 @@ class Auth extends Init {
     /**
      * 登录实际数据校验
      */
-    public function login_post()
+    public function loginPost()
     {
         $validate = Loader::validate('Manage.login');
         $res = $validate -> check(input('post.'));
         if($res){
-            $ManageInfo = $this -> login_man(input('post.username', '', 'trim'), input('post.password', '', 'trim'));
+            $ManageInfo = $this -> loginMan(input('post.username', '', 'trim'), input('post.password', '', 'trim'));
             if($ManageInfo) {
-                $this -> login_save_session('Manage',$ManageInfo);
-                $this -> login_save_db($ManageInfo);
+                $this -> loginSaveSession('Manage',$ManageInfo);
+                $this -> loginSaveDb($ManageInfo);
                  return success('登录成功',  ['re_url' => url('index/index')]);
             }else{
                  return error('登录失败');
@@ -48,7 +48,7 @@ class Auth extends Init {
      * @param string $password 过滤后的密码
      * @return array|bool|false|\PDOStatement|string|\think\Model 获取成功返回用户数据 获取失败返回false
      */
-    private function login_man($username = '', $password = '')
+    private function loginMan($username = '', $password = '')
     {
 
         $tempInfo = Db::name('sys_manage') -> where(['username' => $username]) -> find();
@@ -62,7 +62,7 @@ class Auth extends Init {
      * @param string $key 可自定义 session的key 默认 Manage
      * @param $ManageInfo 要存储的数据
      */
-    private function login_save_session($key = 'Manage', $ManageInfo)
+    private function loginSaveSession($key = 'Manage', $ManageInfo)
     {
        session($key, $ManageInfo);
     }
@@ -71,7 +71,7 @@ class Auth extends Init {
      * 记录最近一次登录信息
      * @param $ManageInfo 用户信息
      */
-    private function login_save_db($ManageInfo)
+    private function loginSaveDb($ManageInfo)
     {
         Db::name('sys_manage') -> where(['id' => $ManageInfo['id']])  -> update(['login_ip' => $_SERVER['REMOTE_ADDR'], 'login_time' => time(),'login_number' => ['exp','login_number+1']]);
     }

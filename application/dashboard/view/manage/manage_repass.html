@@ -75,7 +75,7 @@
             msg('两次输入的帐号密码不一致！');return;
         }
         $.ajax({
-            url:"{:url()}",
+            url:"{:url('manage_repass')}",
             data:$('form').serialize(),
             dataType:'json',
             type:'post',

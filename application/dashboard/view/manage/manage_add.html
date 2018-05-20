@@ -5,7 +5,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            修改信息
+            添加信息
             <small></small>
         </h1>
         <ol class="breadcrumb">
@@ -23,7 +23,7 @@
                 <!-- /.box -->
                 <div class="box box-info">
                     <div class="box-header with-border">
-                        <h3 class="box-title">修改人员信息</h3>
+                        <h3 class="box-title">添加人员信息</h3>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
@@ -110,7 +110,7 @@
     function submit()
     {
         $.ajax({
-            url:"{:url()}",
+            url:"{:url('manage_add')}",
             data:$('form').serialize(),
             dataType:'json',
             type:'post',

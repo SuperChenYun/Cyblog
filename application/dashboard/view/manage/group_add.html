@@ -93,7 +93,7 @@
     function submit()
     {
         $.ajax({
-            url:"{:url()}",
+            url:"{:url('group_add')}",
             data:$('form').serialize(),
             dataType:'json',
             type:'post',

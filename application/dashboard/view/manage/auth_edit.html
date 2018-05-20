@@ -100,7 +100,7 @@
     function submit()
     {
         $.ajax({
-            url:"{:url()}",
+            url:"{:url('auth_edit')}",
             data:$('form').serialize(),
             dataType:'json',
             type:'post',
