@@ -75,12 +75,13 @@ $(function () {
    */
   function changeLayout(cls) {
     $('body').toggleClass(cls)
-    $layout.fixSidebar()
-    if ($('body').hasClass('fixed') && cls == 'fixed') {
-      $pushMenu.expandOnHover()
-      $layout.activate()
-    }
     $controlSidebar.fix()
+    if ($('body').hasClass('sidebar-collapse')) {
+      store('layout', cls)          
+    } else {
+      store('layout', '')
+    }
+    
   }
 
   /**
@@ -121,43 +122,34 @@ $(function () {
       changeLayout($(this).data('layout'))
     })
 
-    $('[data-controlsidebar]').on('click', function () {
-      changeLayout($(this).data('controlsidebar'))
-      var slide = !$controlSidebar.options.slide
-
-      $controlSidebar.options.slide = slide
-      if (!slide)
-        $('.control-sidebar').removeClass('control-sidebar-open')
-    })
-
     $('[data-sidebarskin="toggle"]').on('click', function () {
       var $sidebar = $('.control-sidebar')
       if ($sidebar.hasClass('control-sidebar-dark')) {
         $sidebar.removeClass('control-sidebar-dark')
         $sidebar.addClass('control-sidebar-light')
+        store('aside-bg', 'control-sidebar-light');
       } else {
         $sidebar.removeClass('control-sidebar-light')
         $sidebar.addClass('control-sidebar-dark')
+        store('aside-bg', 'control-sidebar-dark');
       }
     })
-
-    $('[data-enable="expandOnHover"]').on('click', function () {
-      $(this).attr('disabled', true)
-      $pushMenu.expandOnHover()
-      if (!$('body').hasClass('sidebar-collapse'))
-        $('[data-layout="sidebar-collapse"]').click()
-    })
+    
+    if (get('layout')) {
+      $('body').addClass(get('layout'))
+    }
+    if (get('aside-bg') =='control-sidebar-light') {
+      $('.control-sidebar').removeClass('control-sidebar-dark').addClass('control-sidebar-light')
+    }
 
     //  Reset options
-    if ($('body').hasClass('fixed')) {
-      $('[data-layout="fixed"]').attr('checked', 'checked')
-    }
-    if ($('body').hasClass('layout-boxed')) {
-      $('[data-layout="layout-boxed"]').attr('checked', 'checked')
-    }
     if ($('body').hasClass('sidebar-collapse')) {
       $('[data-layout="sidebar-collapse"]').attr('checked', 'checked')
     }
+    if ($('.control-sidebar').hasClass('control-sidebar-light')) {
+      $('[data-sidebarskin="toggle"]').attr('checked', 'checked')
+    }
+    
 
   }
 
@@ -186,45 +178,13 @@ $(function () {
     '<h4 class="control-sidebar-heading">'
     + '布局设置'
     + '</h4>'
-    // // Fixed layout
-    // + '<div class="form-group">'
-    // + '<label class="control-sidebar-subheading">'
-    // + '<input type="checkbox"data-layout="fixed"class="pull-right"/> '
-    // + 'Fixed layout'
-    // + '</label>'
-    // + '<p>Activate the fixed layout. You can\'t use fixed and boxed layouts together</p>'
-    // + '</div>'
-    // // Boxed layout
-    // + '<div class="form-group">'
-    // + '<label class="control-sidebar-subheading">'
-    // + '<input type="checkbox"data-layout="layout-boxed" class="pull-right"/> '
-    // + 'Boxed Layout'
-    // + '</label>'
-    // + '<p>Activate the boxed layout</p>'
-    // + '</div>'
-    // Sidebar Toggle
+    //Sidebar Toggle
     + '<div class="form-group">'
     + '<label class="control-sidebar-subheading">'
     + '<input type="checkbox"data-layout="sidebar-collapse"class="pull-right"/> '
     + '切换侧边栏'
     + '</label>'
     + '<p>切换左侧边栏的状态（打开或折叠）</p>'
-    + '</div>'
-    // Sidebar mini expand on hover toggle
-    + '<div class="form-group">'
-    + '<label class="control-sidebar-subheading">'
-    + '<input type="checkbox"data-enable="expandOnHover"class="pull-right"/> '
-    + '侧边栏展开悬停'
-    + '</label>'
-    + '<p>让侧边栏微扩展悬停</p>'
-    + '</div>'
-    // Control Sidebar Toggle
-    + '<div class="form-group">'
-    + '<label class="control-sidebar-subheading">'
-    + '<input type="checkbox"data-controlsidebar="control-sidebar-open"class="pull-right"/> '
-    + '悬停右侧边栏幻灯片'
-    + '</label>'
-    + '<p>切换幻灯片内容和推送内容效果之间的切换</p>'
     + '</div>'
     // Control Sidebar Skin Toggle
     + '<div class="form-group">'
