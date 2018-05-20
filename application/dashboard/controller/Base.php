@@ -39,10 +39,11 @@ class Base extends Init
     {
         parent::_initialize();
         $this -> checkLoginInfo();
-        $this -> init_session();
-        $this -> CacheAuth();
+        $this -> initSession();
+        $this -> cacheAuth();
         //$this -> checkAuth_ModuleAction();
-        $this -> assign_authModuleAndManage();
+        $this -> assignAuthModuleAndManage();
+        $this -> assign('manage', session('Manage'));
     }
 
     /**
@@ -61,7 +62,7 @@ class Base extends Init
     /**
      * 初始化常量 配置 兼容Tp3 按需调用
      */
-    private function sys_init()
+    private function sysinit()
     {
         define('MODULE_NAME', Request::instance() -> module());
         define('CONTROLLER_NAME', Request::instance() -> controller());
@@ -71,7 +72,7 @@ class Base extends Init
     /**
      * 初始化session数据
      */
-    protected function init_session(){
+    protected function initSession(){
         $this -> auth_module = session('auth_module');
     }
 
@@ -133,7 +134,7 @@ class Base extends Init
     /**
      * 检测访问权限
      */
-    private function checkAuth_ModuleAction()
+    private function checkAuthModuleAction()
     {
         if(session('Manage')['administrator']!== 1)
         $request_url = strtolower( Request::instance() -> controller() . '/' . Request::instance() -> action() );
@@ -151,7 +152,7 @@ class Base extends Init
     /**
      * 分配授权信息
      */
-    private function assign_authModuleAndManage(){
+    private function assignAuthModuleAndManage(){
         $this -> assign('Manage', session('Manage'));
         $this -> assign('auth_module', session('auth_module'));
     }

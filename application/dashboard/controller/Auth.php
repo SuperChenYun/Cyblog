@@ -83,6 +83,6 @@ class Auth extends Init {
     {
         session('Manage', null);
         session('auth_module', null);
-        $this -> redirect('/');
+        $this -> redirect('/dashboard');
     }
 }
