@@ -1,6 +1,7 @@
 # 开发环境
 .idea/*
 .project
+.vscode
 
 # 缓存
 runtime/*
@@ -20,6 +21,8 @@ application/extra/*
 
 # 框架信息
 composer.lock
+thinkphp/
+thinkphp/*
 
 # macOS template
 # General
