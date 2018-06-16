@@ -8,39 +8,39 @@
 
 namespace app\dashboard\controller;
 
-use think\Loader;
-use think\Request;
+use think\facade\App;
+use think\facade\Request;
 
 class System extends Base
 {
-    public function base(Request $request)
+    public function base()
     {
-        if ($request -> isGet()) {
+        if (Request::isGet()) {
             $baseRows = model('SysConfig') -> getDbAll();
             $this -> assign('baseRows', $baseRows);
-            return $this -> fetch();
-        } elseif ($request -> isPost()) {
+            return view();
+        } elseif (Request::isPost()) {
 
         } else {
             return '';
         }
     }
 
-    public function edit(Request $request, $s_id)
+    public function edit($s_id)
     {
-        if ($request -> isGet()) {
+        if (Request::isGet()) {
             $configRow = model('SysConfig')->getBySId($s_id);
             $this->assign('configRow', $configRow);
             switch ($configRow->type) {
                 case 'img':
-                    return $this->fetch('edit-' . $configRow->type);
+                    return view('edit-' . $configRow->type);
                     break;
                 default:
-                    return $this->fetch();
+                    return view();
             }
-        } elseif ($request -> isPost()) {
-            $validate = Loader::validate('system.edit');
-            $result = $validate -> check($request -> param());
+        } elseif (Request::isPost()) {
+            $validate = App::validate('system.edit');
+            $result = $validate -> check(Request::param());
             if ($result) {
                 $state = model('SysConfig') -> changeDb($s_id, $request -> param());
                 if ($state) {
@@ -55,4 +55,15 @@ class System extends Base
         }
     }
 
+    public function add()
+    {
+        if (Request::isGet()) {
+            return view();
+        } elseif ( Request::isPost() ) {
+
+        } else {
+
+        }
+
+    }
 }

@@ -9,9 +9,9 @@
 namespace app\dashboard\controller;
 
 use think\Db;
-use think\Loader;
-use think\Request;
-use app\dashboard\model\Article as ArticleModel;
+use app\common\model\Article as ArticleModel;
+use think\facade\App;
+use think\facade\Request;
 
 class Article extends Base
 {
@@ -39,8 +39,8 @@ class Article extends Base
      */
     public function artEnableOrDisable(Request $request)
     {
-        if (Request::instance() -> isAjax()) {
-            $article = model('article') -> getByArtId($request -> param('art_id', '0'));
+        if (Request::isAjax()) {
+            $article = model('article') -> getByArtId($request::param('art_id', '0'));
             if ($article -> art_status == ArticleModel::SHOW) {
                 $article->art_status = ArticleModel::HIDE;
             } elseif ($article -> art_status == ArticleModel::HIDE) {
@@ -64,17 +64,17 @@ class Article extends Base
      */
     public function artAdd(Request $request)
     {
-        if ($request -> isGet()) {
+        if ($request::isGet()) {
             $category = model('category') -> getAll();
             $this -> assign('category', $category);
             $defaultBannerUrl = model('SysConfig') -> getOne('article_default_banner_url');
             $this -> assign('defaultBannerUrl',$defaultBannerUrl);
             return $this -> fetch();
-        } elseif ($request -> isPost()) {
-            $validate = Loader::validate('Article.add');
-            $result = $validate -> check($request -> post());
+        } elseif ($request::isPost()) {
+            $validate = App::validate('Article.add');
+            $result = $validate -> check($request::post());
             if ($result) {
-                $insId = model('article') -> add($request -> post());
+                $insId = model('article') -> add($request::post());
                 if ($insId) {
                     return success('添加成功',['insId' => $insId]);
                 }
@@ -93,22 +93,25 @@ class Article extends Base
      * @param Request $request
      * @return mixed|string|\think\response\Json
      */
-    public function artEdit(int $art_id, Request $request)
+    public function artEdit($art_id, Request $request)
     {
-        if ($request -> isGet()) {
+        if ($request::isGet()) {
             $category = model('category') -> getAll();
             $this -> assign('category', $category);
             $defaultBannerUrl = model('SysConfig') -> getOne('article_default_banner_url');
             $this -> assign('defaultBannerUrl',$defaultBannerUrl);
             $this -> assign('article', model('article') -> getByArtId($art_id));
             return $this -> fetch();
-        } elseif ($request -> isPost()) {
-            $validate = Loader::validate('Article.edit');
-            $result = $validate -> check($request -> param());
+        } elseif ($request::isPost()) {
+            $validate = App::validate('Article.edit');
+            $result = $validate -> check($request::param());
             if ($result) {
-                $state = model('article') -> edit($request -> param());
+                $article = model('Article') -> getByArtId($art_id);
+                $state = $article -> save(request::param());
                 if ($state) {
                     return success('编辑成功');
+                } else {
+                    return error('编辑失败');
                 }
             } else {
                 return error($validate -> getError());

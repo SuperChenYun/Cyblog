@@ -29,7 +29,7 @@
 
     // 服务器统一请求接口路径
     //serverUrl: window.NEDITOR_UPLOAD || URL + "php/controller.php",
-    serverUrl:'/index.php/dashboard/neditor/controller',
+    serverUrl:'/dashboard/neditor/controller',
 
     //工具栏上的所有的功能按钮和下拉框，可以在new编辑器的实例时选择自己需要的重新定义
     toolbars: [

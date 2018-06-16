@@ -49,13 +49,17 @@
                                     {$row.art_class_name}
                                 </td>
 
-                                <td class="hidden-xs">{$row.art_create_at|date="Y-m-d H:i:s",###}</td>
-                                <td class="hidden-xs">{$row.art_update_at|date="Y-m-d H:i:s",###}</td>
+                                <td class="hidden-xs">{$row.art_create_at|date="Y-m-d H:i:s"}</td>
+                                <td class="hidden-xs">{$row.art_update_at|date="Y-m-d H:i:s"}</td>
                                 <td class="td-group">
                                     {if condition="$row.art_status eq '1'"}
-                                    <a style="text-decoration:none" onClick="start_or_stop('{$row.art_id}')" href="javascript:;" title="隐藏"><i class="fa fa-fw fa-minus-circle"></i></a>
+                                    <a style="text-decoration:none" onClick="start_or_stop('{$row.art_id}')" href="javascript:;" title="隐藏">
+                                        <i class="fa fa-fw fa-minus-circle"></i>
+                                    </a>
                                     {else /}
-                                    <a style="text-decoration:none" onClick="start_or_stop('{$row.art_id}')" href="javascript:;" title="展示"><i class="fa fa-reply fa-minus-circle"></i></a>
+                                    <a style="text-decoration:none" onClick="start_or_stop('{$row.art_id}')" href="javascript:;" title="展示">
+                                        <i class="fa fa-reply fa-minus-circle"></i>
+                                    </a>
                                     {/if}
                                     <a title="编辑" href="javascript:;" onclick="edit('{$row.art_id}')" class="ml-5" style="text-decoration:none"><i class="fa fa-fw fa-edit"></i></a>
 

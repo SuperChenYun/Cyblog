@@ -26,7 +26,7 @@ class Index extends Base
         $count['likNum'] = model('links') -> where([]) -> count();
         
         $this -> assign('count', $count);
-        return $this -> fetch();
+        return view();
     }
 
     /**
@@ -34,6 +34,6 @@ class Index extends Base
      */
     public function welcome()
     {
-        return $this -> fetch();
+        return view();
     }
 }

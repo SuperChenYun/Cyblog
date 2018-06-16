@@ -1,97 +1,70 @@
-{extend name="layout::layout"}
-{block name="htmlTitle"}Dashboard Control{/block}
-{block name="htmlContent"}
-<div class="content-wrapper" style="min-height: 946px;">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <h1>
-            修改密码
-            <small></small>
-        </h1>
-        <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i>Dashboard</a></li>
-            <li><a href="#">管理权限设置</a></li>
-            <li class="active">修改密码</li>
-        </ol>
-    </section>
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>管理权限设置</cite></a>
+        <a><cite>修改密码</cite></a>
+    </div>
+</div>
 
-    <!-- Main content -->
-    <section class="content">
-        <div class="row">
-            <!-- right column -->
-            <div class="col-md-12">
-                <!-- Horizontal Form -->
-                <div class="box box-info">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">修改密码</h3>
-                    </div>
-                    <!-- /.box-header -->
+<div class="layui-fluid" style="">
+    <div class="layui-row layui-col-space15" style="">
+        <!-- /.col -->
+        <div class="col-md-12" style="">
+            <div class="layui-card" style="">
+                <div class="layui-card-header">
+                    <h3 class="box-title">修改密码</h3>
+                </div>
+                <div class="layui-card-body" pad15="" style="">
                     <!-- form start -->
-                    <form class="form-horizontal" method="post">
+                    <form class="layui-form" method="post">
                         <input type="hidden" name="manage_id" value="{:input('get.manage_id',0,'intval')}">
-                        <div class="box-body">
-                            <div class="form-group">
-                                <label for="inputEmail3" class="col-sm-2 control-label">新密码：</label>
-
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control"  name="password" id="inputEmail3" placeholder="NewPassword" required>
-                                </div>
+                        <div class="layui-form-item layui-col-md6">
+                            <label class="layui-form-label">新密码: </label>
+                            <div class="layui-input-block">
+                                <input type="text" class="layui-input"  name="password"  placeholder="NewPassword" required lay-verify="required">
                             </div>
-                            <div class="form-group">
-                                <label for="inputPassword3" class="col-sm-2 control-label">确认新密码：</label>
-
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="password_confirm" id="inputPassword3" placeholder="ConfirmPassword" required>
-                                </div>
+                        </div>
+                        <div class="layui-form-item layui-col-md6">
+                            <label class="layui-form-label">新密码: </label>
+                            <div class="layui-input-block">
+                                <input type="text" class="layui-input"  name="password_confirm"  placeholder="ConfirmPassword" required lay-verify="required">
                             </div>
-
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit="" lay-filter="repass">保存</button>
+                                <button class="layui-btn" onclick="history.go(-1)">取消</button>
+                            </div>
                         </div>
                     </form>
-                    <!-- /.box-body -->
-                    <div class="box-footer">
-                        <button type="button" class="btn btn-default" onclick="javascript:window.history.back()">取消</button>
-                        <button type="button" class="btn btn-info pull-right" onclick="submit()">修改</button>
-                    </div>
-                    <!-- /.box-footer -->
                 </div>
-                <!-- /.box -->
-
             </div>
-            <!--/.col (right) -->
         </div>
-        <!-- /.row -->
-    </section>
-    <!-- /.content -->
+    </div>
 </div>
-{/block}
-{block name="htmlJS"}
-<script type="text/javascript">
-    function submit()
-    {
-        if( $('input[name=password]').val() == '' || $('input[name=password_confirm]').val() == '' ){
-            msg('请正确填写新的帐号密码！');return;
-        }
-        if( $('input[name=password]').val()  != $('input[name=password_confirm]').val() ){
-            msg('两次输入的帐号密码不一致！');return;
-        }
-        $.ajax({
-            url:"{:url('manage_repass')}",
-            data:$('form').serialize(),
-            dataType:'json',
-            type:'post',
-            success:function (resp) {
-                msg(resp.msg);
-                if(resp.code == '1'){
-                    setTimeout( 'window.location.href = "{:url('manage_list')}"',1000);
+
+<script>
+    layui.use('form', function(){
+        var form = layui.form;
+        //监听提交
+        form.on('submit(repass)', function(data){
+            $.ajax({
+                url: "{:url('manage_repass')}",
+                data: $(data.form).serialize(),
+                dataType:'json',
+                type:'post',
+                success:function (resp) {
+                    msg(resp.msg);
+                    if(resp.code == 0) {
+                        setTimeout( 'window.location.reload()',2000);
+                    }
+                },
+                error:function (e) {
+                    msg('操作失败');
                 }
-            },
-            error:function (e) {
-                msg('修改失败');
-            }
-        })
-    }
+            })
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+        form.render();  // 重新渲染
+    });
 </script>
-<!--/请在上方写此页面业务相关的脚本-->
-{/block}
-
-

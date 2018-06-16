@@ -1,111 +1,92 @@
-{extend name="layout::layout"}
-{block name="htmlTitle"}Dashboard Control{/block}
-{block name="htmlContent"}
-<div class="content-wrapper" style="min-height: 946px;">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <h1>
-            添加信息
-            <small></small>
-        </h1>
-        <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i>Dashboard</a></li>
-            <li><a href="#">管理权限设置</a></li>
-            <li class="active">添加信息</li>
-        </ol>
-    </section>
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>权限管理</cite></a>
+        <a><cite>增加用户</cite></a>
+    </div>
+</div>
 
-    <!-- Main content -->
-    <section class="content">
-        <div class="row">
-            <!-- column -->
-            <div class="col-md-12">
-                <!-- /.box -->
-                <div class="box box-info">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">添加人员信息</h3>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <form role="form">
-                            <!-- text input -->
-                            <div class="form-group col-md-6">
-                                <label>用户名: </label>
-                                <input type="text" class="form-control" value="" placeholder="请设置用户名"  name="username">
+<div class="layui-fluid" style="">
+    <div class="layui-row layui-col-space15" style="">
+        <!-- /.col -->
+        <div class="col-md-12" style="">
+            <div class="layui-card" style="">
+                <div class="layui-card-header">
+                    <h3 class="box-title">新增用户</h3>
+                </div>
+                <div class="layui-card-body" pad15="" style="">
+                    <!-- form start -->
+                    <form class="layui-form" method="post">
+                        <input type="hidden" name="manage_id" value="{:input('get.manage_id',0,'intval')}">
+                        <!-- text input -->
+                        <div class="layui-form-item layui-col-md6">
+                            <label class="layui-form-label">用户名: </label>
+                            <div class="layui-input-block">
+                                <input type="text" class="layui-input" value="" placeholder="请设置用户名"  name="username" lay-verify="required">
                             </div>
-                            <div class="form-group col-md-6">
-                                <label>真实姓名: </label>
-                                <input type="text" class="form-control" value="" placeholder="请填写真实姓名"  name="truename">
+                        </div>
+                        <div class="layui-form-item layui-col-md6">
+                            <label class="layui-form-label">真实姓名: </label>
+                            <div class="layui-input-block">
+                                <input type="text" class="layui-input" value="" placeholder="请填写真实姓名"  name="truename"  lay-verify="required">
                             </div>
-                            <div class="form-group col-md-6">
-                                <label>手机: </label>
-                                <input type="tel" class="form-control" value="" placeholder="请填写手机号"  name="telphone">
+                        </div>
+                        <div class="layui-form-item layui-col-md6">
+                            <label class="layui-form-label">手机: </label>
+                            <div class="layui-input-block">
+                                <input type="tel" class="layui-input" value="" placeholder="请填写手机号"  name="telphone"  lay-verify="required">
                             </div>
-                            <div class="form-group col-md-6">
-                                <label>邮箱: </label>
-                                <input type="email" class="form-control" value="" placeholder="example@domain.com"  name="email">
+                        </div>
+                        <div class="layui-form-item layui-col-md6">
+                            <label class="layui-form-label">邮箱: </label>
+                            <div class="layui-input-block">
+                                <input type="email" class="layui-input" value="" placeholder="example@domain.com"  name="email">
                             </div>
-                            <div class="form-group col-md-6">
-                                <label>密码: </label>
-                                <input type="text" class="form-control" value="" placeholder="请设置新用户的密码"  name="password">
+                        </div>
+                        <div class="layui-form-item layui-col-md6">
+                            <label class="layui-form-label">密码: </label>
+                            <div class="layui-input-block">
+                                <input type="text" class="layui-input" value="" placeholder="请设置新用户的密码"  name="password" lay-verify="required">
                             </div>
-
-                            <div class="form-group col-md-12">
-                                <label>授权组：</label>
-                                <div class=box-group>
-                                    <div class="checkbox ">
-                                        {volist name="$group_list" id="row"}
-                                        <label>
-                                            <input type="checkbox" name="auth_group[]" value="{$row.id}" id="auth_group_{$row.id}">
-                                            {$row.group_name}
-                                        </label>
-                                        {/volist}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group col-md-12">
-                                <label>是否启用：</label>
-                                <div class=box-group>
-                                    <div class="checkbox ">
-                                        <div class="radio">
-                                            <label>
-                                                <input type="radio" name="status" value="1" checked>
-                                                启用
-                                            </label>
-
-                                            <label>
-                                                <input type="radio" name="status"  value="0" >
-                                                禁用
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
+                        </div>
+                        <div class="layui-form-item layui-col-md12" >
+                            <label class="layui-form-label">授权组: </label>
+                            <div class=center-block>
+                                {volist name="$group_list" id="row"}
+                                <input type="checkbox" name="auth_group[]" title="{$row.group_name}" value="{$row.id}">
+                                {/volist}
                             </div>
 
-                            <!-- textarea -->
-                            <div class="form-group  col-md-12">
-                                <label>备注:</label>
-                                <textarea class="form-control" rows="5" name="remarks"  placeholder="说点什么...最少输入10个字符"  ></textarea>
-                                <!--<p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>-->
+                        </div>
+                        <div class="layui-form-item layui-col-md12">
+                            <label class="layui-form-label">是否启用：</label>
+                            <div class=layui-input-block>
+                                <input type="radio" name="status" title="启用" value="1" checked>
+                                <input type="radio" name="status" title="禁用" value="0" >
                             </div>
+                        </div>
+                        <!-- textarea -->
+                        <div class="layui-form-item layui-col-md12">
+                            <label class="layui-form-label">备注：</label>
+                            <div class="layui-input-block">
+                                <textarea class="layui-textarea" rows="5" name="remarks"  placeholder="说点什么...最少输入10个字符"  ></textarea>
+                            </div>
+                            <!--<p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>-->
+                        </div>
 
-                        </form>
-                    </div>
-                    <!-- /.box-body -->
-                    <div class="box-footer">
-                        <button type="button" class="btn btn-default" onclick="javascript:window.history.back()">取消</button>
-                        <button type="button" class="btn btn-info pull-right" onclick="submit()">添加</button>
-                    </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit="" lay-filter="submit">保存</button>
+                                <button class="layui-btn" onclick="history.go(-1)">取消</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <!--/.col (right) -->
         </div>
-        <!-- /.row -->
-    </section>
-    <!-- /.content -->
+    </div>
 </div>
-{/block}
-{block name="htmlJS"}
+
 <script type="text/javascript">
     function submit()
     {
@@ -121,10 +102,34 @@
                 }
             },
             error:function (e) {
-                msg('修改失败');
+                msg('操作失败');
             }
         })
     }
 </script>
-<!--/请在上方写此页面业务相关的脚本-->
-{/block}
+
+<script>
+    layui.use('form', function(){
+        var form = layui.form;
+        //监听提交
+        form.on('submit(submit)', function(data){
+            $.ajax({
+                url: "{:url('manage_add')}",
+                data: $(data.form).serialize(),
+                dataType:'json',
+                type:'post',
+                success:function (resp) {
+                    msg(resp.msg);
+                    if(resp.code == 0) {
+                        setTimeout( 'window.location.reload()',2000);
+                    }
+                },
+                error:function (e) {
+                    msg('操作失败');
+                }
+            })
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+        form.render();  // 重新渲染
+    });
+</script>

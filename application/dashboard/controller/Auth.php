@@ -8,10 +8,24 @@
 namespace app\dashboard\controller;
 
 use app\common\controller\Init;
-use think\Db;
-use think\Loader;
+use think\facade\App;
 
 class Auth extends Init {
+
+    protected $SysGroupModel;
+
+    protected $SysActionModel;
+
+    /**
+     * 初始化控制器
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this -> SysGroupModel = model('SysGroup');
+        $this -> SysActionModel = model('SysAction');
+    }
+
     /**
      * 登入
      */
@@ -25,13 +39,15 @@ class Auth extends Init {
      */
     public function loginPost()
     {
-        $validate = Loader::validate('Manage.login');
+        $validate = App::validate('Manage.login');
         $res = $validate -> check(input('post.'));
         if($res){
-            $ManageInfo = $this -> loginMan(input('post.username', '', 'trim'), input('post.password', '', 'trim'));
-            if($ManageInfo) {
-                $this -> loginSaveSession('Manage',$ManageInfo);
-                $this -> loginSaveDb($ManageInfo);
+            $SysManageLogic = model('SysManage', 'logic');
+            $manageInfo = $SysManageLogic
+                -> loginMan(input('post.username', '', 'trim'), input('post.password', '', 'trim'));
+            if($manageInfo) {
+                $this -> loginSaveSession('Manage',$manageInfo);
+                $SysManageLogic -> loginSaveDb($manageInfo);
                  return success('登录成功',  ['re_url' => url('index/index')]);
             }else{
                  return error('登录失败');
@@ -39,22 +55,6 @@ class Auth extends Init {
         }else{
             return error($validate -> getError());
         }
-
-    }
-
-    /**
-     * 数据库信息验证
-     * @param string $username 过滤后的用户名
-     * @param string $password 过滤后的密码
-     * @return array|bool|false|\PDOStatement|string|\think\Model 获取成功返回用户数据 获取失败返回false
-     */
-    private function loginMan($username = '', $password = '')
-    {
-
-        $tempInfo = Db::name('sys_manage') -> where(['username' => $username]) -> find();
-        $ManageInfo = Db::name('sys_manage') -> where(['username' => $username, 'password' => md5($password . $tempInfo['password_salt'])]) -> find();
-        return $ManageInfo ? $ManageInfo : false;
-
     }
 
     /**
@@ -66,16 +66,7 @@ class Auth extends Init {
     {
        session($key, $ManageInfo);
     }
-
-    /**
-     * 记录最近一次登录信息
-     * @param $ManageInfo 用户信息
-     */
-    private function loginSaveDb($ManageInfo)
-    {
-        Db::name('sys_manage') -> where(['id' => $ManageInfo['id']])  -> update(['login_ip' => $_SERVER['REMOTE_ADDR'], 'login_time' => time(),'login_number' => ['exp','login_number+1']]);
-    }
-
+    
     /**
      * 登出
      */
@@ -85,4 +76,5 @@ class Auth extends Init {
         session('auth_module', null);
         $this -> redirect('/dashboard');
     }
+
 }

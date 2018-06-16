@@ -7,11 +7,10 @@
  */
 namespace app\dashboard\controller;
 
-use think\Config;
 use think\Db;
-use think\Loader;
+use think\facade\App;
 use Think\Page;
-use think\Request;
+use think\facade\Request;
 
 class Manage extends Base
 {
@@ -28,7 +27,7 @@ class Manage extends Base
         ];
 
         $where = [
-            'truename|telphone|email' => ['like' , "$searchUserOrEmailOrPhone%"]
+//            'truename|telphone|email' => ['like' , "$searchUserOrEmailOrPhone%"]
         ];
 
         $manage = Db::name('sys_manage') -> where($where) -> order('id', 'asc') -> paginate('','', $searchConfig);
@@ -50,7 +49,7 @@ class Manage extends Base
         $this -> assign('manageTotalRow', $manage -> total());
         $this -> assign('page', $manage -> render());
         $this -> assign('pageTotal', $manage -> lastPage());
-        return $this -> fetch();
+        return view();
     }
 
     /**
@@ -77,7 +76,7 @@ class Manage extends Base
         $this -> assign('groupRows', $groupRowsArr);
         $this -> assign('page', $groupRows -> render());
         $this -> assign('pageTotal', $groupRows -> lastPage());
-        return $this -> fetch();
+        return view();
     }
 
     /**
@@ -93,7 +92,7 @@ class Manage extends Base
         $this -> assign('page', $actionRows -> render());
         $this -> assign('pageTotal', $actionRows -> lastPage());
         $this -> assign('actionTotalRows', $actionTotalRows);
-        return $this -> fetch();
+        return view();
     }
 
     /****************************** 添加 ******************************/
@@ -103,11 +102,11 @@ class Manage extends Base
      */
     public function authAdd()
     {
-        if(Request::instance() -> isGet()){
+        if(Request::isGet()){
             $this -> assign('moduleRows', Db::name('sys_module') -> where([]) -> select());
-            return $this -> fetch();
-        }else if(Request::instance() -> isPost()){
-            $validate = Loader::validate('Auth.add');
+            return view();
+        }else if(Request::isPost()){
+            $validate = App::validate('Auth.add');
             $result = $validate -> check($_POST);
             if ($result) {
                 $data['name'] = input('post.name', '', 'trim');
@@ -117,7 +116,7 @@ class Manage extends Base
                 $data['module_id'] = input('post.module_id', '', 'trim');
                 $data['is_menu'] = input('post.is_menu', '', 'trim');
                 if( Db('sys_action') -> insert($data) ){
-                    Base::flushAuthCache();
+                    $this->flushAuthCache();
                     return success('添加成功', ['url'   =>  url('auth_list')]);
                 }else{
                     return error('添加失败');
@@ -133,11 +132,11 @@ class Manage extends Base
 
     public function manageAdd()
     {
-        if (Request::instance() -> isGet()) {
+        if (Request::isGet()) {
             $this -> assign('group_list', Db::name('sys_group') -> select());
-            return $this -> fetch();
+            return view();
         }else{
-            $validate = Loader::validate('Manage.add');
+            $validate = App::validate('Manage.add');
             $result = $validate -> check($_POST);
             if($result){
                 $data['username'] = input('post.username', '', 'trim');
@@ -163,11 +162,11 @@ class Manage extends Base
 
     public function groupAdd()
     {
-        if (Request::instance() -> isGet()) {
+        if (Request::isGet()) {
             $this -> assign('actionRows', Db::name('sys_action') -> where([]) -> select());
-            return $this -> fetch();
+            return view();
         }else{
-            $validate = Loader::validate('Group.add');
+            $validate = App::validate('Group.add');
             $result = $validate -> check($_POST);
             if ($result) {
                 $data['group_name'] = input('post.group_name', '', 'trim');
@@ -193,12 +192,12 @@ class Manage extends Base
      */
     public function manageEdit()
     {
-        if( Request::instance() -> isGet() ){
+        if( Request::isGet() ){
             $this -> assign('group_list', Db::name('sys_group') -> select());
             $this -> assign('manage_info', Db::name('sys_manage') -> where(['id' => input('get.manage_id', 0 , 'intval')]) -> find() );
-            return $this -> fetch();
-        }elseif( Request::instance() -> isPost() ) {
-            $validate = Loader::validate('Manage.edit');
+            return view();
+        }elseif( Request::isPost() ) {
+            $validate = App::validate('Manage.edit');
             $result = $validate -> check($_POST);
             if($result){
                 $data['username'] = input('post.username', '', 'trim');
@@ -227,12 +226,12 @@ class Manage extends Base
      */
     public function groupEdit()
     {
-        if( Request::instance() -> isGet() ){
+        if( Request::isGet() ){
             $this -> assign('actionRows', Db::name('sys_action') -> where([]) -> select());
             $this -> assign('group_info', Db::name('sys_group') -> where(['id' => input('get.group_id', 0 , 'intval')]) -> find() );
-            return $this -> fetch();
-        }elseif( Request::instance() -> isPost() ) {
-            $validate = Loader::validate('Group.edit');
+            return view();
+        }elseif( Request::isPost() ) {
+            $validate = App::validate('Group.edit');
             $result = $validate -> check($_POST);
             if($result){
                 $data['group_name'] = input('post.group_name', '', 'trim');
@@ -258,12 +257,12 @@ class Manage extends Base
      * @return mixed|\think\response\Json
      */
     public function authEdit(){
-        if( Request::instance() -> isGet() ){
+        if( Request::isGet() ){
             $this -> assign('moduleRows', Db::name('sys_module') -> where([]) -> select());
             $this -> assign('action_info', Db::name('sys_action') -> where(['id' => input('get.auth_id', 0 , 'intval')]) -> find() );
-            return $this -> fetch();
-        }elseif( Request::instance() -> isPost() ) {
-            $validate = Loader::validate('Auth.edit');
+            return view();
+        }elseif( Request::isPost() ) {
+            $validate = App::validate('Auth.edit');
             $result = $validate -> check($_POST);
 
             if($result){
@@ -274,7 +273,7 @@ class Manage extends Base
                 $data['module_id'] = input('post.module_id', '', 'trim');
                 $data['is_menu'] = input('post.is_menu', '', 'trim');
                 if( Db('sys_action') -> where(['id' => input('post.action_id')]) -> update($data) ){
-                    Base::flushAuthCache();
+                    $this->flushAuthCache();
                     return success('修改成功', ['url'   => url('auth_list')]);
                 }else{
                     return error('修改失败');
@@ -294,9 +293,9 @@ class Manage extends Base
      */
     public function manageEnableOrDisable()
     {
-        if( Request::instance() -> isGet() ){
+        if( Request::isGet() ){
 
-        }elseif( Request::instance() -> isPost() ) {
+        }elseif( Request::isPost() ) {
 
             $m_id = input('post.m_id', 0, 'intval');
             $m_info = Db::name('sys_manage')->getById($m_id);
@@ -326,16 +325,16 @@ class Manage extends Base
     /**
      * 重置密码
      */
-    public function  manageRepass()
+    public function manageRepass()
     {
-        if( Request::instance() -> isGet() ){
+        if( Request::isGet() ){
             $m_id = input('get.id', 0 ,'intval');
             $manage_info = Db::name('sys_manage') -> getById($m_id);
             $this -> assign('manage_info', $manage_info);
-            return $this -> fetch();
-        }elseif( Request::instance() -> isPost() ) {
+            return view();
+        }elseif( Request::isPost() ) {
             $id = input('post.manage_id', 0 ,'intval');
-            $validate = Loader::validate('Manage.repass');
+            $validate = App::validate('Manage.repass');
             $result = $validate -> check($_POST);
             if(true === $result){
                 $data['password_salt'] = mt_rand(0,9).mt_rand(0,9).mt_rand(0,9).mt_rand(0,9);
@@ -360,9 +359,9 @@ class Manage extends Base
      */
     public function manageDel()
     {
-        if( Request::instance() -> isGet() ){
+        if( Request::isGet() ){
 
-        }elseif( Request::instance() -> isPost() ) {
+        }elseif( Request::isPost() ) {
             $m_id = input('post.m_id', 0, 'intval');
             if($m_id == 0){
                 return success('操作失败！');
@@ -415,7 +414,7 @@ class Manage extends Base
      */
     public function authDel()
     {
-        if (Request::instance() -> isAjax() && Request::instance() -> isPost()) {
+        if (Request::isAjax() && Request::isPost()) {
             $a_id = input('post.a_id', 0, 'intval');
             if (Db::name('sys_action') -> delete($a_id)) {
                 return success('删除成功');

@@ -2,38 +2,39 @@
     <div class="layui-breadcrumb" lay-filter="breadcrumb">
         <a lay-href="">主页</a>
         <a><cite>系统设置</cite></a>
-        <a><cite>编辑系统配置</cite></a>
+        <a><cite>基础数据设置</cite></a>
     </div>
 </div>
 
-<div class="layui-fluid" style="">
-    <div class="layui-row layui-col-space15" style="">
-        <!-- /.col -->
-        <div class="col-md-12" style="">
-            <div class="layui-card" style="">
-                <div class="layui-card-header">
-                    <h3 class="box-title">编辑配置</h3>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-header">
+            <h3 class="box-title">添加配置项</h3>
+        </div>
+        <div class="layui-card-body" pad15="" style="">
+            <!-- form start -->
+            <form class="layui-form" method="post">
+                <!-- text input -->
+                <div class="layui-form-item layui-col-md6">
+                    <label class="layui-form-label">key: </label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" value="" placeholder="Enter ..."  name="k">
+                    </div>
                 </div>
-                <div class="layui-card-body" pad15="" style="">
-                    <!-- form start -->
-                    <form class="layui-form" method="post">
-                        <input type="hidden" name="s_id" value="{:input('get.s_id',0,'intval')}">
-                        <!-- text input -->
-                        <div class="layui-form-item layui-col-md6">
-                            <label class="layui-form-label">{$configRow->k}: </label>
-                            <div class="layui-input-block">
-                                <input type="text" class="layui-input" value="{$configRow->v}" placeholder="Enter ..."  name="v">
-                            </div>
-                        </div>
-                        <div class="layui-form-item">
-                            <div class="layui-input-block">
-                                <button class="layui-btn" lay-submit="" lay-filter="sysconfig">保存</button>
-                                <button class="layui-btn" onclick="history.go(-1)">取消</button>
-                            </div>
-                        </div>
-                    </form>
+                <div class="layui-form-item layui-col-md6">
+                    <label class="layui-form-label">value: </label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" value="" placeholder="Enter ..."  name="v">
+                    </div>
                 </div>
-            </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit="" lay-filter="sysconfig">保存</button>
+                        <button class="layui-btn" onclick="history.go(-1)">取消</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -45,7 +46,7 @@
         //监听提交
         form.on('submit(sysconfig)', function(data){
             $.ajax({
-                url: "{:url('edit')}",
+                url: "{:url('add')}",
                 data: $(data.form).serialize(),
                 dataType:'json',
                 type:'post',

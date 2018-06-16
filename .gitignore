@@ -14,10 +14,11 @@ log/*
 *.log
 
 # 配置文件
-application/config.php
-application/database.php
+config/app.php
+config/database.php
+!application/extra/neditor.php
 application/extra/*
-!application/extra/*.php.simple
+!config/*.php.simple
 
 # 框架信息
 composer.lock

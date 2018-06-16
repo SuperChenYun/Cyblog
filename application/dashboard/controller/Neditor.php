@@ -23,7 +23,7 @@ class Neditor
     /**
      * Neditor Controller
      */
-    public function controller(Request $request)
+    public function controller()
     {
         config('app_trace', false);
         $this -> CONFIG = json_decode(preg_replace("/\/\*[\s\S]+?\*\//", "", config("neditor.json")), true);
@@ -40,19 +40,19 @@ class Neditor
             case 'uploadvideo':
                 /* 上传文件 */
             case 'uploadfile':
-                $result = $this -> actionUpload($request);
+                $result = $this -> actionUpload();
                 break;
             /* 列出图片 */
             case 'listimage':
-                $result = $this -> actionList($request);
+                $result = $this -> actionList();
                 break;
             /* 列出文件 */
             case 'listfile':
-                $result = $this -> actionlist($request);
+                $result = $this -> actionlist();
                 break;
             /* 抓取远程文件 */
             case 'catchimage':
-                $result = $this -> actionCrawler($request);
+                $result = $this -> actionCrawler();
                 break;
             default:
                 $result = json_encode(array(
@@ -77,9 +77,8 @@ class Neditor
 
     /**
      * 处理上传文件
-     * @param Request $request
      */
-    private function actionUpload(Request $request)
+    private function actionUpload()
     {
 
         /* 上传配置 */
@@ -142,9 +141,8 @@ class Neditor
 
     /**
      * 列出上传的列表
-     * @param Request $request
      */
-    private function actionList(Request $request)
+    private function actionList()
     {
         /* 判断类型 */
         switch ($_GET['action']) {
@@ -206,7 +204,7 @@ class Neditor
      * 抓远程文件
      * @param Request $request
      */
-    private function actionCrawler(Request $request)
+    private function actionCrawler()
     {
 
     }

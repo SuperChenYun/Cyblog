@@ -30,7 +30,7 @@ function return_data($msg, $data=[], $code){
  * @param int $code
  * @return \think\response\Json
  */
-function success($msg = '', $data = [], $code = 1){
+function success($msg = '', $data = [], $code = 0){
     return return_data($msg, $data, $code);
 }
 
@@ -41,6 +41,6 @@ function success($msg = '', $data = [], $code = 1){
  * @param int $code
  * @return \think\response\Json
  */
-function error($msg = '', $data = [], $code = 0){
+function error($msg = '', $data = [], $code = 1){
     return return_data($msg, $data, $code);
 }
