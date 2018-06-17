@@ -16,8 +16,15 @@ class Itpk extends Controller
     public function index()
     {
         $ch = curl_init('http://i.itpk.cn/api.php?question=%E7%AC%91%E8%AF%9D');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
-        return json(json_decode(curl_exec($ch)));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $output = curl_exec($ch);
+
+        $output = str_replace(PHP_EOL, '', $output );
+        $output = str_replace('?', '', $output );
+        $output  = str_replace(array("\r\n", "\r", "\n"), "", $output );
+        echo $output;
+//dump(json_decode($output));
+//        return json(json_decode($output));
     }
 
 }
