@@ -55,7 +55,7 @@ class Article extends Model
         $data['art_class_id'] =  $this -> getArtClassId();
         $data['art_class_name'] =  $this -> getArtClassName();
         $data['art_banner_url'] = $this -> getArtBannerUrl();
-        $state = $this -> update($data);
+        $state = $this -> save($data);
         if ($state) {
             return true;
         } else {

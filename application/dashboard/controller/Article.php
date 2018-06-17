@@ -37,10 +37,10 @@ class Article extends Base
      * 文章展示或者隐藏
      * @return \think\response\Json
      */
-    public function artEnableOrDisable(Request $request)
+    public function artEnableOrDisable()
     {
         if (Request::isAjax()) {
-            $article = model('article') -> getByArtId($request::param('art_id', '0'));
+            $article = model('article') -> getByArtId(Request::param('art_id', '0'));
             if ($article -> art_status == ArticleModel::SHOW) {
                 $article->art_status = ArticleModel::HIDE;
             } elseif ($article -> art_status == ArticleModel::HIDE) {
@@ -59,22 +59,21 @@ class Article extends Base
 
     /**
      * 添加文章
-     * @param Request $request
      * @return mixed|string|\think\response\Json
      */
-    public function artAdd(Request $request)
+    public function artAdd()
     {
-        if ($request::isGet()) {
+        if (Request::isGet()) {
             $category = model('category') -> getAll();
             $this -> assign('category', $category);
             $defaultBannerUrl = model('SysConfig') -> getOne('article_default_banner_url');
             $this -> assign('defaultBannerUrl',$defaultBannerUrl);
             return view();
-        } elseif ($request::isPost()) {
+        } elseif (Request::isPost()) {
             $validate = App::validate('Article.add');
-            $result = $validate -> check($request::post());
+            $result = $validate -> check(Request::post());
             if ($result) {
-                $insId = model('article') -> add($request::post());
+                $insId = model('article') -> add(Request::post());
                 if ($insId) {
                     return success('添加成功',['insId' => $insId]);
                 }
@@ -93,21 +92,21 @@ class Article extends Base
      * @param Request $request
      * @return mixed|string|\think\response\Json
      */
-    public function artEdit($art_id, Request $request)
+    public function artEdit($art_id)
     {
-        if ($request::isGet()) {
+        if (Request::isGet()) {
             $category = model('category') -> getAll();
             $this -> assign('category', $category);
             $defaultBannerUrl = model('SysConfig') -> getOne('article_default_banner_url');
             $this -> assign('defaultBannerUrl',$defaultBannerUrl);
             $this -> assign('article', model('article') -> getByArtId($art_id));
             return view();
-        } elseif ($request::isPost()) {
+        } elseif (Request::isPost()) {
             $validate = App::validate('Article.edit');
-            $result = $validate -> check($request::param());
+            $result = $validate -> check(Request::param());
             if ($result) {
                 $article = model('Article') -> getByArtId($art_id);
-                $state = $article -> save(request::param());
+                $state = $article -> edit(Request::param());
                 if ($state) {
                     return success('编辑成功');
                 } else {

@@ -1,48 +1,15 @@
-{extend name="layout:layout"}
-{block name="htmlTitle"}Dashboard Controls{/block}
-{block name="htmlContent"}
-<!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <h1>
-            Dashboard
-            <small>Control panel</small>
-        </h1>
-        <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Error</a></li>
-            <li class="active">Dashboard</li>
-        </ol>
-    </section>
 
-    <!-- Main content -->
-    <section class="content">
-        <!-- Main row -->
-        <div class="row">
-            
-            <!-- right col (We are only adding the ID to make the widgets sortable)-->
-            <section class="col-md-5 col-lg-12 connectedSortable component">
-                <h1>Error</h1>
-            </section>
-            <section class="col-xs-6 col-xs-offset-3 col-lg-2 col-lg-offset-5 error text-center">
-                <i class="ion ion-alert-circled text-danger"></i>
-                <h2>404 Not Fount</h2>
-            </section>
-            <!-- right col -->
+<title>404 页面不存在</title>
+
+<div class="layui-fluid">
+    <div class="layadmin-tips">
+        <i class="layui-icon" face>&#xe664;</i>
+        <div class="layui-text">
+            <h1>
+                <span class="layui-anim layui-anim-loop layui-anim-">4</span>
+                <span class="layui-anim layui-anim-loop layui-anim-rotate">0</span>
+                <span class="layui-anim layui-anim-loop layui-anim-">4</span>
+            </h1>
         </div>
-        <!-- /.row (main row) -->
-
-    </section>
-    <!-- /.content -->
+    </div>
 </div>
-<!-- /.content-wrapper -->
-{/block}
-{block name="htmlJS"}
-{/block}
-{block name="htmlCSS"}
-<style>
-    .error {
-        font-size: 20rem
-    }
-</style>
-{/block}
