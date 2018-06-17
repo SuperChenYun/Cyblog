@@ -30,7 +30,7 @@ class Article extends Base
         $this -> assign('totalRows', Db::name('article') -> count());
         $this -> assign('page', $article -> render());
         $this -> assign('pageTotal', $article -> lastPage());
-        return $this -> fetch();
+        return view();
     }
 
     /**
@@ -69,7 +69,7 @@ class Article extends Base
             $this -> assign('category', $category);
             $defaultBannerUrl = model('SysConfig') -> getOne('article_default_banner_url');
             $this -> assign('defaultBannerUrl',$defaultBannerUrl);
-            return $this -> fetch();
+            return view();
         } elseif ($request::isPost()) {
             $validate = App::validate('Article.add');
             $result = $validate -> check($request::post());
@@ -101,7 +101,7 @@ class Article extends Base
             $defaultBannerUrl = model('SysConfig') -> getOne('article_default_banner_url');
             $this -> assign('defaultBannerUrl',$defaultBannerUrl);
             $this -> assign('article', model('article') -> getByArtId($art_id));
-            return $this -> fetch();
+            return view();
         } elseif ($request::isPost()) {
             $validate = App::validate('Article.edit');
             $result = $validate -> check($request::param());

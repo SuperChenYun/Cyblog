@@ -8,9 +8,7 @@
 
 namespace app\dashboard\controller;
 
-
-use think\Loader;
-use think\Request;
+use think\facade\Request;
 
 class Category extends Base
 {
@@ -21,16 +19,16 @@ class Category extends Base
         $this -> assign('totalRows', model('category') -> count());
         $this -> assign('page', $category -> render());
         $this -> assign('pageTotal', $category -> lastPage());
-        return $this -> fetch();
+        return view();
     }
 
-    public function catAdd(Request $request)
+    public function catAdd()
     {
-        if($request -> isGet()) {
-            return $this -> fetch();
-        } elseif ($request -> isPost()) {
+        if(Request::isGet()) {
+            return view();
+        } elseif (Request::isPost()) {
             $result = $this->validate(
-                $request -> post(),
+                Request::post(),
                 [
                     'cat_class_name'  => 'require|max:25',
                 ],
@@ -43,7 +41,7 @@ class Category extends Base
                 return $this->error($result);
             }
 
-                $insId = model('category') -> add($request -> post());
+                $insId = model('category') -> add(Request::post());
                 if ($insId) {
                     return success('添加成功',['insId' => $insId]);
                 }
@@ -53,15 +51,15 @@ class Category extends Base
         }
     }
 
-    public function catEdit(int $cat_id, Request $request)
+    public function catEdit($cat_id)
     {
-        if ($request -> isGet()) {
+        if (Request::isGet()) {
             $category = model('category') -> getByCatId($cat_id);
             $this -> assign('category', $category);
-            return $this -> fetch();
-        } elseif ($request -> isPost()) {
+            return view();
+        } elseif (Request::isPost()) {
             $result = $this->validate(
-                $request -> post(),
+                Request::post(),
                 [
                     'cat_class_name'  => 'require|max:25',
                 ],
@@ -72,7 +70,8 @@ class Category extends Base
             if (true !== $result) {
                 return error($result);
             }
-            $state = model('category') -> edit($request -> param());
+            $category = model('category') -> getByCatId(input('cat_id'));
+            $state = $category -> save(Request::param());
             if ($state) {
                 return success('修改成功');
             }
@@ -81,7 +80,7 @@ class Category extends Base
         }
     }
 
-    public function catDel(int $cat_id, Request $request)
+    public function catDel($cat_id)
     {
         $article = model('category') -> getByCatId($cat_id);
         $article -> status = 0;
