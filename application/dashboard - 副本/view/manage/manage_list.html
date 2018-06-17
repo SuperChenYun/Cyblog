@@ -1,0 +1,215 @@
+    {extend name="layout::layout"}
+{block name="htmlTitle"}Dashboard Control{/block}
+{block name="htmlContent"}
+<div class="content-wrapper" style="min-height: 916px;">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            人员列表
+            <small>后台人员列表</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i>Dashboard</a></li>
+            <li><a href="#">管理权限设置</a></li>
+            <li class="active">人员列表</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <button type="button" class="btn bg-navy btn-flat margin" onclick=jump_url("{:url('manage_add')}")>
+                            <i class="fa fa-fw fa-plus"></i>
+                            添加管理员
+                        </button>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div id="example2_wrapper" class=" form-inline dt-bootstrap"><div class="row"><div class="col-sm-6"></div><div class="col-sm-6"></div></div><div class="row"><div class="col-sm-12"><table id="example2" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
+                            <thead>
+                            <tr role="row">
+                                <th width="30">ID</th>
+                                <th width="80">用户名</th>
+                                <th width="80">真实姓名</th>
+                                <th width="110" class="hidden-xs">手机</th>
+                                <th width="150" class="hidden-xs hidden-sm">邮箱</th>
+                                <th width="140" class="hidden-xs hidden-sm">添加时间</th>
+                                <th width="140" class="hidden-xs hidden-sm">更新时间</th>
+                                <th width="140" class="hidden-xs hidden-sm">上次登录时间</th>
+                                <th width="130" class="hidden-xs hidden-sm">上次登录ip</th>
+                                <th width="74" class="hidden-xs hidden-sm">登录次数</th>
+                                <th width="140" class="hidden-xs hidden-sm">所在用户组</th>
+                                <th width="60">状态</th>
+                                <th width="130">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {volist name="ManageRows" id="row"}
+                            <tr role="row" class="odd">
+                                <!--<td ><input type="checkbox" value="1" name="manageIds[]"></td>-->
+                                <td class="sorting_1">{$row.id}</td>
+                                <td>{$row.username}</td>
+                                <td>{$row.truename}</td>
+                                <td class="hidden-xs">{$row.telphone}</td>
+                                <td class="hidden-xs hidden-sm">{$row.email}</td>
+                                <td class="hidden-xs hidden-sm">{$row.create_time|date="m月d日H:i",###}</td>
+                                <td class="hidden-xs hidden-sm">{$row.change_time|date="m月d日H:i",###}</td>
+                                <td class="hidden-xs hidden-sm">{$row.login_time|date="m月d日H:i",###}</td>
+                                <td class="hidden-xs hidden-sm">{$row.login_ip}</td>
+                                <td class="hidden-xs hidden-sm">{$row.login_number}</td>
+                                <td class="hidden-xs hidden-sm">
+                                    {volist name="$row.auth_group_name" id="rows"}
+                                    {$rows}<br />
+                                    {/volist}
+                                </td>
+                                <td>
+                                    {if condition="$row.status eq 1"}
+                                    <span class="label label-success radius">正常</span>
+                                    {else/}
+                                    <span class="label label-danger radius">停用</span>
+                                    {/if}
+                                </td>
+                                <td>
+                                    {if condition="$row.status eq 1"}
+                                        <a style="text-decoration:none" onClick="member_stop(this,'{$row.id}')" href="javascript:;" title="停用"><i class="fa fa-level-down"></i></a>
+                                    {else/}
+                                        <a style="text-decoration:none" onClick="member_start(this,'{$row.id}')" href="javascript:;" title="启用"><i class="fa fa-level-up"></i></a>
+                                    {/if}
+                                    <a title="编辑" href="javascript:;" onclick="member_edit('{$row.id}')" class="ml-5" style="text-decoration:none"><i class="fa fa-edit"></i></a>
+                                    <a style="text-decoration:none" class="ml-5" onClick="change_password('{$row.id}')" href="javascript:;" title="修改密码"><i class="fa fa-reply"></i></a>
+                                    {if condition="$row.administrator neq 1"}
+                                    <a title="删除" href="javascript:;" onclick="member_del(this,'{$row.id}')" class="ml-5" style="text-decoration:none"><i class="fa fa-remove"></i></a>
+                                    {/if}
+                                </td>
+                            </tr>
+                            {/volist}
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th width="30">ID</th>
+                                <th width="80">用户名</th>
+                                <th width="80">真实姓名</th>
+                                <th width="110" class="hidden-xs">手机</th>
+                                <th width="150" class="hidden-xs hidden-sm">邮箱</th>
+                                <th width="140" class="hidden-xs hidden-sm">添加时间</th>
+                                <th width="140" class="hidden-xs hidden-sm">更新时间</th>
+                                <th width="140" class="hidden-xs hidden-sm">上次登录时间</th>
+                                <th width="130" class="hidden-xs hidden-sm">上次登录ip</th>
+                                <th width="74" class="hidden-xs hidden-sm">登录次数</th>
+                                <th width="140" class="hidden-xs hidden-sm" >所在用户组</th>
+                                <th width="60">状态</th>
+                                <th width="130">操作</th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                        </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
+                                    当前第<?php echo Request() -> get('page') ? Request() -> get('page') : 1; ?>页，共{$pageTotal}页{$manageTotalRow}条数据
+                                </div>
+                            </div>
+                                <div class="col-sm-7">
+                                    <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+                                            {$page}
+                                    </div>
+                                </div>
+                        </div>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>
+{/block}
+{block name="htmlJS"}
+<script type="text/javascript">
+
+    /*用户-停用*/
+    function member_stop(obj,id){
+        layer.confirm('确认要停用吗？',function(index){
+            $.ajax({
+                url:"{:url('manage_enable_or_disable')}",
+                type:'post',
+                dateType:'json',
+                data:{m_id:id},
+                success:function (resp) {
+                    layer.msg(resp.msg);
+                    if(resp.code == '1') {
+                        setTimeout('window.location.reload()',1000);
+                    }
+                },
+                error:function(e){
+                        success_msg('操作失败！');
+                }
+            });
+        })
+    }
+
+    /*用户-启用*/
+    function member_start(obj,id){
+        layer.confirm('确认要启用吗？',function(index){
+            $.ajax({
+                url:"{:url('manage_enable_or_disable')}",
+                type:'post',
+                dateType:'json',
+                data:{m_id:id},
+                success:function (resp) {
+                    layer.msg(resp.msg);
+                    if(resp.code == '1') {
+                        setTimeout('window.location.reload()',1000);
+                    }
+                },
+                error:function(e){
+                    success_msg('操作失败！');
+                }
+            });
+        });
+    }
+
+    /*用户-删除*/
+    function member_del(obj,id){
+        layer.confirm('确认要删除吗？删除后不可恢复！',function(index){
+            layer.confirm('您真的要删除吗？',function(index){
+                $.ajax({
+                    url:"{:url('manage_del')}",
+                    type:'post',
+                    dataType:'json',
+                    data:{m_id:id},
+                    success:function (resp) {
+                        layer.msg(resp.msg);
+                        if(resp.code == '1') {
+                            setTimeout('window.location.reload()',1000);
+                        }
+                    },
+                    error:function (e) {
+                        success_msg('操作失败！');
+                    }
+                })
+            })
+        });
+    }
+
+    /*用户-编辑*/
+    function member_edit(id){
+        jump_url("{:url('manage_edit')}" + '?manage_id=' + id);
+    }
+    /*密码-修改*/
+    function change_password(id){
+        jump_url("{:url('manage_repass')}" + '?manage_id=' + id);
+    }
+
+</script>
+<!--/请在上方写此页面业务相关的脚本-->
+{/block}

@@ -79,7 +79,7 @@ class Base extends Init
             if(Request::isAjax()){
                 return error('请登录', ['re_url' => url('/')],302);
             }else {
-                $this->redirect('Auth/login');
+                return $this->redirect('Auth/login');
             }
         }
         $ManageInfo = $this -> SysManageModel -> where(['id' => session('Manage.id')])->find();
@@ -88,7 +88,7 @@ class Base extends Init
             if(Request::isAjax()) {
                 return error('ip地址变化,请重新登录', ['re_url' => url('/')], 302);
             }else{
-                $this -> redirect('/');
+                return $this -> redirect('/');
             }
         }
         if ($ManageInfo -> password != session('Manage')['password']) {
@@ -96,7 +96,7 @@ class Base extends Init
             if(Request::isAjax()) {
                 return error('登录失效,请重新登录', ['re_url' => url('/')], 302);
             }else{
-                $this -> redirect('/');
+                return $this -> redirect('/');
             }
         }
         if ($ManageInfo['change_time'] != session('Manage')['change_time']) {

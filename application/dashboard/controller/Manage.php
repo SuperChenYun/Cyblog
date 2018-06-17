@@ -116,7 +116,6 @@ class Manage extends Base
                 $data['module_id'] = input('post.module_id', '', 'trim');
                 $data['is_menu'] = input('post.is_menu', '', 'trim');
                 if( Db('sys_action') -> insert($data) ){
-                    $this->flushAuthCache();
                     return success('添加成功', ['url'   =>  url('auth_list')]);
                 }else{
                     return error('添加失败');
@@ -232,6 +231,9 @@ class Manage extends Base
             return view();
         }elseif( Request::isPost() ) {
             $validate = App::validate('Group.edit');
+            if (input('group_id', 0 , 'intval') == 1) {
+                return error('禁止操作');
+            }
             $result = $validate -> check($_POST);
             if($result){
                 $data['group_name'] = input('post.group_name', '', 'trim');
@@ -272,8 +274,7 @@ class Manage extends Base
                 $data['action_sort'] = input('post.action_sort',0,'trim');
                 $data['module_id'] = input('post.module_id', '', 'trim');
                 $data['is_menu'] = input('post.is_menu', '', 'trim');
-                if( Db('sys_action') -> where(['id' => input('post.action_id')]) -> update($data) ){
-                    $this->flushAuthCache();
+                if( model('SysAction') -> where(['id' => input('post.action_id')]) -> update($data) ){
                     return success('修改成功', ['url'   => url('auth_list')]);
                 }else{
                     return error('修改失败');
@@ -298,6 +299,9 @@ class Manage extends Base
         }elseif( Request::isPost() ) {
 
             $m_id = input('post.m_id', 0, 'intval');
+            if ($m_id == 1) {
+                return error('禁止操作');
+            }
             $m_info = Db::name('sys_manage')->getById($m_id);
             if($m_info['administrator'] == 1){
                 return error('不允许对超级管理员进行操作');
@@ -389,6 +393,9 @@ class Manage extends Base
             return error('参数错误');
             exit;
         }
+        if ($g_id == 1) {
+            return error('禁止操作');
+        }
 
         $g_info = Db::name('sys_group') -> getById($g_id);
         if($g_info['group_status'] == 1){
@@ -412,15 +419,28 @@ class Manage extends Base
      *
      * @return \think\response\Json
      */
-    public function authDel()
+//    public function authDel()
+//    {
+//        if (Request::isAjax() && Request::isPost()) {
+//            $a_id = input('post.a_id', 0, 'intval');
+//            if (Db::name('sys_action') -> delete($a_id)) {
+//                return success('删除成功');
+//            }else{
+//                return error('删除失败');
+//            }
+//        }
+//    }
+
+    public function groupDel()
     {
         if (Request::isAjax() && Request::isPost()) {
-            $a_id = input('post.a_id', 0, 'intval');
-            if (Db::name('sys_action') -> delete($a_id)) {
+            $g_id = input('post.g_id', 0, 'intval');
+            if (Db::name('sys_group') -> delete($g_id)) {
                 return success('删除成功');
             }else{
                 return error('删除失败');
             }
         }
+
     }
 }

@@ -1,0 +1,101 @@
+{extend name="layout:layout"}
+{block name="htmlTitle"}Dashboard Controls{/block}
+{block name="htmlContent"}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Dashboard
+            <small>Control panel</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Dashboard</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+            <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-aqua">
+                    <div class="inner">
+                        <h3>{$count.artNum|default='-'}</h3>
+
+                        <p>文章总数</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-document-text"></i>
+                    </div>
+                    <a href="{:url('article/index')}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-green">
+                    <div class="inner">
+                        <h3>{$count.clsNum|default='-'}</h3>
+
+                        <p>分类总数</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-social-buffer"></i>
+                    </div>
+                    <a href="{:url('category/index')}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-yellow">
+                    <div class="inner">
+                        <h3>{$count.likNum|default='-'}</h3>
+
+                        <p>友链数</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-person-add"></i>
+                    </div>
+                    <a href="{:url('links/index')}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-red">
+                    <div class="inner">
+                        <h3>{$count.userNum|default='-'}</h3>
+
+                        <p>用户数</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-ios-people"></i>
+                    </div>
+                    <a href="{:url('manage/manage_list')}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+        </div>
+        <!-- /.row -->
+        <!-- Main row -->
+        <div class="row">
+            
+            <!-- right col (We are only adding the ID to make the widgets sortable)-->
+            <section class="col-lg-5 connectedSortable">
+
+            </section>
+            <!-- right col -->
+        </div>
+        <!-- /.row (main row) -->
+
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+{/block}
+{block name="htmlJS"}
+{/block}}

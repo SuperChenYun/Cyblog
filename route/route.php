@@ -51,7 +51,8 @@ return [
         'manage/manage_del' => ['dashboard/manage/manageDel'],
         'manage/group_enable_or_disable' => ['dashboard/manage/groupEnableOrDisable'],
         'manage/auth_del' => ['dashboard/manage/authDel'],
-        
+        'manage/group_del' => ['dashboard/manage/groupDel'],
+
     ]
 
 ];

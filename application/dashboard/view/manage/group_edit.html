@@ -1,120 +1,95 @@
-{extend name="layout::layout"}
-{block name="htmlTitle"}Dashboard Control{/block}
-{block name="htmlContent"}
-<div class="content-wrapper" style="min-height: 946px;">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <h1>
-            修改信息
-            <small></small>
-        </h1>
-        <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i>Dashboard</a></li>
-            <li><a href="#">管理权限设置</a></li>
-            <li class="active">修改权限组信息</li>
-        </ol>
-    </section>
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>管理权限设置</cite></a>
+        <a><cite>编辑用户组</cite></a>
+    </div>
+</div>
 
-    <!-- Main content -->
-    <section class="content">
-        <div class="row">
-            <!-- column -->
-            <div class="col-md-12">
-                <!-- /.box -->
-                <div class="box box-info">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">修改权限组信息</h3>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <form role="form">
-                            <input type="hidden" name="group_id" value="{:input('get.group_id',0,'intval')}">
-                            <!-- text input -->
-                            <div class="form-group col-md-6">
-                                <label>组名称: </label>
-                                <input type="text" class="form-control" value="{$group_info.group_name}" placeholder="请设置用户组名称"  name="group_name">
+<div class="layui-fluid" style="">
+    <div class="layui-row layui-col-space15" style="">
+        <!-- /.col -->
+        <div class="col-md-12" style="">
+            <div class="layui-card" style="">
+                <div class="layui-card-header">
+                    <h3 class="box-title">编辑用户组</h3>
+                </div>
+                <div class="layui-card-body" pad15="" style="">
+                    <!-- form start -->
+
+                    <form class="layui-form" method="post">
+                        <input type="hidden" name="group_id" value="{:input('get.group_id',0,'intval')}">
+                        <!-- text input -->
+                        <div class="layui-form-item layui-col-md6">
+                            <label class="layui-form-label">组名称: </label>
+                            <div class="layui-input-block">
+                                <input type="text" class="layui-input" value="{$group_info.group_name}" placeholder="请设置用户组名称"  name="group_name">
                             </div>
-                            <div class="form-group col-md-6">
-                                <label>组权限: </label>
+                        </div>
+                        <div class="layui-form-item layui-col-md6">
+                            <label class="layui-form-label">组权限: </label>
+                            <div class="layui-input-block">
                                 <div class="box-group">
                                     <div class="checkbox ">
                                         {volist name="actionRows" id="row"}
-                                        <label>
-                                            <input type="checkbox" name="group_actions[]" value="{$row.id}" id="action_{$row.id}" {if condition=" in_array( $row['id'], explode(',',$group_info['group_actions']) ) "} checked{/if}>
-                                            {$row.name}
-                                        </label>
+                                        <input type="checkbox" name="group_actions[]" title="{$row.name}" value="{$row.id}" id="action_{$row.id}" {if condition=" in_array( $row['id'], explode(',',$group_info['group_actions']) ) "} checked{/if}>
                                         {/volist}
                                     </div>
                                 </div>
                             </div>
-                           <div class="form-group col-md-6">
-                               <label>用户组组状态</label>
-                               <div class=box-group>
-                                   <div class="checkbox ">
-                                       <div class="radio">
-                                           <label>
-                                               <input type="radio" name="group_status" value="1" {if condition="$group_info.group_status eq 1"}checked{/if} >
-                                               启用
-                                           </label>
+                        </div>
 
-                                           <label>
-                                               <input type="radio" name="group_status"  value="0" {if condition="$group_info.group_status eq 0"}checked{/if} >
-                                               禁用
-                                           </label>
-                                       </div>
-                                   </div>
-                               </div>
-                           </div>
-
-                            <!-- textarea -->
-                            <div class="form-group  col-md-12">
-                                <label>备注:</label>
-                                <textarea class="form-control" rows="5" name="group_remarks"  placeholder="说点什么...最少输入10个字符"  >{$group_info.group_remarks|htmlspecialchars}</textarea>
-                                <!--<p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>-->
+                        <div class="layui-form-item layui-col-md12">
+                            <label class="layui-form-label">用户组组状态：</label>
+                            <div class=layui-input-block>
+                                <input type="radio" name="group_status" title="启用" value="1" {if condition="$group_info.group_status eq 1"}checked{/if} >
+                                <input type="radio" name="group_status" title="禁用" value="0" {if condition="$group_info.group_status eq 0"}checked{/if} >
                             </div>
+                        </div>
 
-                        </form>
-                    </div>
-                    <!-- /.box-body -->
-                    <div class="box-footer">
-                        <button type="button" class="btn btn-default" onclick="javascript:window.history.back()">取消</button>
-                        <button type="button" class="btn btn-info pull-right" onclick="submit()">修改</button>
-                    </div>
+                        <!-- textarea -->
+                        <div class="layui-form-item layui-col-md12">
+                            <label class="layui-form-label">备注：</label>
+                            <div class="layui-input-block">
+                                <textarea class="layui-textarea" rows="5" name="group_remarks"  placeholder="说点什么...最少输入10个字符"  >{$group_info.group_remarks|htmlspecialchars}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit="" lay-filter="group_edit">保存</button>
+                                <a href="javascript:;" class="layui-btn" lay-href="{:url('group_list','','')}">取消</a>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <!--/.col (right) -->
         </div>
-        <!-- /.row -->
-    </section>
-    <!-- /.content -->
+    </div>
 </div>
-{/block}
-{block name="htmlJS"}
-<script type="text/javascript">
-    function submit()
-    {
-        if( $('input[name=password]').val() == '' || $('input[name=password_confirm]').val() == '' ){
-            msg('请正确填写新的帐号密码！');return;
-        }
-        if( $('input[name=password]').val()  != $('input[name=password_confirm]').val() ){
-            msg('两次输入的帐号密码不一致！');return;
-        }
-        $.ajax({
-            url:"{:url('group_edit')}",
-            data:$('form').serialize(),
-            dataType:'json',
-            type:'post',
-            success:function (resp) {
-                msg(resp.msg);
-                if(resp.code == '1'){
-                    setTimeout( 'window.location.reload()',1000);
+
+<script>
+    layui.use('form', function(){
+        var form = layui.form;
+        //监听提交
+        form.on('submit(group_edit)', function(data){
+            $.ajax({
+                url: "{:url('group_edit')}",
+                data: $(data.form).serialize(),
+                dataType:'json',
+                type:'post',
+                success:function (resp) {
+                    msg(resp.msg);
+                    if(resp.code == 0) {
+                        setTimeout( 'window.location.reload()',2000);
+                    }
+                },
+                error:function (e) {
+                    msg('操作失败');
                 }
-            },
-            error:function (e) {
-                msg('操作失败');
-            }
-        })
-    }
+            })
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+        form.render();  // 重新渲染
+    });
 </script>
-<!--/请在上方写此页面业务相关的脚本-->
-{/block}

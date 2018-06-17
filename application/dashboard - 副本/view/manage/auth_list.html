@@ -1,0 +1,153 @@
+{extend name="layout::layout"}
+{block name="htmlTitle"}Dashboard Control{/block}
+{block name="htmlContent"}
+<div class="content-wrapper" style="min-height: 916px;">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            权限列表
+            <small>权限列表</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i>Dashboard</a></li>
+            <li><a href="#">管理权限设置</a></li>
+            <li class="active">权限列表</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <button type="button" class="btn bg-navy btn-flat margin" onclick=jump_url("{:url('auth_add')}")>
+                            <i class="fa fa-fw fa-plus"></i>
+                            添加权限
+                        </button>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div id="example2_wrapper" class=" form-inline dt-bootstrap"><div class="row"><div class="col-sm-6"></div><div class="col-sm-6"></div></div><div class="row"><div class="col-sm-12"><table id="example2" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
+                            <thead>
+                            <tr role="row">
+                                <th width="30" class="hidden-xs">ID</th>
+                                <th width="80">Name</th>
+                                <th width="80">Controller</th>
+                                <th width="80">Action</th>
+                                <th width="110" class="hidden-xs">隶属模块</th>
+                                <th width="80">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {volist name="actionRows" id="row"}
+                            <tr role="row" class="odd">
+                                <td class="sorting_1 hidden-xs">{$row.said}</td>
+                                <td>{$row.name}</td>
+                                <td>{$row.controller}</td>
+                                <td>{$row.action}</td>
+                                <td class="hidden-xs">{$row.module_name}</td>
+                                <td>
+                                    <a title="编辑" href="javascript:;" onclick="edit_action('{$row.said}')" class="ml-5" style="text-decoration:none"><i class="fa fa-fw fa-edit"></i></a>
+
+                                    <a title="删除" href="javascript:;" onclick="del_action('{$row.said}')" class="ml-5" style="text-decoration:none"> <i class="fa fa-fw fa-trash"></i></a>
+                                </td>
+
+                            </tr>
+
+
+                            {/volist}
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th width="30">ID</th>
+                                <th width="80" class="hidden-xs">Name</th>
+                                <th width="80">Controller</th>
+                                <th width="80">Action</th>
+                                <th width="110" class="hidden-xs">隶属模块</th>
+                                <th width="80">操作</th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                        </div>
+                        </div>
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
+                                        当前第<?php echo Request() -> get('page') ? Request() -> get('page') : 1; ?>页，共{$pageTotal}页{$actionTotalRows}条数据
+                                    </div>
+                                </div>
+                                <div class="col-sm-7">
+                                    <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+                                        {$page}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>
+{/block}
+{block name="htmlJS"}
+<script type="text/javascript">
+    /*用户-启用停用*/
+    function start_or_stop_action(id){
+        layer.confirm('确认操作吗？',function(index){
+            $.ajax({
+                url:"{:url('auth_enable_or_disable')}",
+                type:'post',
+                dateType:'json',
+                data:{a_id:id},
+                success:function (resp) {
+                    layer.msg(resp.msg);
+                    if(resp.code == '1') {
+                        setTimeout('window.location.reload()',1000);
+                    }
+                },
+                error:function(e){
+                    success_msg('操作失败！');
+                }
+            });
+        });
+    }
+
+    /*用户-删除*/
+    function del_action(id){
+        layer.confirm('确认要删除吗？删除后不可恢复！',function(index){
+            layer.confirm('您真的要删除吗？',function(index){
+                $.ajax({
+                    url:"{:url('auth_del')}",
+                    type:'post',
+                    dataType:'json',
+                    data:{a_id:id},
+                    success:function (resp) {
+                        layer.msg(resp.msg);
+                        if(resp.code == '1') {
+                            setTimeout('window.location.reload()',1000);
+                        }
+                    },
+                    error:function (e) {
+                        success_msg('操作失败！');
+                    }
+                })
+            })
+        });
+    }
+
+    /*用户-编辑*/
+    function edit_action(id){
+        jump_url("{:url('auth_edit')}" + '?auth_id=' + id);
+    }
+
+</script>
+<!--/请在上方写此页面业务相关的脚本-->
+{/block}

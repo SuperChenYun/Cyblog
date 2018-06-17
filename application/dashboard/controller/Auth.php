@@ -26,6 +26,10 @@ class Auth extends Init {
         $this -> SysActionModel = model('SysAction');
     }
 
+    public function index()
+    {
+        return $this->redirect('login');
+    }
     /**
      * 登入
      */
