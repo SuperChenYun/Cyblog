@@ -33,7 +33,7 @@ class Msgapi extends Controller
         // 按消息类型分发请求
         $this -> wechatApp -> server -> push(function($message) {
             $msgType = $message['MsgType'];
-            $module = Request::instance()->module();
+            $module = Request::module();
             $logic = 'app\\' . $module . '\\wechatmsg\\' . ucfirst($msgType);
             if (class_exists($logic)) {
                 return $logic::deal($message);
