@@ -16,6 +16,7 @@ log/*
 # 配置文件
 config/app.php
 config/database.php
+config/wechat.php
 !application/extra/neditor.php
 application/extra/*
 !config/*.php.simple
