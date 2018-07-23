@@ -241,11 +241,12 @@ class Manage extends Base
             }
             $result = $validate -> check($_POST);
             if($result){
+                $data = model('sys_group') -> getById(input('group_id', 0 , 'intval'));
                 $data['group_name'] = input('post.group_name', '', 'trim');
-                $data['group_actions'] = implode(',', is_array($_POST['group_actions']) ? $_POST['group_actions'] : []);
+                $data['group_actions'] = is_array($_POST['group_actions']) ? $_POST['group_actions'] : [];
                 $data['group_status'] = input('post.group_status', 1, 'intval');
                 $data['group_remarks'] = input('post.group_remarks', 'htmlspecialchars');
-                if( model('sys_group') -> where(['id' => input('post.group_id')]) -> update($data) ){
+                if( $data -> save() ){
                     return success('修改成功');
                 }else{
                     return error('修改失败');
