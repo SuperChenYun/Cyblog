@@ -15,4 +15,8 @@ class SysGroup extends Model
 {
     protected $name = 'sys_group';
 
+    protected $type = [
+        'group_actions'    =>  'json',
+    ];
+
 }

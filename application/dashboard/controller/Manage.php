@@ -7,9 +7,9 @@
  */
 namespace app\dashboard\controller;
 
-use think\Db;
+use app\common\model\SysGroup;
+use app\common\model\SysManage;
 use think\facade\App;
-use Think\Page;
 use think\facade\Request;
 
 class Manage extends Base
@@ -30,14 +30,14 @@ class Manage extends Base
 //            'truename|telphone|email' => ['like' , "$searchUserOrEmailOrPhone%"]
         ];
 
-        $manage = Db::name('sys_manage') -> where($where) -> order('id', 'asc') -> paginate('','', $searchConfig);
-        $group = Db::name('sys_group') -> select();
+        $manage = model('sysManage') -> where($where) -> order('id', 'asc') -> paginate('','', $searchConfig);
+        $group = model('sysGroup') -> select();
 
         $manageRowsGroupList = [];
         foreach ($manage -> items()  AS $key => $val) {
             if($val['auth_group']){
-                $authGroupArr = explode(',', $val['auth_group']);
-                $manageRowsGroupList[$key] = $val;
+                $authGroupArr = $val['auth_group'];
+                $manageRowsGroupList[$key] = $val -> toArray();
                 foreach ($group AS $k => $v){
                     if( in_array($v['id'], $authGroupArr) ){
                         $manageRowsGroupList[$key]['auth_group_name'][] = $v['group_name'];
@@ -57,14 +57,14 @@ class Manage extends Base
      */
     public function groupList()
     {
-        $groupTotalRows = Db::name('sys_group') -> count();
-        $groupRows = Db::name('sys_group') -> paginate();
-        $actionRows = Db::name('sys_action') -> select();
+        $groupTotalRows = model('sysGroup') -> count();
+        $groupRows = model('sysGroup') -> paginate();
+        $actionRows = model('sysAction') -> select();
 
         $groupRowsArr = []; // 处理后的数组
         foreach ($groupRows -> items() AS $key => $val){
-            $actionsArr = explode(',', $val['group_actions']);
-            $groupRowsArr[$key] = $val;
+            $actionsArr = $val['group_actions'];
+            $groupRowsArr[$key] = $val -> toArray();
             foreach ($actionRows AS $k => $v){
                 if(in_array($v['id'], $actionsArr)){
                     $groupRowsArr[$key]['group_actions_name'][] = $v['name'];
@@ -84,8 +84,8 @@ class Manage extends Base
      */
     public function authList()
     {
-        $actionTotalRows = Db::name('sys_action') -> count();
-        $actionRows = Db::name('sys_action') -> alias('sa') -> join('__SYS_MODULE__ sm', 'sm.id = sa.module_id') -> field(['sa.id' => 'said','sm.id' => 'smid','sa.*','sm.*']) -> paginate();
+        $actionTotalRows = model('sys_action') -> count();
+        $actionRows = model('sys_action') -> alias('sa') -> join('__SYS_MODULE__ sm', 'sm.id = sa.module_id') -> field(['sa.id' => 'said','sm.id' => 'smid','sa.*','sm.*']) -> paginate();
 
         $this -> assign('actionTotalRows', $actionTotalRows);
         $this -> assign('actionRows', $actionRows -> items());
@@ -103,7 +103,7 @@ class Manage extends Base
     public function authAdd()
     {
         if(Request::isGet()){
-            $this -> assign('moduleRows', Db::name('sys_module') -> where([]) -> select());
+            $this -> assign('moduleRows', model('sysModule') -> where([]) -> select());
             return view();
         }else if(Request::isPost()){
             $validate = App::validate('Auth.add');
@@ -115,7 +115,7 @@ class Manage extends Base
                 $data['action_sort'] = input('post.action_sort',0,'trim');
                 $data['module_id'] = input('post.module_id', '', 'trim');
                 $data['is_menu'] = input('post.is_menu', '', 'trim');
-                if( Db('sys_action') -> insert($data) ){
+                if( model('sys_action') -> insert($data) ){
                     return success('添加成功', ['url'   =>  url('auth_list')]);
                 }else{
                     return error('添加失败');
@@ -132,22 +132,23 @@ class Manage extends Base
     public function manageAdd()
     {
         if (Request::isGet()) {
-            $this -> assign('group_list', Db::name('sys_group') -> select());
+            $this -> assign('group_list', model('sys_group')-> select());
             return view();
         }else{
             $validate = App::validate('Manage.add');
             $result = $validate -> check($_POST);
             if($result){
+                $data = new SysManage();
                 $data['username'] = input('post.username', '', 'trim');
                 $data['truename'] = input('post.truename', '', 'trim');
                 $data['telphone'] = input('post.telphone', '', 'trim');
                 $data['password_salt'] = mt_rand(0, 9) . mt_rand(0, 9) . mt_rand(0, 9) . mt_rand(0, 9);
                 $data['password'] = md5(input('post.password', '', 'trim') . $data['password_salt']);
                 $data['email'] = input('post.email', '', 'trim');
-                $data['auth_group'] = implode(',',$_POST['auth_group'] );
+                $data['auth_group'] = $_POST['auth_group'];
                 $data['status'] = input('post.status', '', 'trim');
                 $data['remarks'] = input('post.remarks', '', 'trim');
-                if( Db('sys_manage') -> insert($data) ){
+                if( $data -> save() ){
                     return success('添加成功', ['url' => url('manage_list')]);
                 }else{
                     return error('添加失败');
@@ -162,17 +163,18 @@ class Manage extends Base
     public function groupAdd()
     {
         if (Request::isGet()) {
-            $this -> assign('actionRows', Db::name('sys_action') -> where([]) -> select());
+            $this -> assign('actionRows', model('sys_action') -> where([]) -> select());
             return view();
         }else{
             $validate = App::validate('Group.add');
             $result = $validate -> check($_POST);
             if ($result) {
+                $data = new SysGroup();
                 $data['group_name'] = input('post.group_name', '', 'trim');
-                $data['group_actions'] = implode(',', is_array($_POST['group_actions']) ? $_POST['group_actions'] : []);
+                $data['group_actions'] = is_array($_POST['group_actions']) ? $_POST['group_actions'] : [];
                 $data['group_status'] = input('post.group_status', 1, 'intval');
                 $data['group_remarks'] = input('post.group_remarks', 'htmlspecialchars');
-                if (Db::name('sys_group') -> insert($data)) {
+                if ( $data -> save()) {
                     return success('添加成功', ['url' => url('group_list')]);
                 } else {
                     return error('添加失败');
@@ -192,21 +194,22 @@ class Manage extends Base
     public function manageEdit()
     {
         if( Request::isGet() ){
-            $this -> assign('group_list', Db::name('sys_group') -> select());
-            $this -> assign('manage_info', Db::name('sys_manage') -> where(['id' => input('get.manage_id', 0 , 'intval')]) -> find() );
+            $this -> assign('group_list', model('sys_group') -> select());
+            $this -> assign('manage_info', model('sys_manage') -> where(['id' => input('get.manage_id', 0 , 'intval')]) -> find() );
             return view();
         }elseif( Request::isPost() ) {
             $validate = App::validate('Manage.edit');
             $result = $validate -> check($_POST);
             if($result){
+                $data = model('sysManage') -> getById(input('post.manage_id'));
                 $data['username'] = input('post.username', '', 'trim');
                 $data['truename'] = input('post.truename', '', 'trim');
                 $data['telphone'] = input('post.telphone', '', 'trim');
                 $data['email'] = input('post.email', '', 'trim');
-                $data['auth_group'] = implode(',',$_POST['auth_group'] );
+                $data['auth_group'] = $_POST['auth_group'];
                 $data['status'] = input('post.status', '', 'trim');
                 $data['remarks'] = input('post.remarks', '', 'trim');
-                if( Db('sys_manage') -> where(['id' => input('post.manage_id')]) -> update($data) ){
+                if( $data -> save() ){
                     return success('修改成功');
                 }else{
                     return error('修改失败');
@@ -226,8 +229,10 @@ class Manage extends Base
     public function groupEdit()
     {
         if( Request::isGet() ){
-            $this -> assign('actionRows', Db::name('sys_action') -> where([]) -> select());
-            $this -> assign('group_info', Db::name('sys_group') -> where(['id' => input('get.group_id', 0 , 'intval')]) -> find() );
+            $actionRows = model('sys_action') -> where([]) -> select();
+            $groupInfo = model('sys_group') -> where(['id' => input('get.group_id', 0 , 'intval')]) -> find();
+            $this -> assign('actionRows', $actionRows);
+            $this -> assign('group_info', $groupInfo);
             return view();
         }elseif( Request::isPost() ) {
             $validate = App::validate('Group.edit');
@@ -240,7 +245,7 @@ class Manage extends Base
                 $data['group_actions'] = implode(',', is_array($_POST['group_actions']) ? $_POST['group_actions'] : []);
                 $data['group_status'] = input('post.group_status', 1, 'intval');
                 $data['group_remarks'] = input('post.group_remarks', 'htmlspecialchars');
-                if( Db('sys_group') -> where(['id' => input('post.group_id')]) -> update($data) ){
+                if( model('sys_group') -> where(['id' => input('post.group_id')]) -> update($data) ){
                     return success('修改成功');
                 }else{
                     return error('修改失败');
@@ -260,8 +265,8 @@ class Manage extends Base
      */
     public function authEdit(){
         if( Request::isGet() ){
-            $this -> assign('moduleRows', Db::name('sys_module') -> where([]) -> select());
-            $this -> assign('action_info', Db::name('sys_action') -> where(['id' => input('get.auth_id', 0 , 'intval')]) -> find() );
+            $this -> assign('moduleRows', model('sys_module') -> where([]) -> select());
+            $this -> assign('action_info', model('sys_action') -> where(['id' => input('get.auth_id', 0 , 'intval')]) -> find() );
             return view();
         }elseif( Request::isPost() ) {
             $validate = App::validate('Auth.edit');
@@ -302,7 +307,7 @@ class Manage extends Base
             if ($m_id == 1) {
                 return error('禁止操作');
             }
-            $m_info = Db::name('sys_manage')->getById($m_id);
+            $m_info = model('sys_manage')->getById($m_id);
             if($m_info['administrator'] == 1){
                 return error('不允许对超级管理员进行操作');
                 exit;
@@ -310,10 +315,10 @@ class Manage extends Base
 
             if ($m_info['status'] == 0) {
                 // 启用
-                $response = Db::name('sys_manage')->where(['id' => $m_info['id']])->setField('status', 1);
+                $response = model('sys_manage')->where(['id' => $m_info['id']])->setField('status', 1);
             } elseif ($m_info['status'] == 1){
                 // 禁用
-                $response = Db::name('sys_manage')->where(['id' => $m_info['id']])->setField('status', 0);
+                $response = model('sys_manage')->where(['id' => $m_info['id']])->setField('status', 0);
             }
             if($response){
                 return success('操作成功');
@@ -333,7 +338,7 @@ class Manage extends Base
     {
         if( Request::isGet() ){
             $m_id = input('get.id', 0 ,'intval');
-            $manage_info = Db::name('sys_manage') -> getById($m_id);
+            $manage_info = model('sys_manage') -> getById($m_id);
             $this -> assign('manage_info', $manage_info);
             return view();
         }elseif( Request::isPost() ) {
@@ -343,7 +348,7 @@ class Manage extends Base
             if(true === $result){
                 $data['password_salt'] = mt_rand(0,9).mt_rand(0,9).mt_rand(0,9).mt_rand(0,9);
                 $data['password'] = md5( input('post.password') . $data['password_salt'] ) ;
-                $result = Db::name('sys_manage') -> where(['id' => $id]) -> update($data);
+                $result = model('sys_manage') -> where(['id' => $id]) -> update($data);
                 if($result){
                     return success('修改成功');
                 }else{
@@ -371,7 +376,8 @@ class Manage extends Base
                 return success('操作失败！');
                 exit;
             }
-            if ( Db::name('sys_manage') -> delete($m_id) ){
+            $data = model('SysManage') -> getById($m_id);
+            if ( $data -> delete() ){
                 return success('删除成功，数据不可恢复!');
             }else{
                 return success( '删除失败！');
@@ -397,7 +403,7 @@ class Manage extends Base
             return error('禁止操作');
         }
 
-        $g_info = Db::name('sys_group') -> getById($g_id);
+        $g_info = model('sys_group') -> getById($g_id);
         if($g_info['group_status'] == 1){
             $field['group_status'] = 0;
         }elseif ($g_info['group_status'] == 0){
@@ -406,7 +412,7 @@ class Manage extends Base
             $field['group_status'] = 0;
         }
 
-         if( Db::name('sys_group') -> where(['id' => $g_id]) -> update($field) ){
+         if( model('sys_group') -> where(['id' => $g_id]) -> update($field) ){
             return success('操作成功');
          }else{
              return error('操作失败');
@@ -414,28 +420,12 @@ class Manage extends Base
 
     }
 
-    /**
-     * 删除授权模块
-     *
-     * @return \think\response\Json
-     */
-//    public function authDel()
-//    {
-//        if (Request::isAjax() && Request::isPost()) {
-//            $a_id = input('post.a_id', 0, 'intval');
-//            if (Db::name('sys_action') -> delete($a_id)) {
-//                return success('删除成功');
-//            }else{
-//                return error('删除失败');
-//            }
-//        }
-//    }
-
     public function groupDel()
     {
         if (Request::isAjax() && Request::isPost()) {
             $g_id = input('post.g_id', 0, 'intval');
-            if (Db::name('sys_group') -> delete($g_id)) {
+            $data = model('sysGroup') -> getById($g_id);
+            if ($data -> delete()) {
                 return success('删除成功');
             }else{
                 return error('删除失败');

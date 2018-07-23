@@ -47,7 +47,7 @@
                             <label class="layui-form-label">授权组: </label>
                             <div class=center-block>
                                 {volist name="$group_list" id="row"}
-                                <input type="checkbox" name="auth_group[]" title="{$row.group_name}" value="{$row.id}" {if condition=" in_array( $row['id'], explode(',',$manage_info['auth_group']) ) "} checked{/if}>
+                                <input type="checkbox" name="auth_group[]" title="{$row.group_name}" value="{$row.id}" {if condition=" in_array( $row['id'], $manage_info['auth_group']) "} checked{/if}>
                                 {/volist}
                             </div>
 

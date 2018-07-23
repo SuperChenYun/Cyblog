@@ -14,7 +14,7 @@
 
         <div class="layui-card-body">
             <div style="padding-bottom: 10px;">
-                <button class="layui-btn layuiadmin-btn-list" data-type="batchdel" >删除</button>
+                <!--<button class="layui-btn layuiadmin-btn-list" data-type="batchdel" >删除</button>-->
                 <a href="javascript:;" lay-href="{:url('manage_add','','')}" class="layui-btn layuiadmin-btn-list" data-type="add">添加</a>
             </div>
             <table class="layui-table" lay-even="" lay-skin="row">
@@ -56,9 +56,11 @@
                         <td>{$row.login_ip}</td>
                         <td>{$row.login_number}</td>
                         <td>
+                            {if condition="$row.auth_group_name"}
                             {volist name="$row.auth_group_name" id="rows"}
                             {$rows}<br />
                             {/volist}
+                            {/if}
                         </td>
                         <td>
                             {if condition="$row.status eq 1"}

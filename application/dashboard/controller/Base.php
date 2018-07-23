@@ -49,6 +49,7 @@ class Base extends Init
      */
     public function __construct()
     {
+
         parent::__construct();
         $this -> SysManageModel = model('SysManage');
         $this -> SysGroupModel = model('SysGroup');
@@ -140,11 +141,13 @@ class Base extends Init
         }else {
             $ManageGroup = $this->SysGroupModel->field('group_actions')->where(['id' => ['in', session('Manage')['auth_group']]])->select();
         }
+
         // 整理组列表
-        $actions = '';
+        $actions = [];
         foreach ($ManageGroup AS $k => $v){
-            $actions .= $v['group_actions'] . ',';
+            $actions = array_unique(array_merge($actions, $v['group_actions']));
         }
+
         // 整理授权的模块 作为后台左侧菜单
         $auth_module = $this -> SysActionModel -> alias('sa')
             -> join('__SYS_MODULE__ smd', 'smd.id = sa.module_id')

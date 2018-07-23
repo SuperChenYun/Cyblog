@@ -32,7 +32,7 @@
                                 <div class="box-group">
                                     <div class="checkbox ">
                                         {volist name="actionRows" id="row"}
-                                        <input type="checkbox" name="group_actions[]" title="{$row.name}" value="{$row.id}" id="action_{$row.id}" {if condition=" in_array( $row['id'], explode(',',$group_info['group_actions']) ) "} checked{/if}>
+                                        <input type="checkbox" name="group_actions[]" title="{$row.name}" value="{$row.id}" id="action_{$row.id}" {if condition=" in_array( $row['id'], $group_info['group_actions'] ) "} checked{/if}>
                                         {/volist}
                                     </div>
                                 </div>

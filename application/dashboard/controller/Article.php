@@ -8,7 +8,6 @@
 
 namespace app\dashboard\controller;
 
-use think\Db;
 use app\common\model\Article as ArticleModel;
 use think\facade\App;
 use think\facade\Request;
@@ -25,9 +24,9 @@ class Article extends Base
             'query' => ['search' => input('get.search', '', 'trim')]
         ];
         $where = [];
-        $article = Db::name('article') -> where($where) -> order('art_id', 'desc') -> paginate('','', $searchConfig);
+        $article = model('article') -> where($where) -> order('art_id', 'desc') -> paginate('','', $searchConfig);
         $this -> assign('article', $article);
-        $this -> assign('totalRows', Db::name('article') -> count());
+        $this -> assign('totalRows', model('article') -> count());
         $this -> assign('page', $article -> render());
         $this -> assign('pageTotal', $article -> lastPage());
         return view();

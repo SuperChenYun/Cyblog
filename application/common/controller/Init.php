@@ -14,12 +14,7 @@ namespace app\common\controller;
  */
 use think\Controller;
 
-class Init extends Controller {
-    /**
-     * 初始化控制器
-     */
-    public function _initialize()
-    {
-        trace(session(''));
-    }
+class Init extends Controller
+{
+
 }
