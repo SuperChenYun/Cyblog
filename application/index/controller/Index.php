@@ -2,10 +2,10 @@
 
 namespace app\index\controller;
 
-class Index{
+class Index extends Base
+{
     public function index()
     {
-        echo 'App module.';
-	    echo '闲杂人等请速速离开！！！';
+	    return view();
     }
 }
