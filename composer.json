@@ -42,7 +42,7 @@
         "preferred-install": "dist"
     },
     "repositories": [
-        {"type": "composer", "url": "https://packagist.phpcomposer.com"},
+        {"type": "composer", "url": "https://packagist.laravel-china.org"},
         {"packagist": false}
     ]
 }
