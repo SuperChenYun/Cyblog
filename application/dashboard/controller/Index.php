@@ -7,6 +7,8 @@
  */
 namespace app\dashboard\controller;
 
+use system\SystemInfo;
+
 class Index extends Base
 {
     public function _initialize()
@@ -34,6 +36,17 @@ class Index extends Base
      */
     public function welcome()
     {
+        // 获取系统信息
+        $sysInfo = SystemInfo::getSystemInfo();
+        // 获取框架信息
+        $framInfo = $this -> getFrameworkInfo();
+        // 获取监控信息
+        $monitorInfo =SystemInfo::getMonitorInfo();
+        $this -> assign([
+            'sysInfo' => $sysInfo, // 操作系统系统信息
+            'framInfo' => $framInfo, // 框架信息
+            'monitorInfo' => $monitorInfo // 监控信息
+        ]);
         return view();
     }
 }

@@ -19,7 +19,7 @@ config/database.php
 config/wechat.php
 !application/extra/neditor.php
 application/extra/*
-!config/*.php.simple
+!config/*.sample.php
 
 # 框架信息
 composer.lock

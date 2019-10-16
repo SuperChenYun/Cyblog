@@ -12,6 +12,8 @@ use app\common\controller\Init;
 use app\common\model\SysAction;
 use app\common\model\SysGroup;
 use app\common\model\SysManage;
+use app\common\tool\WinUsageInfo;
+use think\App;
 use think\facade\Request;
 
 class Base extends Init
@@ -50,11 +52,12 @@ class Base extends Init
     public function __construct()
     {
 
+        define('IS_WIN', strstr(PHP_OS, 'WIN') ? 1 : 0);
         parent::__construct();
-        $this -> SysManageModel = model('SysManage');
-        $this -> SysGroupModel = model('SysGroup');
-        $this -> SysActionModel = model('SysAction');
-        $this -> checkLoginInfo();
+        $this->SysManageModel = model('SysManage');
+        $this->SysGroupModel = model('SysGroup');
+        $this->SysActionModel = model('SysAction');
+        $this->checkLoginInfo();
         //$this -> checkAuthModuleAction();
     }
 
@@ -77,35 +80,35 @@ class Base extends Init
     private function checkLoginInfo()
     {
         if (!session('Manage')) {
-            if(Request::isAjax()){
-                return error('请登录', ['re_url' => url('/')],302);
-            }else {
+            if (Request::isAjax()) {
+                return error('请登录', ['re_url' => url('/')], 302);
+            } else {
                 return $this->redirect('Auth/login');
             }
         }
-        $ManageInfo = $this -> SysManageModel -> where(['id' => session('Manage.id')])->find();
+        $ManageInfo = $this->SysManageModel->where(['id' => session('Manage.id')])->find();
         if ($ManageInfo['login_ip'] != $_SERVER['REMOTE_ADDR']) {
             session(null);
-            if(Request::isAjax()) {
+            if (Request::isAjax()) {
                 return error('ip地址变化,请重新登录', ['re_url' => url('/')], 302);
-            }else{
-                return $this -> redirect('/');
+            } else {
+                return $this->redirect('/');
             }
         }
-        if ($ManageInfo -> password != session('Manage')['password']) {
+        if ($ManageInfo->password != session('Manage')['password']) {
             session(null);
-            if(Request::isAjax()) {
+            if (Request::isAjax()) {
                 return error('登录失效,请重新登录', ['re_url' => url('/')], 302);
-            }else{
-                return $this -> redirect('/');
+            } else {
+                return $this->redirect('/');
             }
         }
         if ($ManageInfo['change_time'] != session('Manage')['change_time']) {
             session(null);
-            if(Request::isAjax()) {
+            if (Request::isAjax()) {
                 return error('登录失效,请重新登录', ['re_url' => url('/')], 302);
-            }else{
-                $this -> redirect('/');
+            } else {
+                $this->redirect('/');
             }
         }
     }
@@ -115,13 +118,13 @@ class Base extends Init
      */
     private function checkAuthModuleAction()
     {
-        if(session('Manage')['administrator']!== 1)
-        $request_url = strtolower( Request::controller() . '/' . Request::action() );
-        if(!in_array( $request_url, session('auth_request_url'))){
-            if(Request::isAjax()){
+        if (session('Manage')['administrator'] !== 1)
+            $request_url = strtolower(Request::controller() . '/' . Request::action());
+        if (!in_array($request_url, session('auth_request_url'))) {
+            if (Request::isAjax()) {
                 return error('error', '您没有访问权限');
                 exit;
-            }else {
+            } else {
                 echo $this->fetch($this->noAuthPagePath);
                 exit;
             }
@@ -129,49 +132,54 @@ class Base extends Init
     }
 
     /** layuiAdmin **/
+
     /**
      * 返回菜单信息
+     *
      * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function menu()
     {
         // 授权组
-        if( session('Manage')['administrator'] == 1 ){
+        if (session('Manage')['administrator'] == 1) {
             $ManageGroup = $this->SysGroupModel->field('group_actions')->select();
-        }else {
+        } else {
             $ManageGroup = $this->SysGroupModel->field('group_actions')->where(['id' => ['in', session('Manage')['auth_group']]])->select();
         }
 
         // 整理组列表
         $actions = [];
-        foreach ($ManageGroup AS $k => $v){
+        foreach ($ManageGroup AS $k => $v) {
             $actions = array_unique(array_merge($actions, $v['group_actions']));
         }
 
         // 整理授权的模块 作为后台左侧菜单
-        $auth_module = $this -> SysActionModel -> alias('sa')
-            -> join('__SYS_MODULE__ smd', 'smd.id = sa.module_id')
-            -> where(['is_menu' => 'y'])
-            -> whereIn('sa.id', $actions)
-            -> order( 'module_sort asc, action_sort asc')
-            -> select();
+        $auth_module = $this->SysActionModel->alias('sa')
+            ->join('__SYS_MODULE__ smd', 'smd.id = sa.module_id')
+            ->where(['is_menu' => 'y'])
+            ->whereIn('sa.id', $actions)
+            ->order('module_sort asc, action_sort asc')
+            ->select();
 
         // 整理数据为二维数组
         $authArr = [
             [
-                'name'  => 'index',
+                'name' => 'index',
                 'title' => '主页',
-                'icon'  => 'layui-icon-console',
-                'jump'  => '/',
-                'list'  =>  []
+                'icon' => 'layui-icon-console',
+                'jump' => '/',
+                'list' => []
             ]
         ];
-        foreach ($auth_module AS $k => $v){
+        foreach ($auth_module AS $k => $v) {
             $authArr[$v['module_id']]['name'] = $v['module_controller'];
             $authArr[$v['module_id']]['title'] = $v['module_name'];
             $authArr[$v['module_id']]['icon'] = $v['module_iconfount'];
             $authArr[$v['module_id']]['list'][] = [
-                'id'    => $v['id'],
+                'id' => $v['id'],
                 'name' => $v['action'],
                 'title' => $v['name'],
                 'jump' => url($v['controller'] . '/' . $v['action'], '', '')
@@ -206,4 +214,22 @@ class Base extends Init
         return view('/about');
     }
 
+
+    /**
+     * 获取程序信息
+     *
+     * @return array
+     */
+    protected function getFrameworkInfo()
+    {
+        return [
+            'framework_version' => App::VERSION,
+            'framework_name' => 'ThinkPHP',
+            'auther' => 'itzcy',
+            'auther_email' => 'itzcy@itzcy.com',
+            'site_github' => 'https://github.com/itzcy/Cyblog',
+            'site_gitee' => 'https://gitee.com/itzcy/Cyblog',
+        ];
+
+    }
 }
