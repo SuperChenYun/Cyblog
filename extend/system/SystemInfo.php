@@ -51,7 +51,7 @@ abstract class SystemInfo
         $memeryInfo = self::getLinuxMemeryInfo();
         return [
             'cpu_name' => $cpuInfo['model_name'],
-            'memery_size' => sprintf("%.2f", (int)$memeryInfo['MemTotal']/1024/1024) . ' GB'
+            'memery_size' => sprintf("%.2f", (int)$memeryInfo['MemTotal'] / 1024 / 1024) . ' GB'
         ];
     }
 
@@ -93,7 +93,7 @@ abstract class SystemInfo
             if (count($arr) == 2) {
                 list($key, $val) = $arr;
             }
-            $infoArr[ trim(str_replace(' ', '_', $key)) ] = trim($val);
+            $infoArr[trim(str_replace(' ', '_', $key))] = trim($val);
         }
         return $infoArr;
     }
@@ -114,12 +114,13 @@ abstract class SystemInfo
     }
 
 
-    private static function getWindowsCpuInfo() {
+    private static function getWindowsCpuInfo()
+    {
         exec("wmic cpu get name", $raw); // 型号
-        exec("wmic cpu get SerialNumber",$raw ); //
-        exec("wmic cpu get ThreadCount",$raw ); // 线程数
-        exec("wmic cpu get NumberOfCores",$raw ); // 核心数
-        exec("wmic cpu get ProcessorId",$raw ); // 处理器编号
+        exec("wmic cpu get SerialNumber", $raw); //
+        exec("wmic cpu get ThreadCount", $raw); // 线程数
+        exec("wmic cpu get NumberOfCores", $raw); // 核心数
+        exec("wmic cpu get ProcessorId", $raw); // 处理器编号
 
         return [
             'name' => $raw[1],
@@ -191,13 +192,13 @@ abstract class SystemInfo
             $cpuInfo = file_get_contents('/proc/stat');
             $pattern = "/(cpu[0-9]?)[\s]+([0-9]+)[\s]+([0-9]+)[\s]+([0-9]+)[\s]+([0-9]+)[\s]+([0-9]+)[\s]+([0-9]+)[\s]+([0-9]+)/";
             preg_match_all($pattern, $cpuInfo, $out);
-            $cpuUsage = (100*$out[2][0]+$out[3][0]) / ($out[4][0]+$out[5][0]+$out[6][0]+$out[7][0]);
+            $cpuUsage = (100 * $out[2][0] + $out[3][0]) / ($out[4][0] + $out[5][0] + $out[6][0] + $out[7][0]);
 
             $memInfo = file_get_contents('/proc/meminfo');
             $memInfo = self::linuxProcFileToArray($memInfo);
-            $notUsageSize = (int)$memInfo['MemTotal'] - (int)$memInfo['MemFree'] ;
+            $notUsageSize = (int)$memInfo['MemTotal'] - (int)$memInfo['MemFree'];
 
-            $monitorInfo['memery_usage'] = sprintf('%.2f', $notUsageSize / (int)$memInfo['MemTotal'] );
+            $monitorInfo['memery_usage'] = sprintf('%.2f', $notUsageSize / (int)$memInfo['MemTotal']);
             $monitorInfo['cpu_usage'] = sprintf('%.2f', $cpuUsage);
         } else {
             // windows
@@ -205,12 +206,12 @@ abstract class SystemInfo
             $monitorInfo['cpu_usage'] = sprintf('%.2f', $winUsageInfo->getCpuUsage());
             $monitorInfo['memery_usage'] = sprintf('%.2f', $winUsageInfo->getMemoryUsage()['usage']);
         }
-        return  $monitorInfo;
+        return $monitorInfo;
     }
 
     private static function getLinuxLoadAvg()
     {
-        $avg = exec('cat /proc/loadavg');
+        $avg = file_get_contents('/proc/loadavg');
         $avg = explode(' ', $avg);
         return $avg;
     }
