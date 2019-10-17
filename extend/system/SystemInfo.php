@@ -192,7 +192,7 @@ abstract class SystemInfo
             $cpuInfo = file_get_contents('/proc/stat');
             $pattern = "/(cpu[0-9]?)[\s]+([0-9]+)[\s]+([0-9]+)[\s]+([0-9]+)[\s]+([0-9]+)[\s]+([0-9]+)[\s]+([0-9]+)[\s]+([0-9]+)/";
             preg_match_all($pattern, $cpuInfo, $out);
-            $cpuUsage = (100 * $out[2][0] + $out[3][0]) / ($out[4][0] + $out[5][0] + $out[6][0] + $out[7][0]);
+            $cpuUsage = (100 * $out[2][0] + $out[3][0]) / ($out[4][0] + $out[5][0] + $out[6][0] + $out[7][0]) / 100;
 
             $memInfo = file_get_contents('/proc/meminfo');
             $memInfo = self::linuxProcFileToArray($memInfo);
