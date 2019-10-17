@@ -195,7 +195,8 @@ abstract class SystemInfo
             $total1=$arr[2][0]+$arr[3][0]+$arr[4][0]+$arr[5][0]+$arr[6][0]+$arr[7][0]+$arr[8][0]+$arr[9][0];
             $time1=$arr[2][0]+$arr[3][0]+$arr[4][0]+$arr[6][0]+$arr[7][0]+$arr[8][0]+$arr[9][0];
 
-            usleep(5000);
+            sleep(1);
+
             $string=file_get_contents("/proc/stat");
             preg_match_all($mode,$string,$arr);
             $total2=$arr[2][0]+$arr[3][0]+$arr[4][0]+$arr[5][0]+$arr[6][0]+$arr[7][0]+$arr[8][0]+$arr[9][0];
@@ -203,10 +204,6 @@ abstract class SystemInfo
 
             $time=$time2-$time1;
             $total=$total2-$total1;
-
-            dump($time);
-
-            dump ($total);
 
             $percent=bcdiv($time,$total,3);
             $percent=$percent*100;
