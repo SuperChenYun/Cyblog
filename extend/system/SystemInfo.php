@@ -196,9 +196,13 @@ abstract class SystemInfo
 
             $memInfo = file_get_contents('/proc/meminfo');
             $memInfo = self::linuxProcFileToArray($memInfo);
-            $notUsageSize = (int)$memInfo['MemTotal'] - (int)$memInfo['MemFree'];
+            $usageSize = (int)$memInfo['MemTotal']
+                - (int)$memInfo['MemFree']
+                - (int)$memInfo['Buffers']
+                - (int)$memInfo['Cached']
+                - (int)$memInfo['SReclaimable'];
 
-            $monitorInfo['memery_usage'] = sprintf('%.2f', $notUsageSize / (int)$memInfo['MemTotal']);
+            $monitorInfo['memery_usage'] = sprintf('%.2f', $usageSize / (int)$memInfo['MemTotal']);
             $monitorInfo['cpu_usage'] = sprintf('%.2f', $cpuUsage);
         } else {
             // windows
