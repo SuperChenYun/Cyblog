@@ -189,10 +189,27 @@ abstract class SystemInfo
             // linux
             $monitorInfo['loadAvg'] = self::getLinuxLoadAvg();
 
-            $cpuInfo = file_get_contents('/proc/stat');
-            $pattern = "/(cpu[0-9]?)[\s]+([0-9]+)[\s]+([0-9]+)[\s]+([0-9]+)[\s]+([0-9]+)[\s]+([0-9]+)[\s]+([0-9]+)[\s]+([0-9]+)/";
-            preg_match_all($pattern, $cpuInfo, $out);
-            $cpuUsage = (100 * $out[2][0] + $out[3][0]) / ($out[4][0] + $out[5][0] + $out[6][0] + $out[7][0]) / 100;
+            $mode = "/(cpu)[\s]+([0-9]+)[\s]+([0-9]+)[\s]+([0-9]+)[\s]+([0-9]+)[\s]+([0-9]+)[\s]+([0-9]+)[\s]+([0-9]+)[\s]+([0-9]+)/";
+            $string=file_get_contents("/proc/stat");
+            preg_match_all($mode,$string,$arr);
+            $total1=$arr[2][0]+$arr[3][0]+$arr[4][0]+$arr[5][0]+$arr[6][0]+$arr[7][0]+$arr[8][0]+$arr[9][0];
+            $time1=$arr[2][0]+$arr[3][0]+$arr[4][0]+$arr[6][0]+$arr[7][0]+$arr[8][0]+$arr[9][0];
+
+            usleep(5000);
+            $string=file_get_contents("/proc/stat");
+            preg_match_all($mode,$string,$arr);
+            $total2=$arr[2][0]+$arr[3][0]+$arr[4][0]+$arr[5][0]+$arr[6][0]+$arr[7][0]+$arr[8][0]+$arr[9][0];
+            $time2=$arr[2][0]+$arr[3][0]+$arr[4][0]+$arr[6][0]+$arr[7][0]+$arr[8][0]+$arr[9][0];
+
+            $time=$time2-$time1;
+            $total=$total2-$total1;
+
+            dump($time);
+
+            dump ($total);
+
+            $percent=bcdiv($time,$total,3);
+            $percent=$percent*100;
 
             $memInfo = file_get_contents('/proc/meminfo');
             $memInfo = self::linuxProcFileToArray($memInfo);
@@ -203,7 +220,7 @@ abstract class SystemInfo
                 - (int)$memInfo['SReclaimable'];
 
             $monitorInfo['memery_usage'] = sprintf('%.2f', $usageSize / (int)$memInfo['MemTotal']);
-            $monitorInfo['cpu_usage'] = sprintf('%.2f', $cpuUsage);
+            $monitorInfo['cpu_usage'] = sprintf('%.2f', $percent);
         } else {
             // windows
             $winUsageInfo = new WinUsageInfo();
