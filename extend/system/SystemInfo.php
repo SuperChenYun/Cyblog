@@ -221,7 +221,9 @@ abstract class SystemInfo
             // windows
             $winUsageInfo = new WinUsageInfo();
             $monitorInfo['cpu_usage'] = sprintf('%.2f', $winUsageInfo->getCpuUsage());
-            $monitorInfo['memery_usage'] = sprintf('%.2f', $winUsageInfo->getMemoryUsage()['usage']);
+
+            $winMemInfo = $winUsageInfo->getMemoryUsage();
+            $monitorInfo['memery_usage'] = sprintf('%.2f', 1 - ( $winMemInfo['FreePhysicalMemory'] / $winMemInfo['TotalVisibleMemorySize']));
         }
         return $monitorInfo;
     }
