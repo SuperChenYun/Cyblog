@@ -206,7 +206,6 @@ abstract class SystemInfo
             $total=$total2-$total1;
 
             $percent=bcdiv($time,$total,3);
-            $percent=$percent*100;
 
             $memInfo = file_get_contents('/proc/meminfo');
             $memInfo = self::linuxProcFileToArray($memInfo);
