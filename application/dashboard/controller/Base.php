@@ -206,7 +206,7 @@ class Base extends Init
     }
 
     /**
-     * About
+     * Info
      * @return \think\response\View
      */
     public function about()

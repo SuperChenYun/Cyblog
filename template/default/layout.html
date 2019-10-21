@@ -1,0 +1,12 @@
+<html lang="en">
+<head>
+    {include file="public/meta" /}
+    <title> {$title|default=''} {$sysConfig.site_name|default="CyBlog"} </title>
+    {include file="public/static" /}
+</head>
+<body>
+    {include file="public/header" /}
+    {__CONTENT__}
+    {include file="public/footer" /}
+</body>
+</html>

@@ -1,0 +1,20 @@
+<footer class="">
+    <div class="layui-main">
+        <div class="copyright">
+            Copyright © 2017-{:date('Y')} CyBlog .All Rights Reserved.
+        </div>
+    </div>
+</footer>
+<!--<script src="__STATIC__/lib/layui/layui.all.js"></script>-->
+<script src="__STATIC__/lib/layui/layui.js"></script>
+<script>
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function () {
+        var element = layui.element;
+        element.init();
+        element.render();
+        element.on('nav(filter)', function(elem){
+            console.log(elem); //得到当前点击的DOM对象
+        });
+    });
+</script>

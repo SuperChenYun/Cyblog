@@ -1,0 +1,43 @@
+<header>
+    <div class="layui-header header header-doc" autumn="">
+
+        <div class="layui-main">
+
+            <a class="logo" href="/">
+                <img src="__STATIC__/app/logo.png" alt="layui">
+            </a>
+
+            <ul class="layui-nav" lay-filter="">
+
+                <li class="layui-nav-item {if condition="$controller eq 'Index'"}layui-this{/if}">
+                    <a href="{:url('/')}" title="Home"><i class="layui-icon">&#xe68e;</i> Home</a>
+                </li>
+
+                <li class="layui-nav-item {if condition="$controller eq 'Article'"}layui-this{/if}">
+                    <a href="{:url('/article')}" title="article"><i class="layui-icon">&#xe705;</i> Article</a>
+                </li>
+
+                <li class="layui-nav-item layui-hide-xs {if condition="$controller eq 'Category'"}layui-this{/if}">
+                    <a href="{:url('/category')}" title="category"><i class="layui-icon">&#xe60a;</i> Category</a>
+                </li>
+
+                <li class="layui-nav-item {if condition="$controller eq 'Info'"}layui-this{/if}">
+                    <a href="javascript:;" title="about"><i class="layui-icon">&#xe64e;</i> Info</a>
+                    <dl class="layui-nav-child">
+
+                        <dd lay-unselect="">
+                            <a href="{:url('/about')}" ><i class="layui-icon">&#xe67b;</i> About</a>
+                        </dd>
+
+                        <dd lay-unselect="">
+                            <a href="{:url('/copyright')}" ><i class="layui-icon">&#xe67b;</i> Copyright</a>
+                        </dd>
+                    </dl>
+                </li>
+
+            </ul>
+        </div>
+
+    </div>
+
+</header>

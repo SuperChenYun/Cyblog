@@ -23,6 +23,9 @@ class SysManage
      * @param string $username 过滤后的用户名
      * @param string $password 过滤后的密码
      * @return array|bool|false|\PDOStatement|string|\think\Model 获取成功返回用户数据 获取失败返回false
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function loginMan($username = '', $password = '')
     {

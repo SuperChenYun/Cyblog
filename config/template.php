@@ -33,7 +33,8 @@ return [
     // 标签库标签结束标记
     'taglib_end'   => '}',
     'tpl_replace_string'  =>  [
-//        '__CDN_STATIC__'    =>  '//cdn.itzcy.com/static',
-        '__CDN_STATIC__'    =>  '/static',
-    ]
+//        '__STATIC__'    =>  '//cdn.itzcy.com/static',
+        '__STATIC__'    =>  '/static',
+    ],
+
 ];

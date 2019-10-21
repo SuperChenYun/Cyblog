@@ -2,6 +2,7 @@
 .idea/*
 .project
 .vscode
+nginx.htaccess
 
 # 缓存
 runtime/*

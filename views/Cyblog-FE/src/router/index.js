@@ -5,7 +5,7 @@ import Category from '@/pages/Category'
 import Article from '@/pages/Article'
 import Timeline from '@/pages/Timeline'
 import Experiment from '@/pages/Experiment'
-import About from '@/pages/About'
+import About from '@/pages/Info'
 
 Vue.use(Router)
 
