@@ -1,6 +1,7 @@
 
 h1,h2,h3{font-size: 14px;}
 ::-webkit-input-placeholder{color: #999}
+.full-screen{width: 100%;padding: 0;margin:0;overflow: hidden}
 /* replace Layui */
 .layui-nav .layui-this:after, .layui-nav-bar, .layui-nav-tree .layui-nav-itemed:after{background-color: #cdcdcd
 }
@@ -28,7 +29,7 @@ h1,h2,h3{font-size: 14px;}
 /* HomeContent */
 .home-content {
     width: 100%;
-    min-height: 40rem;
+    min-height: 44rem;
     position: relative;
     overflow: hidden;
 }
@@ -75,3 +76,23 @@ footer .copyright {text-align: center}
 }
 
 
+/*文章列表*/
+.articles{text-align: center}
+.article-item{
+    margin: 0 0 3rem 0;
+    width: 90%;
+    padding: 0 5%;
+
+}
+.article-thumb {width: 100%;}
+.article-thumb img {
+    max-width: 100%;
+}
+.article-title {
+    line-height: 2.334rem;
+}
+.article-data{
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #EEEEEE;
+}
