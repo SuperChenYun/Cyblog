@@ -1,0 +1,15 @@
+INSERT INTO blog.sys_action (id, controller, action, name, module_id, action_sort, is_menu) VALUES (1, 'manage', 'manage_list', '人员列表', 2, 1, 'y');
+INSERT INTO blog.sys_action (id, controller, action, name, module_id, action_sort, is_menu) VALUES (2, 'manage', 'group_list', '用户组列表', 2, 2, 'y');
+INSERT INTO blog.sys_action (id, controller, action, name, module_id, action_sort, is_menu) VALUES (3, 'manage', 'auth_list', '权限管理', 2, 3, 'y');
+INSERT INTO blog.sys_action (id, controller, action, name, module_id, action_sort, is_menu) VALUES (4, 'system', 'base', '基础数据设置', 1, 1, 'y');
+INSERT INTO blog.sys_action (id, controller, action, name, module_id, action_sort, is_menu) VALUES (5, 'article', 'index', '文章管理', 3, 0, 'y');
+INSERT INTO blog.sys_action (id, controller, action, name, module_id, action_sort, is_menu) VALUES (6, 'article', 'art_add', '添加文章', 3, 0, 'y');
+INSERT INTO blog.sys_action (id, controller, action, name, module_id, action_sort, is_menu) VALUES (7, 'article', 'art_edit', '编辑文章', 3, 0, 'n');
+INSERT INTO blog.sys_action (id, controller, action, name, module_id, action_sort, is_menu) VALUES (8, 'article', 'art_del', '删除文章', 3, 0, 'n');
+INSERT INTO blog.sys_action (id, controller, action, name, module_id, action_sort, is_menu) VALUES (9, 'article', 'art_enable_or_disable', '文章状态编辑', 3, 0, 'n');
+INSERT INTO blog.sys_action (id, controller, action, name, module_id, action_sort, is_menu) VALUES (10, 'category', 'index', '分类管理', 4, 0, 'y');
+INSERT INTO blog.sys_action (id, controller, action, name, module_id, action_sort, is_menu) VALUES (11, 'category', 'cat_add', '添加分类', 4, 0, 'y');
+INSERT INTO blog.sys_action (id, controller, action, name, module_id, action_sort, is_menu) VALUES (12, 'wechat', 'log', '微信日志', 5, 10, 'y');
+INSERT INTO blog.sys_action (id, controller, action, name, module_id, action_sort, is_menu) VALUES (13, 'wechat', 'setting', '微信配置', 5, 20, 'y');
+INSERT INTO blog.sys_action (id, controller, action, name, module_id, action_sort, is_menu) VALUES (16, 'test', 'index', 'Test', 5, 0, 'y');
+INSERT INTO blog.sys_action (id, controller, action, name, module_id, action_sort, is_menu) VALUES (17, 'Sbs', 'indexs', 'qdm107081506123123', 1, 0, 'y');

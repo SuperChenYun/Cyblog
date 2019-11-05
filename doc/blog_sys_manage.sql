@@ -1,0 +1,3 @@
+INSERT INTO blog.sys_manage (id, username, password, password_salt, truename, majro, telphone, email, auth_group, create_time, change_time, administrator, status, remarks, login_ip, login_time, login_number) VALUES (1, 'itzcy', '073c3e53ca586eb791d7a9ba99126c1a', '3913', '张辰云', 'Full Stack Developer
+
+', '17013408381', 'itzcy@qq.com', '["1","2"]', 1, 11, 1, 1, 'asfasfdasfdasdasfasfd', '127.0.0.1', '1571648329', 118);
