@@ -50,7 +50,7 @@ abstract class Base extends Init
 
         View::assign('sysConfig', $this->sysConfig);
 
-        $this -> pageRows = Config::get('app.page_rows') ?? $this -> pageRows;
+        $this -> pageRows = Config::get('paginate.list_rows') ?? $this -> pageRows;
     }
 
     /**
