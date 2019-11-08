@@ -104,7 +104,7 @@ header{
     z-index: 1;
 }
 .home-bg {
-    background-image: url("/static/app/img/home-bg.jpg");
+    background-image: url("/views/default/static/img/home-bg.jpg");
     background-position:center;
     background-size: cover;
     filter: blur(3px);

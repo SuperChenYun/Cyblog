@@ -28,8 +28,6 @@ class Article extends Model
         $this -> setAttr('art_desc', $this -> getArtDesc());
         $this -> setAttr('art_create_at', time());
         $this -> setAttr('art_update_at', time());
-        $this -> setAttr('art_author_id', $this -> getArtAutherId());
-        $this -> setAttr('art_author_name', $this -> getArtAutherName());
         $this -> setAttr('art_category_id', $this -> getArtCategoryId());
         $this -> setAttr('art_category_name', $this -> getArtCategoryName());
         $this -> setAttr('art_banner_url', $this -> getArtBannerUrl());
@@ -51,8 +49,6 @@ class Article extends Model
         $this -> data($data);
         $data['art_desc'] = $this -> getArtDesc();
         $data['art_update_at'] =  time();
-        //$data['art_author_id'] = $this -> getArtAutherId();
-        //$data['art_author_name'] = $this -> getArtAutherName();
         $data['art_update_at'] =  time();
         $data['art_category_id'] =  $this -> getArtCategoryId();
         $data['art_category_name'] =  $this -> getArtCategoryName();
@@ -71,33 +67,18 @@ class Article extends Model
      * @param array $where
      * @return array|\think\Paginator
      */
-    public static function paging($page, $where = []) {
+    public static function paging($page, $where = [], $orderFile = null, $sort = 'desc') {
         try {
             $articlesNum = self::where($where)->count();
-           return self::where($where)
-                ->cache("articles_".sha1($page))
-                ->paginate(null, $articlesNum);
+            $article = self::where($where);
+            $article -> order($orderFile, $sort);
+            $article ->cache("articles_".sha1($page));
+
+            return $article ->paginate(null, $articlesNum);
         } catch (DbException $e) {
             \think\facade\Log::error($e->getTraceAsString());
             return  [];
         }
-    }
-    /**
-     * 获取当前作者的id
-     * @return int
-     */
-    protected function getArtAutherId()
-    {
-        return session('Manage.id') ?: false;
-    }
-
-    /**
-     * 获取当前作者的 用户名
-     * @return bool
-     */
-    protected function getArtAutherName()
-    {
-        return session('Manage.username') ?: false;
     }
 
     /**

@@ -33,7 +33,7 @@ class Article extends Base
             ['art_release_time' ,'<=' , strtotime(date('Y-m-d H:i'))],
         ];
 
-        $articles = \app\index\model\Article::paging($page, $where);
+        $articles = \app\index\model\Article::paging($page, $where, 'art_id');
         View::assign('articles', $articles);
 
         $tags = Tags::getAll();
@@ -43,8 +43,17 @@ class Article extends Base
         return View::fetch();
     }
 
+    /**
+     * 查看文章
+     * @param $id
+     * @return string
+     */
     public function show($id)
     {
+        $article = \app\index\model\Article::cache('article_'.$id)->getByArtId($id);
+
+        View::assign('article', $article);
+
         return View::fetch();
     }
 

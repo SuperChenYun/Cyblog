@@ -13,7 +13,7 @@
                     {volist name="categoryes" id="category" empty=""}
                     <li class="col-lg-3 col-md-4 col-sm-12 ">
                         <div class="category-item">
-                            <a href="">
+                            <a href="{:url('/category/'.$category.category_sign)}">
                                 <div>{$category.category_name|default="Null"}</div>
                             </a>
                         </div>
