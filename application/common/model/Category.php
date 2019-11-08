@@ -9,6 +9,8 @@
 namespace app\common\model;
 
 
+use think\exception\DbException;
+use think\facade\Log;
 use think\Model;
 
 /**
@@ -18,11 +20,45 @@ use think\Model;
  */
 class Category extends Model
 {
+
+    const STATUS_NORMAL = 1;
+    const STATUS_DELETE = 2;
+
+    /**
+     * 获取全部
+     */
     public function getAll()
     {
-        return $this->select();
+        try {
+            return $this->select();
+        } catch (DbException $e) {
+            Log::error($e->getTraceAsString());
+            return [];
+        }
     }
 
+    /**
+     * 带分页获取
+     * @param $page
+     * @return array|\think\Paginator
+     */
+    public static function paging($page, $where = [])
+    {
+        try {
+            $articlesNum = self::count();
+            return $categoryes = self::where($where)
+                ->cache("categoryes_" . sha1($page))
+                ->paginate(null, $articlesNum);
+        } catch (DbException $e ) {
+            \think\facade\Log::error($e->getTraceAsString());
+            return [];
+        }
+    }
+
+    /**
+     * @param $postData
+     * @return int|string
+     */
     public function add($postData)
     {
         $data['cat_class_name'] = $postData['cat_class_name'];
@@ -30,6 +66,10 @@ class Category extends Model
         return $this->insertGetId($data);
     }
 
+    /**
+     * @param $data
+     * @return bool
+     */
     public function edit($data)
     {
         $data['update_at'] = time();

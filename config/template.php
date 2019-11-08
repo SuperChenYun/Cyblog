@@ -34,7 +34,7 @@ return [
     'taglib_end'   => '}',
     'tpl_replace_string'  =>  [
 //        '__STATIC__'    =>  '//cdn.itzcy.com/static',
-        '__STATIC__'    =>  '/static',
+        '__STATIC__'    =>  '/views/default/static/',
     ],
 
 ];

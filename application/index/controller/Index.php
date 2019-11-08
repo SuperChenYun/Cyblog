@@ -7,7 +7,6 @@ use think\facade\View;
 class Index extends Base
 {
 
-
     /**
      * 首页
      *
@@ -15,7 +14,7 @@ class Index extends Base
      */
     public function index()
     {
-//        return \view();
+
 	    return View::fetch();
     }
 }

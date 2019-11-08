@@ -8,6 +8,7 @@
 
 namespace app\common\model;
 
+use think\exception\DbException;
 use think\Model;
 use think\facade\Request;
 
@@ -20,6 +21,7 @@ class Article extends Model
 {
     const SHOW = 1;
     const HIDE = 2;
+
     public function add($data)
     {
         $this -> data($data);
@@ -28,8 +30,8 @@ class Article extends Model
         $this -> setAttr('art_update_at', time());
         $this -> setAttr('art_author_id', $this -> getArtAutherId());
         $this -> setAttr('art_author_name', $this -> getArtAutherName());
-        $this -> setAttr('art_class_id', $this -> getArtClassId());
-        $this -> setAttr('art_class_name', $this -> getArtClassName());
+        $this -> setAttr('art_category_id', $this -> getArtCategoryId());
+        $this -> setAttr('art_category_name', $this -> getArtCategoryName());
         $this -> setAttr('art_banner_url', $this -> getArtBannerUrl());
         $state = $this -> save($data);
         if ($state) {
@@ -52,8 +54,8 @@ class Article extends Model
         //$data['art_author_id'] = $this -> getArtAutherId();
         //$data['art_author_name'] = $this -> getArtAutherName();
         $data['art_update_at'] =  time();
-        $data['art_class_id'] =  $this -> getArtClassId();
-        $data['art_class_name'] =  $this -> getArtClassName();
+        $data['art_category_id'] =  $this -> getArtCategoryId();
+        $data['art_category_name'] =  $this -> getArtCategoryName();
         $data['art_banner_url'] = $this -> getArtBannerUrl();
         $state = $this -> save($data);
         if ($state) {
@@ -63,6 +65,23 @@ class Article extends Model
         }
     }
 
+    /**
+     * 分页获取
+     * @param $page
+     * @param array $where
+     * @return array|\think\Paginator
+     */
+    public static function paging($page, $where = []) {
+        try {
+            $articlesNum = self::where($where)->count();
+           return self::where($where)
+                ->cache("articles_".sha1($page))
+                ->paginate(null, $articlesNum);
+        } catch (DbException $e) {
+            \think\facade\Log::error($e->getTraceAsString());
+            return  [];
+        }
+    }
     /**
      * 获取当前作者的id
      * @return int
@@ -85,27 +104,36 @@ class Article extends Model
      * 获取当前文章分类Id
      * @return int
      */
-    protected function getArtClassId()
+    protected function tegoryId()
     {
-        return Request::post('art_class_id') ?: 0;
+        return Request::post('art_category_id') ?: 0;
     }
 
     /**
      * 获取当前文章所在的分类名称
      * @return string
      */
-    protected function getArtClassName()
+    protected function getArtCategoryName()
     {
-        if ($this -> getAttr('art_class_id') == 0) {
+        if ($this -> getAttr('art_category_id') == 0) {
             return '未分类';
         }
-        $res = \model('Category')
-            -> field('cat_class_name')
-            -> where(['cat_id' => $this -> getArtClassId()])
-            -> find();
-        return $res -> cat_class_name ?: '';
+        try {
+            $res = \model('Category')
+                ->field('category_name')
+                ->where(['category_id' => $this->getArtCategoryId()])
+                ->find();
+            return $res->category_name ?: '';
+        } catch (DbException $e) {
+            trace($e -> getTraceAsString(), 'ERROR');
+            return '';
+        }
     }
 
+    /**
+     * 获取文章的banner 图url
+     * @return mixed|string
+     */
     private function getArtBannerUrl()
     {
         if (empty($this -> getAttr('art_banner_url'))) {
@@ -115,6 +143,10 @@ class Article extends Model
         return $this -> getAttr('art_banner_url');
     }
 
+    /**
+     * 获取文章的简短描述
+     * @return string
+     */
     private function getArtDesc()
     {
         $str=$this -> getAttr('art_content_text');

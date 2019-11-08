@@ -4,6 +4,7 @@
 namespace app\index\controller;
 
 
+use think\exception\DbException;
 use think\facade\View;
 
 /**
@@ -19,6 +20,12 @@ class Category extends Base
      */
     public function index()
     {
+        $page = $this -> getPageNum();
+        $where = [
+            'status' => \app\index\model\Category::STATUS_NORMAL
+        ];
+        $categoryes = \app\index\model\Category::paging($page, $where);
+        View::assign('categoryes', $categoryes);
         return View::fetch();
     }
 

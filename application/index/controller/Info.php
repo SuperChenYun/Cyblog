@@ -4,6 +4,7 @@
 namespace app\index\controller;
 
 
+use think\facade\Response;
 use think\facade\View;
 
 /**
@@ -13,10 +14,14 @@ use think\facade\View;
  */
 class Info extends Base
 {
+    public function index()
+    {
+        return Response::create('/', 'redirect', '302');
+    }
     /**
      * @return string
      */
-    public function index()
+    public function about()
     {
         return View::fetch();
     }
@@ -26,7 +31,7 @@ class Info extends Base
      */
     public function copyright()
     {
-
+        return View::fetch();
     }
 
 

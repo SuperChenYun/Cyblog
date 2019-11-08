@@ -15,7 +15,7 @@
 
 return [
     // 模板路径
-    'view_path'    => '../template/default/',
+    'view_path'    => './views/default/',
     'layout_on'     =>  true,
     'layout_name'   =>  'layout',
 ];

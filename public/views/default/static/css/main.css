@@ -35,11 +35,20 @@ header{
 }
 /* TopArea*/
 .top-area{
-    background: #4285f4bd;
+    background: #4285f4;
     min-height: 12rem;
     color:#FFFFFF !important;
     margin-bottom: 2rem;
 }
+.top-area.category {
+    background: #34a853;
+}
+.top-area.about{
+     background: #fbbc05;
+ }
+.top-area.copyright{
+      background: #ea4335;
+  }
 .top-area h1 {
     font-size:3rem;
     line-height: 8rem;
@@ -48,14 +57,16 @@ header{
     font-size:1rem;
     transform: translateX(5rem);
 }
-
+/* middle-area */
+.middle-area{
+    min-height: 400px;
+}
 /* footer */
 .footer-section {
     background: #0d0d0d;
     padding:3rem 0;
     color: #949494;
 }
-
 .footer-section h2 {
     font-size: 2rem;
 
@@ -63,7 +74,6 @@ header{
     font-style: italic;
     margin-bottom: 20px;
 }
-
 .footer-section p {
     font-size: 1.4rem;
     margin-bottom: 40px;
@@ -75,6 +85,17 @@ header{
 }
 .footer-section .copyright{
     color: #4b4c4c;
+}
+/* tags */
+.tags-ul {}
+.tags-ul span {
+    margin: 4px 1px;
+    padding: 0 16px;
+    border: 1px solid;
+    border-color: #fd482c38;
+    border-radius: 5px;
+    display: inline-block;
+    font-size: 12px;
 }
 /* Home */
 .home-content {
@@ -100,18 +121,15 @@ header{
 .articles li {
     padding: 0 2% 20px 2%;
 }
-
 .article-item {
     margin: 0 0 1.4rem 0;
     height: 26rem;
     overflow: hidden;
     background: #ffffff;
 }
-
 .article-item:hover {
     box-shadow: 0px 0px 5px rgba(175, 177, 177, 0.28);
 }
-
 .article-thumb {
     width: 100%;
     position: relative;
@@ -121,7 +139,6 @@ header{
 .article-thumb img {
     width: 100%;
 }
-
 .light {
     cursor: pointer;
     position: absolute;
@@ -155,7 +172,6 @@ header{
     font-size: 1.4rem;
     padding: 0 3%;
 }
-
 .article-data {
     line-height: 3rem;
     border-top: 1px solid #EEEEEE;
@@ -168,7 +184,17 @@ header{
 /* Article Content */
 
 /* Category */
+.category-item {
+    height: 100px;
+    border: 1px solid #e8e7e7;
+    border-radius: 5px;
+    line-height: 96px;
 
+}
+.category-item:hover {
+    transform: translateX(-3px) translateY(-3px);
+    box-shadow: 0px 0px 5px 5px rgba(132, 132, 132, 0.075)
+}
 /* Category Content*/
 
 
@@ -221,7 +247,7 @@ header{
 .pagination li a.page-link:before,
 .pagination li a.page-link:after{
     content:'';
-    background: linear-gradient(225deg,#73a5f7,#4285f4);
+    background: linear-gradient(225deg,#4285f4,#4285f4);
     height: 100%;
     width: 100%;
     border: 3px solid #fff;
@@ -278,6 +304,9 @@ header{
     left: 0;
 }
 .pagination li:last-child a.page-link:hover:after{ left: 80%; }
+.page-item.disabled .page-link{
+    color:#EEEEEE;
+}
 @media only screen and (max-width: 480px){
     .pagination{ display: block; }
 

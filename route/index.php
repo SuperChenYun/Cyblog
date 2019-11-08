@@ -11,7 +11,7 @@ return [
     'category/:id' => 'index/category/articles', // 分类下的文章列表
     'category' => 'index/category/index', // 分类
 
-    'about' => 'index/info/index', // 关于
+    'about' => 'index/info/about', // 关于
     'copyright' => 'index/info/copyright', // 关于
 
 ];

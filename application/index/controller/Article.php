@@ -5,6 +5,7 @@ namespace app\index\controller;
 
 
 
+use app\index\model\Tags;
 use think\exception\DbException;
 use think\facade\Config;
 use think\facade\View;
@@ -32,16 +33,13 @@ class Article extends Base
             ['art_release_time' ,'<=' , strtotime(date('Y-m-d H:i'))],
         ];
 
-        try {
-            $articlesNum = \app\index\model\Article::where($where)->count();
-            $articles = \app\index\model\Article::where($where)
-                ->cache("article_".sha1($page))
-                ->paginate($this->pageRows, $articlesNum);
-        } catch (DbException $e) {
-            $articles = [];
-            \think\facade\Log::error($e->getTraceAsString());
-        }
+        $articles = \app\index\model\Article::paging($page, $where);
         View::assign('articles', $articles);
+
+        $tags = Tags::getAll();
+        Tags::randColor($tags);
+        View::assign('tags', $tags);
+
         return View::fetch();
     }
 

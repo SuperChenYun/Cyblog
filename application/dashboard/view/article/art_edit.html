@@ -56,10 +56,10 @@
                 <div class="layui-form-item">
                     <div class="layui-card-header">分类设置</div>
                     <div class="layui-card-body layui-form">
-                        <select name="art_class_id" required lay-verify="required"  lay-search lay-filter="" >
+                        <select name="art_category_id" required lay-verify="required"  lay-search lay-filter="" >
                             <option value="0">请选择分类</option>
                             {volist name="category" id="vo"}
-                            <option value="{$vo -> cat_id|default=''}" {if condition="$vo.cat_id eq $article.art_class_id"}selected{/if}>{$vo -> cat_class_name|default='读取失败'}</option>
+                            <option value="{$vo -> category_id|default=''}" {if condition="$vo.category_id eq $article.art_category_id"}selected{/if}>{$vo -> category_name|default='读取失败'}</option>
                             {/volist}
                         </select>
                     </div>
