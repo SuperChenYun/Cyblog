@@ -1,2 +1,0 @@
-INSERT INTO blog.sys_group (id, group_name, group_actions, group_remarks, group_status) VALUES (1, '超级管理员', '["1","2","3","4","5","6","7","8","9","10","11","12","13","16"]', '', 1);
-INSERT INTO blog.sys_group (id, group_name, group_actions, group_remarks, group_status) VALUES (2, '系统管理员', '["1","2","3","4","5","6","7","8","9","10","11","12","13","16"]', '', 1);
