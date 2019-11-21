@@ -137,7 +137,7 @@ header{
 
 }
 .article-thumb img {
-    width: 100%;
+    min-width: 100%;
     height: 240px;
 }
 .light {
@@ -184,7 +184,22 @@ header{
 }
 
 /* Article Content */
-
+.article-show h3 {
+    font-size: 2.2rem;
+    text-align: center;
+}
+.article-show .category-name{
+    text-align: center;
+    color:#EEEEEE;
+}
+.article-content{
+    overflow: hidden;
+    width: 100%;
+    min-height: 1px;
+}
+.article-content  img{
+    max-width: 100%;
+}
 /* Category */
 .category-item {
     height: 100px;

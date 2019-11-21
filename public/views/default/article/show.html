@@ -6,11 +6,13 @@
             <p>-- All Article</p>
         </div>
     </div>
-    <div class="container middle-area">
+    <div class="container middle-area article-show" >
 
         <h3>{$article.art_title}</h3>
-        <div>{$article.art_category_name}</div>
-        {$article.art_content|raw}
+        <div class="category-name">{$article.art_category_name}</div>
+        <div class="article-content">
+            {$article.art_content|raw}
+        </div>
 
     </div>
 </div>
