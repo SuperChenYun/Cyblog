@@ -61,7 +61,7 @@ abstract class Base extends Init
         try {
             $sysConfig = SysConfig::cache('sys_config')->field(['k', 'v'])->select();
             foreach ($sysConfig as $itme) {
-                $this->sysConfig[$itme['k']] = $itme['v'];
+                $this->sysConfig[$itme -> k] = $itme -> v;
             }
         } catch (DbException $e) {
             trace($e->getTraceAsString(), 'EXCEPTION');
