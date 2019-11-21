@@ -143,7 +143,7 @@
         formData['art_desc'] = $('textarea[name=art_desc]').val();  // 描述
         formData['art_content'] = ue.getContent();  // 带标签的内容
         formData['art_content_text'] = ue.getPlainTxt(); //不带标签的内容
-        formData['art_class_id'] = $('select[name=art_class_id]').val(); //classid
+        formData['art_category_id'] = $('select[name=art_category_id]').val(); //classid
         formData['art_banner_url'] = $('.banner-value').val(); //classid
         $.ajax({
             "url": '{:url("art_add","","")}',
