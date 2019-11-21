@@ -67,7 +67,7 @@ class Article extends Base
         if (Request::isGet()) {
             $category = model('category') -> getNormalAll();
             $this -> assign('category', $category);
-            $this -> assign('defaultBannerUrl',$this -> sysConfig['article_default_banner_url'];);
+            $this -> assign('defaultBannerUrl',$this -> sysConfig['article_default_banner_url']);
             return view();
         } elseif (Request::isPost()) {
             $validate = App::validate('Article.add');
