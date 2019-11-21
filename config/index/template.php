@@ -15,7 +15,10 @@
 
 return [
     // 模板路径
-    'view_path'    => '/views/default/static/',
+    'view_path'    => './views/default/',
     'layout_on'     =>  true,
     'layout_name'   =>  'layout',
+    'tpl_replace_string'  =>  [
+        '__STATIC__'    => '/views/default/static/',
+    ],
 ];
