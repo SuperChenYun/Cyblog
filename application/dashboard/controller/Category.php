@@ -30,11 +30,11 @@ class Category extends Base
             $result = $this->validate(
                 Request::post(),
                 [
-                    'cat_class_name'  => 'require|max:25',
+                    'categoty_name'  => 'require|max:25',
                 ],
                 [
-                    'cat_class_name.require' => '请填写分类名称',
-                    'cat_class_name.max' => '分类名称最大25个字符'
+                    'categoty_name.require' => '请填写分类名称',
+                    'categoty_name.max' => '分类名称最大25个字符'
                 ]);
             if(true !== $result){
                 // 验证失败 输出错误信息
@@ -61,11 +61,11 @@ class Category extends Base
             $result = $this->validate(
                 Request::post(),
                 [
-                    'cat_class_name'  => 'require|max:25',
+                    'categoty_name'  => 'require|max:25',
                 ],
                 [
-                    'cat_class_name.require' => '请填写分类名称',
-                    'cat_class_name.max' => '分类名称最大25个字符'
+                    'categoty_name.require' => '请填写分类名称',
+                    'categoty_name.max' => '分类名称最大25个字符'
                 ]);
             if (true !== $result) {
                 return error($result);
