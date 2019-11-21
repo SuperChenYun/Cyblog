@@ -21,7 +21,9 @@ class Article extends Base
     public function index ()
     {
         $searchConfig = [
-            'query' => ['search' => input('get.search', '', 'trim')]
+            'query' => ['search' => input('get.search', '', 'trim')],
+            'fragment' => url(),
+            'path' => Request::get('HTTP_REFERER'),
         ];
         $where = [];
         $article = model('article') -> where($where) -> order('art_id', 'desc') -> paginate('','', $searchConfig);
