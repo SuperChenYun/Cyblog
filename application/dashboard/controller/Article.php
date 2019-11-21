@@ -97,7 +97,7 @@ class Article extends Base
         if (Request::isGet()) {
             $category = model('category') -> getAll();
             $this -> assign('category', $category);
-            $this -> assign('defaultBannerUrl',$this -> sysConfig['article_default_banner_url'];);
+            $this -> assign('defaultBannerUrl',$this -> sysConfig['article_default_banner_url']);
             $this -> assign('article', model('article') -> getByArtId($art_id));
             return view();
         } elseif (Request::isPost()) {
