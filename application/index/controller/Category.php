@@ -32,8 +32,15 @@ class Category extends Base
     /**
      * 某个分类下的文章
      */
-    public function articles()
+    public function articles($sign)
     {
+        $category = \app\index\model\Category::getByCategorySign($sign);
+        $where = [
+            'art_status' => \app\index\model\Article::SHOW,
+            'art_category_id' => $category -> id,
+        ];
+        $articles = \app\index\model\Article::paging($this -> getPageNum(), $where, 'art_id');
+        View::assign('articles', $articles);
         // 用文章的列表
         return View::fetch('article/index');
     }
