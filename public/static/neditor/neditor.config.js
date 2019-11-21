@@ -95,7 +95,7 @@
         "insertimage",
         "emotion",
         // "scrawl",
-        // "insertvideo",
+        "insertvideo",
         // "music",
         "attachment",
         // "map",
