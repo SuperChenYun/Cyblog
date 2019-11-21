@@ -33,7 +33,7 @@
                 <tbody>
                 {volist name="category" id="row"}
                 <tr>
-                    <td>{$row.cat_id}</td>
+                    <td>{$row.category_id}</td>
                     <td>{$row.category_name}</td>
 
                     <td>
@@ -41,7 +41,6 @@
                         <a title="删除" href="javascript:;" onclick="del('{$row.cat_id}')" > <i class="layui-icon layui-icon-delete"></i></a>
                     </td>
                 </tr>
-
 
                 {/volist}
 
