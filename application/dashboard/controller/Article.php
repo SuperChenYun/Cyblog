@@ -67,8 +67,7 @@ class Article extends Base
         if (Request::isGet()) {
             $category = model('category') -> getNormalAll();
             $this -> assign('category', $category);
-            $defaultBannerUrl = $this -> sysConfig['article_default_banner_url'];
-            $this -> assign('defaultBannerUrl',$defaultBannerUrl);
+            $this -> assign('defaultBannerUrl',$this -> sysConfig['article_default_banner_url'];);
             return view();
         } elseif (Request::isPost()) {
             $validate = App::validate('Article.add');
@@ -98,8 +97,7 @@ class Article extends Base
         if (Request::isGet()) {
             $category = model('category') -> getAll();
             $this -> assign('category', $category);
-            $defaultBannerUrl = model('SysConfig') -> getOne('article_default_banner_url');
-            $this -> assign('defaultBannerUrl',$defaultBannerUrl);
+            $this -> assign('defaultBannerUrl',$this -> sysConfig['article_default_banner_url'];);
             $this -> assign('article', model('article') -> getByArtId($art_id));
             return view();
         } elseif (Request::isPost()) {
