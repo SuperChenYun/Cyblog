@@ -4,6 +4,7 @@
 namespace app\index\controller;
 
 
+use app\index\model\Tags;
 use think\exception\DbException;
 use think\facade\View;
 
@@ -41,6 +42,11 @@ class Category extends Base
         ];
         $articles = \app\index\model\Article::paging($this -> getPageNum(), $where, 'art_id');
         View::assign('articles', $articles);
+
+        $tags = Tags::getAll();
+        Tags::randColor($tags);
+        View::assign('tags', $tags);
+        
         // 用文章的列表
         return View::fetch('article/index');
     }
