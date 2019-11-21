@@ -37,8 +37,8 @@
                     <td>{$row.category_name}</td>
 
                     <td>
-                        <a title="编辑" href="javascript:;" lay-href="{:url('cat_edit','','')}?cat_id={$row.cat_id}" ><i class="layui-icon layui-icon-edit"></i></a>
-                        <a title="删除" href="javascript:;" onclick="del('{$row.cat_id}')" > <i class="layui-icon layui-icon-delete"></i></a>
+                        <a title="编辑" href="javascript:;" lay-href="{:url('cat_edit','','')}?category_id={$row.category_id}" ><i class="layui-icon layui-icon-edit"></i></a>
+                        <a title="删除" href="javascript:;" onclick="del('{$row.category_id}')" > <i class="layui-icon layui-icon-delete"></i></a>
                     </td>
                 </tr>
 
@@ -72,7 +72,7 @@
                     url:"{:url('cat_del')}",
                     type:'post',
                     dataType:'json',
-                    data:{cat_id:id},
+                    data:{category_id:id},
                     success:function (resp) {
                         layer.msg(resp.msg);
                         if(resp.code == '0') {

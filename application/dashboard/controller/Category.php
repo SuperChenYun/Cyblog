@@ -51,10 +51,10 @@ class Category extends Base
         }
     }
 
-    public function catEdit($cat_id)
+    public function catEdit($category_id)
     {
         if (Request::isGet()) {
-            $category = model('category') -> getByCatId($cat_id);
+            $category = model('category') -> getByCatId($category_id);
             $this -> assign('category', $category);
             return view();
         } elseif (Request::isPost()) {
@@ -70,7 +70,7 @@ class Category extends Base
             if (true !== $result) {
                 return error($result);
             }
-            $category = model('category') -> getByCatId(input('cat_id'));
+            $category = model('category') -> getByCatId(input('category_id'));
             $state = $category -> save(Request::param());
             if ($state) {
                 return success('修改成功');
@@ -80,9 +80,9 @@ class Category extends Base
         }
     }
 
-    public function catDel($cat_id)
+    public function catDel($category_id)
     {
-        $article = model('category') -> getByCatId($cat_id);
+        $article = model('category') -> getByCatId($category_id);
         $article -> status = 0;
         $state = $article -> save();
         if ($state) {
