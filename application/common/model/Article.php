@@ -67,12 +67,12 @@ class Article extends Model
      * @param array $where
      * @return array|\think\Paginator
      */
-    public static function paging($page, $where = [], $orderFile = null, $sort = 'desc') {
+    public static function paging($page, $where = [], $orderFile = null, $sort = 'desc', $cachePrefix= "articles_") {
         try {
             $articlesNum = self::where($where)->count();
             $article = self::where($where);
             $article -> order($orderFile, $sort);
-            $article ->cache("articles_".sha1($page));
+            $article ->cache($cachePrefix.sha1($page));
 
             return $article ->paginate(null, $articlesNum);
         } catch (DbException $e) {

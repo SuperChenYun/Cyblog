@@ -40,7 +40,7 @@ class Category extends Base
             'art_status' => \app\index\model\Article::SHOW,
             'art_category_id' => $category -> category_id,
         ];
-        $articles = \app\index\model\Article::paging($this -> getPageNum(), $where, 'art_id');
+        $articles = \app\index\model\Article::paging($this -> getPageNum(), $where, 'art_id', 'desc', 'category_');
         View::assign('articles', $articles);
 
         $tags = Tags::getAll();
