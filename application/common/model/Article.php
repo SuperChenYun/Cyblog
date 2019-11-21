@@ -130,7 +130,10 @@ class Article extends Model
      */
     private function getArtDesc()
     {
-        $str=$this -> getAttr('art_content_text');
+        if ($this -> getAttr('art_desc')) {
+            return $this -> getAttr('art_desc');
+        }
+        $str = $this -> getAttr('art_content_text');
         $start=0;
         $length= 140;
         $encoding = 'utf-8';
