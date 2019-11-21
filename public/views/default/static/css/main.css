@@ -190,7 +190,8 @@ header{
 }
 .article-show .category-name{
     text-align: center;
-    color:#EEEEEE;
+    color:#212529;
+    margin: 10px 0 16px 0;
 }
 .article-content{
     overflow: hidden;
