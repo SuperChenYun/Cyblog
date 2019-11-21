@@ -498,6 +498,7 @@
           hr:     [],
           i:      ['class', 'style'],
           img:    ['src', 'alt', 'title', 'width', 'height', 'id', '_src', '_url', 'loadingclass', 'class', 'data-latex'],
+          iframe : ['class' , 'style' , 'src', 'frameborder', 'width', 'height'],
           ins:    ['datetime'],
           li:     ['class', 'style'],
           mark:   [],
