@@ -11,6 +11,8 @@ return [
     'category/:sign' => 'index/category/articles', // 分类下的文章列表
     'category' => 'index/category/index', // 分类
 
+    'tags/:sign' => 'index/tags/show', // tag 下的文章
+
     'about' => 'index/info/about', // 关于
     'copyright' => 'index/info/copyright', // 关于
 
