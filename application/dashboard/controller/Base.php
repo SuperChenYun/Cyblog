@@ -13,7 +13,9 @@ use app\common\model\SysAction;
 use app\common\model\SysGroup;
 use app\common\model\SysManage;
 use app\common\tool\WinUsageInfo;
+use app\index\model\SysConfig;
 use think\App;
+use think\exception\DbException;
 use think\facade\Request;
 
 class Base extends Init
@@ -47,6 +49,12 @@ class Base extends Init
     protected $SysActionModel;
 
     /**
+     * 数据库中的相关配置
+     * @var array
+     */
+    protected $sysConfig = [];
+
+    /**
      * 初始化控制器
      */
     public function __construct()
@@ -59,8 +67,24 @@ class Base extends Init
         $this->SysActionModel = model('SysAction');
         $this->checkLoginInfo();
         //$this -> checkAuthModuleAction();
+        $this -> loadSysConfig();
     }
 
+
+    /**
+     * 从数据库加载配置文件
+     */
+    private function loadSysConfig()
+    {
+        try {
+            $sysConfig = SysConfig::cache('sys_config')->field(['k', 'v'])->select();
+            foreach ($sysConfig as $itme) {
+                $this->sysConfig[$itme -> k] = $itme -> v;
+            }
+        } catch (DbException $e) {
+            trace($e->getTraceAsString(), 'EXCEPTION');
+        }
+    }
     /**
      * 兼容空action
      * @param $action_name
