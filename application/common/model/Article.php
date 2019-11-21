@@ -85,7 +85,7 @@ class Article extends Model
      * 获取当前文章分类Id
      * @return int
      */
-    protected function tegoryId()
+    protected function getArtCategoryId()
     {
         return Request::post('art_category_id') ?: 0;
     }
