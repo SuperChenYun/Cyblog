@@ -22,9 +22,9 @@
                                     {$article.art_title|default="Null"}
                                 </h2>
                                 <h3 class="article-data">
-                                    <i class="layui-icon layui-icon-note"></i><span>测试</span>
-                                    <i class="layui-icon layui-icon-flag"></i><span>3214</span>
-                                    <i class="layui-icon layui-icon-date"></i><span>2019-11-01 17:33</span>
+                                    <i class="layui-icon layui-icon-note"></i><span>{$article.category_name}</span>
+                                    <i class="layui-icon layui-icon-flag"></i><span>{$article.view_num}</span>
+                                    <i class="layui-icon layui-icon-date"></i><span>{:date('Y-m-d', $article.art_create_at))}</span>
                                 </h3>
                                 <p>
                                     {:\\app\\common\\tool\\Str::cut($article.art_desc)}
