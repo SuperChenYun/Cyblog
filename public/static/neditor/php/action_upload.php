@@ -1,4 +1,5 @@
 <?php
+die();
 /**
  * 上传附件和上传视频
  * User: Jinqn

@@ -1,4 +1,5 @@
 <?php
+die();
 
 /**
  * Created by JetBrains PhpStorm.

@@ -1,4 +1,5 @@
 <?php
+die();
 /**
  * 抓取远程图片
  * User: Jinqn
