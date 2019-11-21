@@ -38,6 +38,21 @@ class Category extends Model
     }
 
     /**
+     * 获取未删除的
+     * @return array|\PDOStatement|string|\think\Collection
+     */
+    public function getNormalAll()
+    {
+        try {
+            return $this->where(['status' => self::STATUS_NORMAL])->select();
+        } catch (DbException $e) {
+            Log::error($e->getTraceAsString());
+            return [];
+        }
+    }
+
+
+    /**
      * 带分页获取
      * @param $page
      * @return array|\think\Paginator

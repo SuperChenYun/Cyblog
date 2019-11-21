@@ -65,7 +65,7 @@ class Article extends Base
     public function artAdd()
     {
         if (Request::isGet()) {
-            $category = model('category') -> getAll();
+            $category = model('category') -> getNormalAll();
             $this -> assign('category', $category);
             $defaultBannerUrl = model('SysConfig') -> getOne('article_default_banner_url');
             $this -> assign('defaultBannerUrl',$defaultBannerUrl);
