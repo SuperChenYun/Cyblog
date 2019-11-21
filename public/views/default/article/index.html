@@ -15,7 +15,7 @@
                         <div class="article-item" >
                             <a href="{:url('/article/'.$article.art_id)}">
                                 <div class="article-thumb">
-                                    <img src="{$article.art_banner|default=$sysConfig.article_default_banner_url}" alt="">
+                                    <img src="{$article.art_banner_url|default=$sysConfig.article_default_banner_url}" alt="">
                                     <i class="light"></i>
                                 </div>
                                 <h2 class="article-title">
