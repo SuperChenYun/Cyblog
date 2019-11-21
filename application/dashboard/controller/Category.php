@@ -82,7 +82,7 @@ class Category extends Base
 
     public function catDel($category_id)
     {
-        $article = model('category') -> getByCatId($category_id);
+        $article = model('category') -> getByCategoryId($category_id);
         $article -> status = 0;
         $state = $article -> save();
         if ($state) {
