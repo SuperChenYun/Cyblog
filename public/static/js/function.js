@@ -7,7 +7,3 @@ function jump_url(url){
 function msg(content){
     layer.msg(content)
 }
-// 设置 highlight
-document.querySelectorAll('pre').forEach((block) => {
-    hljs.highlightBlock(block);
-});

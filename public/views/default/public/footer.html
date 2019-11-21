@@ -15,6 +15,12 @@
 
 <script src="__STATIC__/js/jquery-3.2.1.min.js"></script>
 <script src="__STATIC__/js/bootstrap.min.js"></script>
-<script src="__STATIC__/js/function.js"></script>
 <script src="__STATIC__/js/highlight.pack.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
+<script src="__STATIC__/js/function.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+    // 设置 highlight
+    document.querySelectorAll('pre').forEach((block) => {
+        hljs.highlightBlock(block);
+    });
+</script>
