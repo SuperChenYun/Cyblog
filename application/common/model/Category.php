@@ -61,7 +61,7 @@ class Category extends Model
      */
     public function add($postData)
     {
-        $data['categoty_name'] = $postData['categoty_name'];
+        $data['category_name'] = $postData['category_name'];
         $data['create_at'] = time();
         return $this->insertGetId($data);
     }
