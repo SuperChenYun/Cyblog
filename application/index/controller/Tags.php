@@ -17,20 +17,6 @@ use think\facade\View;
 class Tags extends Base
 {
 
-    ///**
-    // * 非法访问直接重定向
-    // */
-    //public function index()
-    //{
-    //    $page = $this -> getPageNum();
-    //    $where = [
-    //        'status' => \app\index\model\Category::STATUS_NORMAL
-    //    ];
-    //    $categoryes = \app\index\model\Category::paging($page, $where);
-    //    View::assign('categoryes', $categoryes);
-    //    return View::fetch();
-    //}
-
     /**
      * 某个分类下的文章
      */

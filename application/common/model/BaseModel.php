@@ -31,13 +31,13 @@ class BaseModel extends Model
      */
     public static function paging($page, $where = [], $orderFile = 'id', $sort = 'desc', $cachePrefix ='', $with = []) {
         try {
-            $tagsNum = self::where($where)->count();
-            $tags = self::where($where);
-            if (!empty($with)) $tags -> with($with);
-            $tags -> order($orderFile, $sort);
-            $tags -> cache($cachePrefix.sha1($page));
+            $num = self::where($where)->count();
+            $model = self::where($where);
+            if (!empty($with)) $model -> with($with);
+            $model -> order($orderFile, $sort);
+            $model -> cache($cachePrefix.sha1($page));
 
-            return $tags -> paginate(null, $tagsNum);
+            return $model -> paginate(null, $num);
         } catch (DbException $e) {
             \think\facade\Log::error($e->getTraceAsString());
             return  [];
