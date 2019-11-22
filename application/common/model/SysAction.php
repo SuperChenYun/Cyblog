@@ -11,7 +11,7 @@ namespace app\common\model;
 
 use think\Model;
 
-class SysAction extends Model
+class SysAction extends BaseModel
 {
     protected $name = 'sys_action';
 

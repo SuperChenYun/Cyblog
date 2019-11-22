@@ -18,7 +18,7 @@ use think\Model;
  * Class Category
  * @package app\dashboard\model
  */
-class Category extends Model
+class Category extends BaseModel
 {
 
     const STATUS_NORMAL = 1;
@@ -50,26 +50,7 @@ class Category extends Model
             return [];
         }
     }
-
-
-    /**
-     * 带分页获取
-     * @param $page
-     * @return array|\think\Paginator
-     */
-    public static function paging($page, $where = [])
-    {
-        try {
-            $articlesNum = self::count();
-            return $categoryes = self::where($where)
-                ->cache("categoryes_" . sha1($page))
-                ->paginate(null, $articlesNum);
-        } catch (DbException $e ) {
-            \think\facade\Log::error($e->getTraceAsString());
-            return [];
-        }
-    }
-
+    
     /**
      * @param $postData
      * @return int|string

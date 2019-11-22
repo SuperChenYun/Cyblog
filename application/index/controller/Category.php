@@ -25,7 +25,7 @@ class Category extends Base
         $where = [
             'status' => \app\index\model\Category::STATUS_NORMAL
         ];
-        $categoryes = \app\index\model\Category::paging($page, $where);
+        $categoryes = \app\index\model\Category::paging($page, $where, 'category_id', 'desc', 'categoryes_');
         View::assign('categoryes', $categoryes);
         return View::fetch();
     }
@@ -43,9 +43,7 @@ class Category extends Base
         $articles = \app\index\model\Article::paging($this -> getPageNum(), $where, 'art_id', 'desc', 'category_'.$sign.'_');
         View::assign('articles', $articles);
 
-        $tags = Tags::getAll();
-        Tags::randColor($tags);
-        View::assign('tags', $tags);
+        $this -> assignAllTags();
 
         // 用文章的列表
         return View::fetch('article/index');

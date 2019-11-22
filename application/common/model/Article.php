@@ -8,6 +8,7 @@
 
 namespace app\common\model;
 
+use app\index\controller\Base;
 use think\exception\DbException;
 use think\Model;
 use think\facade\Request;
@@ -17,7 +18,7 @@ use think\facade\Request;
  * Class Article
  * @package app\dashboard\model
  */
-class Article extends Model
+class Article extends BaseModel
 {
     const SHOW = 1;
     const HIDE = 2;
@@ -58,26 +59,6 @@ class Article extends Model
             return true;
         } else {
             return false;
-        }
-    }
-
-    /**
-     * 分页获取
-     * @param $page
-     * @param array $where
-     * @return array|\think\Paginator
-     */
-    public static function paging($page, $where = [], $orderFile = null, $sort = 'desc', $cachePrefix= "articles_") {
-        try {
-            $articlesNum = self::where($where)->count();
-            $article = self::where($where);
-            $article -> order($orderFile, $sort);
-            $article ->cache($cachePrefix.sha1($page));
-
-            return $article ->paginate(null, $articlesNum);
-        } catch (DbException $e) {
-            \think\facade\Log::error($e->getTraceAsString());
-            return  [];
         }
     }
 
@@ -139,5 +120,7 @@ class Article extends Model
         $encoding = 'utf-8';
         return mb_substr($str, $start, $length, $encoding);
     }
+
+
 
 }

@@ -9,7 +9,7 @@ use think\exception\DbException;
 use think\facade\Log;
 use think\Model;
 
-class Tags extends Model
+class Tags extends BaseModel
 {
 
     const COLOR_LIST = [
@@ -24,7 +24,7 @@ class Tags extends Model
     public static function getAll()
     {
         try {
-            return self::select();
+            return self::cache('tags_all')->select();
         }catch (DbException $e) {
             Log::error($e -> getTraceAsString());
             return new Collection();

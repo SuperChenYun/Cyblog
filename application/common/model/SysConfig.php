@@ -11,7 +11,7 @@ namespace app\common\model;
 use think\facade\Cache;
 use think\Model;
 
-class SysConfig extends Model
+class SysConfig extends BaseModel
 {
     protected $name = 'sys_config';
 

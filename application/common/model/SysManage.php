@@ -3,7 +3,7 @@ namespace app\common\model;
 
 use think\Model;
 
-class SysManage extends Model 
+class SysManage extends BaseModel
 {
     protected $name = 'sys_manage';
 

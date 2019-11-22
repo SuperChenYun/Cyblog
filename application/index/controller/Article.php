@@ -27,18 +27,15 @@ class Article extends Base
     public function index()
     {
 
-        $page = $this -> getPageNum();
         $where = [
             ['art_status' ,'=', \app\index\model\Article::SHOW],
             ['art_release_time' ,'<=' , strtotime(date('Y-m-d H:i'))],
         ];
 
-        $articles = \app\index\model\Article::paging($page, $where, 'art_id');
+        $articles = \app\index\model\Article::paging($this -> getPageNum(), $where, 'art_id', 'desc','articles_');
         View::assign('articles', $articles);
 
-        $tags = Tags::getAll();
-        Tags::randColor($tags);
-        View::assign('tags', $tags);
+        $this -> assignAllTags();
 
         return View::fetch();
     }

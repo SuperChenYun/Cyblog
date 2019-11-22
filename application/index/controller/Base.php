@@ -11,6 +11,7 @@ namespace app\index\controller;
 
 use app\common\controller\Init;
 use app\index\model\SysConfig;
+use app\index\model\Tags as TagsModel;
 use think\exception\DbException;
 use think\facade\App;
 use think\facade\Config;
@@ -78,6 +79,15 @@ abstract class Base extends Init
         return input($field, '1') < 0 ? 0 : input($field, '1', 'intval');
     }
 
+    /**
+     * 查询所有的tags 并分配到页面
+     */
+    public function assignAllTags()
+    {
+        $tags = TagsModel::getAll();
+        TagsModel::randColor($tags);
+        View::assign('tags', $tags);
+    }
     public function _empty()
     {
         return Redirect::create('/', 'redirect');

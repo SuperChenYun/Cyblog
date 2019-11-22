@@ -4,6 +4,7 @@
 namespace app\index\controller;
 
 
+use app\common\model\Article;
 use app\index\model\Tags as TagsModel;
 use think\exception\DbException;
 use think\facade\View;
@@ -35,20 +36,21 @@ class Tags extends Base
      */
     public function show($sign)
     {
-        //$category = \app\index\model\Category::getByCategorySign($sign);
-        //$where = [
-        //    'art_status' => \app\index\model\Article::SHOW,
-        //    'art_category_id' => $category -> category_id,
-        //];
-        //$articles = \app\index\model\Article::paging($this -> getPageNum(), $where, 'art_id', 'desc', 'tags_'.$sign.'_');
-        //View::assign('articles', $articles);
-        //
-        //$tags = TagsModel::getAll();
-        //Tags::randColor($tags);
-        //View::assign('tags', $tags);
-        //
-        //// 用文章的列表
-        //return View::fetch('article/index');
+        $tag = \app\index\model\Tags::getByTagSign($sign);
+        if (empty($tag)) {
+            return View::fetch('/404');
+        }
+        $where = [
+            'tags_id' => $tag -> id,
+        ];
+        $articles = \app\index\model\ArticleTags::paging($this -> getPageNum(), $where, 'article_id', 'desc', 'tags_'.$sign.'_', ['normalArticle']);
+
+        View::assign('articles', $articles);
+
+        $this -> assignAllTags();
+
+        // 用文章的列表
+        return View::fetch('article/index');
     }
 
 }

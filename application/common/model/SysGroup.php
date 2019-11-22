@@ -11,7 +11,7 @@ namespace app\common\model;
 
 use think\Model;
 
-class SysGroup extends Model
+class SysGroup extends BaseModel
 {
     protected $name = 'sys_group';
 
