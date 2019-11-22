@@ -1,6 +1,8 @@
 # 开发环境
 .idea/*
 .project
+.vscode
+nginx.htaccess
 
 # 缓存
 runtime/*
@@ -13,13 +15,17 @@ log/*
 *.log
 
 # 配置文件
-application/config.php
-application/database.php
+config/app.php
+config/database.php
+config/wechat.php
+!application/extra/neditor.php
 application/extra/*
-!application/extra/*.php.simple
+!config/*.sample.php
 
 # 框架信息
 composer.lock
+thinkphp/
+thinkphp/*
 
 # macOS template
 # General

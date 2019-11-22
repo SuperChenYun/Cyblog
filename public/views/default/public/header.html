@@ -1,0 +1,41 @@
+<header>
+    <div class="container">
+        <div class="brand navbar-expand-md navbar-light navbar">
+            <a class="navbar-brand" href="{:url('/')}">
+                <img src="__STATIC__/img/logo.png" alt="CyBlog" style="height: 50px">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-nav" >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="main-nav">
+
+                <ul class="navbar-nav">
+                    <li class="nav-item {if condition="$controller eq 'Index'"}active{/if}">
+                    <a class="nav-link" href="{:url('/')}">Home</a>
+                    </li>
+
+                    <li class="nav-item {if condition="$controller eq 'Article'"}active{/if}">
+                    <a class="nav-link" href="{:url('/article')}">Article</a>
+                    </li>
+
+                    <li class="nav-item {if condition="$controller eq 'Category'"}active{/if}">
+                    <a class="nav-link" href="{:url('/category')}">Category</a>
+                    </li>
+
+                    <li class="nav-item {if condition="$controller eq 'Info'"}active{/if}">
+                    <a class="nav-link" href="{:url('/about')}">About</a>
+                    </li>
+
+                    <li class="nav-item {if condition="$controller eq 'Info'"}active{/if}">
+                    <a class="nav-link" href="{:url('/copyright')}">Copyright</a>
+                    </li>
+
+                </ul>
+
+            </div>
+        </div>
+
+
+    </div>
+
+</header>

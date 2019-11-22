@@ -1,0 +1,162 @@
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>管理权限设置</cite></a>
+        <a><cite>用户列表</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto" lay-filter="app-content-list">
+            <h3>用户列表</h3>
+        </div>
+
+        <div class="layui-card-body">
+            <div style="padding-bottom: 10px;">
+                <!--<button class="layui-btn layuiadmin-btn-list" data-type="batchdel" >删除</button>-->
+                <a href="javascript:;" lay-href="{:url('manage_add','','')}" class="layui-btn layuiadmin-btn-list" data-type="add">添加</a>
+            </div>
+            <table class="layui-table" lay-even="" lay-skin="row">
+                    <colgroup>
+                        <col width="150">
+                        <col width="150">
+                        <col width="200">
+                        <col>
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th width="30">ID</th>
+                            <th width="80">用户名</th>
+                            <th width="80">真实姓名</th>
+                            <th width="110">手机</th>
+                            <th width="150">邮箱</th>
+                            <th width="140">添加时间</th>
+                            <th width="140">更新时间</th>
+                            <th width="140">上次登录时间</th>
+                            <th width="130">上次登录ip</th>
+                            <th width="74">登录次数</th>
+                            <th width="140">所在用户组</th>
+                            <th width="60">状态</th>
+                            <th width="130">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {volist name="ManageRows" id="row"}
+                    <tr role="row" class="odd">
+                        <!--<td ><input type="checkbox" value="1" name="manageIds[]"></td>-->
+                        <td class="sorting_1">{$row.id}</td>
+                        <td>{$row.username}</td>
+                        <td>{$row.truename}</td>
+                        <td>{$row.telphone}</td>
+                        <td>{$row.email}</td>
+                        <td>{$row.create_time|date="m月d日H:i"}</td>
+                        <td>{$row.change_time|date="m月d日H:i"}</td>
+                        <td>{$row.login_time|date="m月d日H:i"}</td>
+                        <td>{$row.login_ip}</td>
+                        <td>{$row.login_number}</td>
+                        <td>
+                            {if condition="$row.auth_group_name"}
+                            {volist name="$row.auth_group_name" id="rows"}
+                            {$rows}<br />
+                            {/volist}
+                            {/if}
+                        </td>
+                        <td>
+                            {if condition="$row.status eq 1"}
+                            <span class="label label-success radius">正常</span>
+                            {else/}
+                            <span class="label label-danger radius">停用</span>
+                            {/if}
+                        </td>
+                        <td>
+                            {if condition="$row.status eq 1"}
+                            <a style="text-decoration:none" onClick="member_stop(this,'{$row.id}')" href="javascript:;" title="停用"><i class="layui-icon layui-icon-close"></i></a>
+                            {else/}
+                            <a style="text-decoration:none" onClick="member_start(this,'{$row.id}')" href="javascript:;" title="启用"><i class="layui-icon layui-icon-ok"></i></a>
+                            {/if}
+
+                            <a title="编辑" href="javascript:;" lay-href="{:url('manage_edit')}?manage_id={$row.id}"><i class="layui-icon layui-icon-edit"></i></a>
+                            <a title="修改密码" href="javascript:;" lay-href="{:url('manage_repass')}?manage_id={$row.id}"><i class="layui-icon layui-icon-password"></i></a>
+
+                            {if condition="$row.administrator neq 1"}
+                            <a title="删除" href="javascript:;" onclick="member_del(this,'{$row.id}')" class="ml-5" style="text-decoration:none"><i class="layui-icon layui-icon-delete"></i></a>
+                            {/if}
+                        </td>
+                    </tr>
+                    {/volist}
+                    </tbody>
+
+                </table>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    /*用户-停用*/
+    function member_stop(obj,id){
+        layer.confirm('确认要停用吗？',function(index){
+            $.ajax({
+                url:"{:url('manage_enable_or_disable')}",
+                type:'post',
+                dateType:'json',
+                data:{m_id:id},
+                success:function (resp) {
+                    layer.msg(resp.msg);
+                    if(resp.code == '0') {
+                        setTimeout('window.location.reload()',1000);
+                    }
+                },
+                error:function(e){
+                        success_msg('操作失败！');
+                }
+            });
+        })
+    }
+
+    /*用户-启用*/
+    function member_start(obj,id){
+        layer.confirm('确认要启用吗？',function(index){
+            $.ajax({
+                url:"{:url('manage_enable_or_disable')}",
+                type:'post',
+                dateType:'json',
+                data:{m_id:id},
+                success:function (resp) {
+                    layer.msg(resp.msg);
+                    if(resp.code == '0') {
+                        setTimeout('window.location.reload()',1000);
+                    }
+                },
+                error:function(e){
+                    success_msg('操作失败！');
+                }
+            });
+        });
+    }
+
+    /*用户-删除*/
+    function member_del(obj,id){
+        layer.confirm('确认要删除吗？删除后不可恢复！',function(index){
+            layer.confirm('您真的要删除吗？',function(index){
+                $.ajax({
+                    url:"{:url('manage_del')}",
+                    type:'post',
+                    dataType:'json',
+                    data:{m_id:id},
+                    success:function (resp) {
+                        layer.msg(resp.msg);
+                        if(resp.code == '0') {
+                            setTimeout('window.location.reload()',1000);
+                        }
+                    },
+                    error:function (e) {
+                        success_msg('操作失败！');
+                    }
+                })
+            })
+        });
+    }
+
+</script>

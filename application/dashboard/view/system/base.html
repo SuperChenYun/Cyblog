@@ -1,0 +1,48 @@
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>系统设置</cite></a>
+        <a><cite>基础数据设置</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <div style="padding-bottom: 10px;">
+                <a href="javascript:;" lay-href="{:url('add','','')}" class="layui-btn layuiadmin-btn-list" data-type="add">添加</a>
+            </div>
+            <table class="layui-table"  lay-even="" lay-skin="row">
+                <colgroup>
+                    <col width="150">
+                    <col width="150">
+                    <col width="200">
+                    <col>
+                </colgroup>
+                <thead>
+                <tr role="row">
+                    <th width="30">参数名</th>
+                    <th width="80">参数值</th>
+                    <th width="110" class="hidden-xs">添加时间</th>
+                    <th width="110" class="hidden-xs">更新时间</th>
+                    <th width="80">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {volist name="baseRows" id="row"}
+                <tr role="row" class="odd">
+                    <!--<td ><input type="checkbox" value="1" name="groupIds[]"></td>-->
+                    <td>{$row.k}</td>
+                    <td>{$row.v}</td>
+                    <td class="hidden-xs">{$row.create_at|date="Y-m-d H:i:s"}</td>
+                    <td class="hidden-xs">{$row.update_at|date="Y-m-d H:i:s"}</td>
+                    <td class="td-group">
+                        <a title="编辑" href="javascript:;" lay-href="{:url('edit')}?s_id={$row.s_id}" class="ml-5" style="text-decoration:none"><i class="layui-icon layui-icon-edit"></i></a>
+                    </td>
+                </tr>
+                {/volist}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

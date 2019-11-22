@@ -1,0 +1,208 @@
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md8">
+            <div class="layui-row layui-col-space15">
+
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">数据概览</div>
+                        <div class="layui-card-body">
+
+                            <div class="layui-carousel layadmin-carousel layadmin-dataview" data-anim="fade" lay-filter="LAY-index-dataview">
+                                <div carousel-item id="LAY-index-dataview">
+                                    <div><i class="layui-icon layui-icon-loading1 layadmin-loading"></i></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="layui-col-md6">
+                    <div class="layui-card">
+                        <div class="layui-card-header">服务器信息</div>
+                        <div class="layui-card-body layui-text">
+                            <table class="layui-table">
+                                <colgroup>
+                                    <col width="100">
+                                    <col>
+                                </colgroup>
+                                <tbody>
+                                <tr>
+                                    <td>操作系统</td>
+                                    <td>
+                                        {$sysInfo.operating_system}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>PHP版本</td>
+                                    <td>
+                                        {$sysInfo.php_version}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Zend版本</td>
+                                    <td>
+                                        {$sysInfo.zend_version}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>WEB服务</td>
+                                    <td>
+                                        {$sysInfo.server_software}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>CPU</td>
+                                    <td>
+                                        {$sysInfo.cpu_name}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>内存</td>
+                                    <td>{$sysInfo.memery_size}</td>
+                                </tr>
+                                <tr>
+                                    <td>磁盘</td>
+                                    <td style="padding-bottom: 0;">
+                                        {$sysInfo.disk_size}
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-col-md6">
+                    <div class="layui-card">
+                        <div class="layui-card-header">程序信息</div>
+                        <div class="layui-card-body layui-text">
+                            <table class="layui-table">
+                                <colgroup>
+                                    <col width="100">
+                                    <col>
+                                </colgroup>
+                                <tbody>
+                                <tr>
+                                    <td>框架</td>
+                                    <td>
+                                        <script type="text/html" template>
+                                            {$framInfo.framework_name}
+                                        </script>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>版本</td>
+                                    <td>
+                                        {$framInfo.framework_version}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>作者</td>
+                                    <td>
+                                        {$framInfo.auther}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>邮箱</td>
+                                    <td>
+                                        {$framInfo.auther_email}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>GitHub</td>
+                                    <td>
+                                        <a href="{$framInfo.site_github}" target="_blank">{$framInfo.site_github}</a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>Gitee</td>
+                                    <td>
+                                        <a href="{$framInfo.site_gitee}" target="_blank">{$framInfo.site_gitee}</a>
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="layui-col-md4">
+
+
+
+            {if condition="isset($monitorInfo.loadAvg)"}
+            <div class="layui-card">
+                <div class="layui-card-header">服务器负载</div>
+                <div class="layui-card-body layadmin-takerates">
+                    <div lay-filter="loadavg_0" class="layui-progress " lay-showPercent="yes">
+                        <h3>1分钟负载</h3>
+                        <div class="layui-progress-bar" lay-percent="{$monitorInfo.loadAvg.0}/10"></div>
+                    </div>
+                    <div lay-filter="loadavg_1" class="layui-progress" lay-showPercent="yes">
+                        <h3>5分钟负载</h3>
+                        <div class="layui-progress-bar" lay-percent="{$monitorInfo.loadAvg.1}/10"></div>
+                    </div>
+                    <div lay-filter="loadavg_2" class="layui-progress" lay-showPercent="yes" >
+                        <h3>15分钟负载</h3>
+                        <div class="layui-progress-bar" lay-percent="{$monitorInfo.loadAvg.2}/10"></div>
+                    </div>
+                </div>
+            </div>
+            {/if}
+
+            <div class="layui-card">
+                <div class="layui-card-header">实时监控</div>
+                <div class="layui-card-body layadmin-takerates">
+                    <div lay-filter="monitor-cpu" class="layui-progress" lay-showPercent="yes">
+                        <h3>CPU使用</h3>
+                        <div class="layui-progress-bar" lay-percent="{$monitorInfo.cpu_usage * 100}%"></div>
+                    </div>
+                    <div lay-filter="monitor-memery" class="layui-progress" lay-showPercent="yes">
+                        <h3>内存占用</h3>
+                        <div class="layui-progress-bar" lay-percent="{$monitorInfo.memery_usage * 100}%"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+    //加载 controller 目录下的对应模块
+    /*
+
+     小贴士：
+     这里 console 模块对应 的 console.js 并不会重复加载，
+     然而该页面的视图则是重新插入到容器，那如何保证能重新来控制视图？有两种方式：
+     1): 借助 layui.factory 方法获取 console 模块的工厂（回调函数）给 layui.use
+     2): 直接在 layui.use 方法的回调中书写业务代码，即:
+     layui.use('console', function(){
+     //同 console.js 中的 layui.define 回调中的代码
+     });
+
+     这里我们采用的是方式1。其它很多视图中采用的其实都是方式2，因为更简单些，也减少了一个请求数。
+
+     */
+    layui.use('console', layui.factory('console'));
+</script>
+

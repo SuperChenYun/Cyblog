@@ -1,0 +1,107 @@
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>管理权限设置</cite></a>
+        <a><cite>编辑权限</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid" style="">
+    <div class="layui-row layui-col-space15" style="">
+        <!-- /.col -->
+        <div class="col-md-12" style="">
+            <div class="layui-card" style="">
+                <div class="layui-card-header">
+                    <h3 class="box-title">编辑权限</h3>
+                </div>
+                <div class="layui-card-body" pad15="" style="">
+                    <!-- form start -->
+
+                    <form class="layui-form" method="post">
+                        <input type="hidden" name="action_id" value="{:input('get.auth_id',0,'intval')}">
+                        <!-- text input -->
+                        <div class="layui-form-item layui-col-md6">
+                            <label class="layui-form-label">Name: </label>
+
+                            <div class="layui-input-block">
+                                <input type="text" class="layui-input" value="{$action_info.name}" placeholder="AUTH NAME"  name="name">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item layui-col-md6">
+                            <label class="layui-form-label">controller: </label>
+                            <div class="layui-input-block">
+                                <input type="text" class="layui-input" value="{$action_info.controller}" placeholder="CONTROLLER NAME"  name="controller">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item layui-col-md6">
+                            <label class="layui-form-label">action: </label>
+                            <div class="layui-input-block">
+                                <input type="text" class="layui-input" value="{$action_info.action}" placeholder="CONTROLLER NAME"  name="action">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item layui-col-md6">
+                            <label class="layui-form-label">排序（数字越大菜单中排序越靠后）: </label>
+                            <div class="layui-input-block">
+                                <input type="text" class="layui-input" value="{$action_info.action_sort|default=0}" placeholder="排序数组 数字越大菜单中排序越靠后"  name="action_sort">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item layui-col-md12">
+                            <label class="layui-form-label">隶属模块：</label>
+                            <div class=layui-input-block>
+                                {foreach name="moduleRows" id="row"}
+                                    <input type="radio" name="module_id" value="{$row.id}"  title="{$row.module_name}" {if condition="$action_info.module_id eq $row.id"}checked{/if}>
+                                {/foreach}
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item layui-col-md12">
+                            <label class="layui-form-label">是否菜单：</label>
+                            <div class=layui-input-block>
+                                        <input type="radio" name="is_menu" value="y" title="是" {if condition="$action_info.is_menu eq 'y'"}checked{/if} >
+                                        <input type="radio" name="is_menu"  value="n" title="否" {if condition="$action_info.is_menu eq 'n'"}checked{/if} >
+                            </div>
+                        </div>
+
+
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit="" lay-filter="auth_edit">保存</button>
+                                <a href="javascript:;" class="layui-btn" lay-href="{:url('auth_list','','')}">取消</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use('form', function(){
+        var form = layui.form;
+        //监听提交
+        form.on('submit(auth_edit)', function(data){
+            $.ajax({
+                url: "{:url('auth_edit')}",
+                data: $(data.form).serialize(),
+                dataType:'json',
+                type:'post',
+                success:function (resp) {
+                    msg(resp.msg);
+                    if(resp.code == 0) {
+                        setTimeout( 'window.location.reload()',2000);
+                    }
+                },
+                error:function (e) {
+                    msg('操作失败');
+                }
+            })
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+        form.render();  // 重新渲染
+    });
+</script>

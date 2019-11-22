@@ -1,0 +1,61 @@
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>管理权限设置</cite></a>
+        <a><cite>权限列表</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto" lay-filter="app-content-list">
+            <h3>权限列表</h3>
+        </div>
+
+        <div class="layui-card-body">
+            <div style="padding-bottom: 10px;">
+                <a href="javascript:;" lay-href="{:url('auth_add','','')}" class="layui-btn layuiadmin-btn-list" data-type="add">添加</a>
+            </div>
+            <table class="layui-table" lay-even="" lay-skin="row">
+                <thead>
+                <tr role="row">
+                    <th width="30" class="hidden-xs">ID</th>
+                    <th width="80">Name</th>
+                    <th width="80">Controller</th>
+                    <th width="80">Action</th>
+                    <th width="110" class="layui-hide-xs">隶属模块</th>
+                    <th width="80">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {volist name="actionRows" id="row"}
+                <tr role="row" class="odd">
+                    <td class="sorting_1 hidden-xs">{$row.said}</td>
+                    <td>{$row.name}</td>
+                    <td>{$row.controller}</td>
+                    <td>{$row.action}</td>
+                    <td class="hidden-xs">{$row.module_name}</td>
+                    <td>
+                        <a title="编辑" href="javascript:;" lay-href="{:url('auth_edit','','')}?auth_id={$row.said}"  ><i class="layui-icon layui-icon-edit"></i></a>
+                    </td>
+                </tr>
+                {/volist}
+                </tbody>
+            </table>
+
+            <div class="row">
+                <div class="col-sm-5">
+                    <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
+                        当前第<?php echo Request() -> get('page') ? Request() -> get('page') : 1; ?>页，共{$pageTotal}页{$actionTotalRows}条数据
+                    </div>
+                </div>
+                <div class="col-sm-7">
+                    <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+                        {$page}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

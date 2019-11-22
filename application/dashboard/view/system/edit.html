@@ -1,0 +1,89 @@
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>系统设置</cite></a>
+        <a><cite>编辑系统配置</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid" style="">
+    <div class="layui-row layui-col-space15" style="">
+        <!-- /.col -->
+        <div class="col-md-12" style="">
+            <div class="layui-card" style="">
+                <div class="layui-card-header">
+                    <h3 class="box-title">编辑配置</h3>
+                </div>
+                <div class="layui-card-body" pad15="" style="">
+                    <!-- form start -->
+                    <form class="layui-form" method="post">
+                        <input type="hidden" name="s_id" value="{:input('get.s_id',0,'intval')}">
+                        <!-- text input -->
+                        <div class="layui-form-item layui-col-md6">
+                            <label class="layui-form-label">{$configRow->k}: </label>
+                            <div class="layui-input-block">
+                                <input type="text" class="layui-input" value="{$configRow->v}" placeholder="Enter ..."  name="v">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit="" lay-filter="sysconfig">保存</button>
+                                <a href="javascript:;" class="layui-btn" lay-href="{:url('base','','')}">取消</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    layui.use('form', function(){
+        var form = layui.form;
+        //监听提交
+        form.on('submit(sysconfig)', function(data){
+            $.ajax({
+                url: "{:url('edit')}",
+                data: $(data.form).serialize(),
+                dataType:'json',
+                type:'post',
+                success:function (resp) {
+                    msg(resp.msg);
+                    if(resp.code == 0) {
+                        setTimeout( 'window.location.reload()',2000);
+                    }
+                },
+                error:function (e) {
+                    msg('操作失败');
+                }
+            })
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+        form.render();  // 重新渲染
+    });
+
+    function submit()
+    {
+        var formData = new Object();
+        formData['v'] = $('input[name=v]').val();   // 标题
+
+        console.log(formData);
+        $.ajax({
+            "url": window.location.href,
+            'type':'post',
+            'data':formData,
+            'dataType':'json',
+            'success': function (resp) {
+                msg(resp.msg);
+                if(resp.code == 1) {
+                    setTimeout('window.location.href = "{:url('base')}"', 2000);
+                }
+            },
+            'error':function (e) {
+                msg('添加失败，再试一次吧！');
+            }
+        })
+    }
+</script>

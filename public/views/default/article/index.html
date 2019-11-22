@@ -1,0 +1,66 @@
+<div class="full-screen">
+    <div class="top-area">
+        <div class="container">
+            <h1>Article</h1>
+            <p>-- All Article</p>
+        </div>
+    </div>
+    <div class="container middle-area">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-9 articles">
+                <!--    Article.   -->
+                <ul class="row">
+                    {volist name="articles" id="article" empty=""}
+                    <li class="col-lg-6 col-md-6 col-sm-12 ">
+                        <div class="article-item" >
+                            <a href="{:url('/article/'.$article.art_id)}">
+                                <div class="article-thumb">
+                                    <img src="{$article.art_banner_url|default=$sysConfig.article_default_banner_url}" alt="">
+                                    <i class="light"></i>
+                                </div>
+                                <h2 class="article-title">
+                                    {$article.art_title|default="Null"}
+                                </h2>
+                                <h3 class="article-data">
+                                    <i class="layui-icon layui-icon-note"></i><span>{$article.art_category_name}</span>
+                                    <i class="layui-icon layui-icon-flag"></i><span>{$article.view_num}</span>
+                                    <i class="layui-icon layui-icon-date"></i><span>{:date('Y-m-d', $article.art_create_at)}</span>
+                                </h3>
+                                <p>
+                                    {:\\app\\common\\tool\\Str::cut($article.art_desc)}
+                                </p>
+
+                            </a>
+                        </div>
+                    </li>
+                    {/volist}
+                </ul>
+                <!--    End Article.    -->
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-3 right-slider">
+                <div>
+                    <div class="card-body">
+                        <h5 class="card-title">Tags</h5>
+                        <div class="tags-ul">
+                            {volist name="$tags" id="tag" empty="暂时还没有数据哦"}
+                            <a href="{:url('/tags/' . $tag.tag_sign)}"><span style="border-color: {$tag.border_color|default="#4285f4"}">{$tag.tag_name|default="Null"}</span></a>
+                            {/volist}
+                        </div>
+                    </div>
+                </div>
+
+                <!--<div>-->
+                <!--    <div class="card-body">-->
+                <!--        巴拉巴拉小魔仙-->
+                <!--        叭叭叭啦了-->
+                <!--    </div>-->
+                <!--</div>-->
+
+            </div>
+        </div>
+        <div class="Page text-center">
+            {$articles->render()|raw}
+        </div>
+
+    </div>
+</div>

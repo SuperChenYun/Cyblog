@@ -1,0 +1,26 @@
+<footer class="footer-section spad">
+    <div class="container text-center">
+        <h2>Let’s Go !</h2>
+        <!--<p>itzcy@itzcy.com</p>-->
+        <div class="social">
+            <a target="_blank" href="{$sysConfig.contact_github|default='#github'}"><i class="fa fa-github"></i></a>
+            <a target="_blank" href="{$sysConfig.contact_tencent_qq|default='#tentcent_qq'}"><i class="fa fa-qq"></i></a>
+            <br>
+            <div class="copyright">
+                Copyright ©<script>document.write(new Date().getFullYear());</script> CyBlog . All rights reserved
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="__STATIC__/js/jquery-3.2.1.min.js"></script>
+<script src="__STATIC__/js/bootstrap.min.js"></script>
+<script src="__STATIC__/js/highlight.pack.js"></script>
+<script src="__STATIC__/js/function.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+    // 设置 highlight
+    document.querySelectorAll('pre').forEach((block) => {
+        hljs.highlightBlock(block);
+    });
+</script>
