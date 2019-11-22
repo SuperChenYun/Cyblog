@@ -36,6 +36,9 @@ class Category extends Base
     public function articles($sign)
     {
         $category = \app\index\model\Category::getByCategorySign($sign);
+        if (empty($category)) {
+            return View::fetch('/404');
+        }
         $where = [
             'art_status' => \app\index\model\Article::SHOW,
             'art_category_id' => $category -> category_id,
