@@ -102,6 +102,7 @@ header{
     min-height: 44rem;
     overflow: hidden;
     z-index: 1;
+    background: #e1e1e1;
 }
 .home-bg {
     background-image: url("/views/default/static/img/home-bg.jpg");
@@ -109,6 +110,24 @@ header{
     background-size: cover;
     filter: blur(3px);
     height: 100%;
+}
+.links, links li {
+    display: inline-block;
+    padding: 0;
+}
+.links-title{
+    color:#6d6d6d;
+    font-weight: bold;
+
+}
+.link {
+    display: inline-block;
+    margin: 0 1rem ;
+}
+.link,.link a{
+    color: #6d6d6d;
+    font-size: 1rem;
+    line-height: 1.2rem;
 }
 /* Article */
 

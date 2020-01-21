@@ -1,3 +1,15 @@
 <div class="home-content">
     <div class="home-bg"></div>
+    <div>
+        <div class="container">
+            <span class="links-title">友情链接：</span>
+            <ul class="links">
+                {foreach name="links" id="link"}
+                <li class="link">
+                    <a href="{$link.link_url}?referer={:request()->host()}" target="_blank">{$link.link_name}</a>
+                </li>
+                {/foreach}
+            </ul>
+        </div>
+    </div>
 </div>
