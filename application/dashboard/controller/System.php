@@ -42,7 +42,7 @@ class System extends Base
             $validate = App::validate('System.edit');
             $result = $validate -> check(Request::param());
             if ($result) {
-                $state = model('SysConfig') -> changeDb($s_id, $request -> param());
+                $state = model('SysConfig') -> changeDb($s_id, $result -> param());
                 if ($state) {
                     return success('修改成功');
                 }
