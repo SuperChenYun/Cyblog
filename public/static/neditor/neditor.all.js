@@ -7730,7 +7730,7 @@ var fillCharReg = new RegExp(domUtils.fillChar, "g");
       //编辑器不能为空内容
 
       if (domUtils.isEmptyNode(me.body)) {
-        me.body.innerHTML = "<p>" + (browser.ie ? "" : "<br/>") + "</p>";
+        me.body.innerHTML = "<div>" + (browser.ie ? "" : "<br/>") + "</div>";
       }
       //如果要求focus, 就把光标定位到内容开始
       if (options.focus) {
