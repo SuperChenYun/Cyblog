@@ -27,6 +27,7 @@ class Category extends Base
         ];
         $categoryes = \app\index\model\Category::paging($page, $where, 'category_id', 'desc', 'categoryes_');
         View::assign('categoryes', $categoryes);
+        View::assign('title', 'Categorys');
         return View::fetch();
     }
 
@@ -47,6 +48,8 @@ class Category extends Base
         View::assign('articles', $articles);
 
         $this -> assignAllTags();
+
+        View::assign('title', $category-> category_name . ' - Category');
 
         // 用文章的列表
         return View::fetch('article/index');

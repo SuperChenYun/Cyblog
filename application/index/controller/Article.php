@@ -37,6 +37,8 @@ class Article extends Base
 
         $this -> assignAllTags();
 
+        View::assign('title', 'Article');
+
         return View::fetch();
     }
 
@@ -50,6 +52,8 @@ class Article extends Base
         $article = \app\index\model\Article::cache('article_'.$id)->getByArtId($id);
 
         View::assign('article', $article);
+
+        View::assign('title', $article->art_title);
 
         return View::fetch();
     }

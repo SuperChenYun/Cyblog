@@ -17,6 +17,7 @@ class Index extends Base
     {
         $links = Links::normalLinks();
         View::assign('links', $links);
+        View::assign('title', '欢迎访问我的博客');
 	    return View::fetch();
     }
 }

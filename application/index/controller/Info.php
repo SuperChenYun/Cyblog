@@ -16,6 +16,7 @@ class Info extends Base
 {
     public function index()
     {
+        View::assign('title', 'Redirect');
         return Response::create('/', 'redirect', '302');
     }
     /**
@@ -23,6 +24,7 @@ class Info extends Base
      */
     public function about()
     {
+        View::assign('title', 'About');
         return View::fetch();
     }
 
@@ -31,6 +33,7 @@ class Info extends Base
      */
     public function copyright()
     {
+        View::assign('title', 'Copyright');
         return View::fetch();
     }
 
