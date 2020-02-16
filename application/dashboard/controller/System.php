@@ -39,7 +39,7 @@ class System extends Base
                     return view();
             }
         } elseif (Request::isPost()) {
-            $validate = App::validate('system.edit');
+            $validate = App::validate('System.edit');
             $result = $validate -> check(Request::param());
             if ($result) {
                 $state = model('SysConfig') -> changeDb($s_id, $request -> param());
