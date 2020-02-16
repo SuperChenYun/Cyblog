@@ -23,7 +23,7 @@ class Article extends Base
         $searchConfig = [
             'query' => ['search' => input('get.search', '', 'trim')],
             'fragment' => url(),
-            'path' => Request::get('HTTP_REFERER'),
+            'path' => '',
         ];
         $where = [];
         $article = model('article') -> where($where) -> order('art_id', 'desc') -> paginate('','', $searchConfig);
