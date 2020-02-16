@@ -60,7 +60,7 @@ abstract class Base extends Init
     private function loadSysConfig()
     {
         try {
-            $sysConfig = SysConfig::cache('sys_config')->field(['k', 'v'])->select();
+            $sysConfig = SysConfig::cache('sys_config', 7200 )->field(['k', 'v'])->select();
             foreach ($sysConfig as $itme) {
                 $this->sysConfig[$itme -> k] = $itme -> v;
             }
