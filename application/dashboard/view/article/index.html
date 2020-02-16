@@ -80,13 +80,16 @@
 </div>
 
 <script>
-    // 转换分页链接
-    $('#paginate a').each(function(index, ele) {
-        var rawPageUrl = $(ele).attr('href');
-        rawArrPageUrl = rawPageUrl.split('#');
-        pageUrl = '#' + rawArrPageUrl[1] + rawArrPageUrl[0];
-        $(ele).attr('href', pageUrl);
+    $(function () {
+        // 转换分页链接
+        $('#paginate a').each(function(index, ele) {
+            var rawPageUrl = $(ele).attr('href');
+            rawArrPageUrl = rawPageUrl.split('#');
+            pageUrl = '#' + rawArrPageUrl[1] + rawArrPageUrl[0];
+            $(ele).attr('href', pageUrl);
+        })
     })
+
 </script>
 
 <script type="text/javascript">
