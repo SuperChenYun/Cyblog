@@ -42,6 +42,9 @@
                         <td class="layui-hide-xs">{$row.art_create_at|date="Y-m-d H:i:s"}</td>
                         <td class="layui-hide-xs">{$row.art_update_at|date="Y-m-d H:i:s"}</td>
                         <td>
+
+                            <a title="查看" target="_blank" href="{:url('/article')}/{$row.art_id}.html"  ><i class="layui-icon layui-icon-link"></i></a>
+
                             {if condition="$row.art_status eq '1'"}
                             <a onClick="start_or_stop('{$row.art_id}')" href="javascript:;" title="隐藏">
                                 <i class="layui-icon layui-icon-close"></i>

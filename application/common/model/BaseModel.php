@@ -35,7 +35,7 @@ class BaseModel extends Model
             $model = self::where($where);
             if (!empty($with)) $model -> with($with);
             $model -> order($orderFile, $sort);
-            $model -> cache($cachePrefix.sha1($page));
+            $model -> cache($cachePrefix.sha1($page), 1800);
 
             return $model -> paginate(null, $num);
         } catch (DbException $e) {
