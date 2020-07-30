@@ -1,0 +1,64 @@
+# drone 本地构建
+kind: pipeline
+type: docker
+name: CyBlog
+
+# drone构建步骤
+steps:
+  # 1.maven打包
+  - name: phpunit
+    pull: if-not-exists
+    image: composer:latest
+    commands:
+      # composer aliyun
+      - composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
+      # composer 
+      - composer install
+      # 开PHPUNIT
+      - ./vendor/bin/phpunit
+
+#   # 2.使用ssh访问主机制作镜像并运行
+#   - name: ssh commands
+#     pull: if-not-exists
+#     image: appleboy/drone-ssh:1.5.7
+#     settings:
+#       host: 0.0.0.0
+#       username: root
+#       password:
+#         # 从drone仓库配置中秘密空间读取密码
+#         from_secret: ssh_password
+#       port: 22
+#       script:
+#         - echo =======暂停容器=======
+#         - docker stop `docker ps -a | grep springdemo | awk '{print $1}' `
+#         - echo =======暂停旧容器和镜像=======
+#         - docker rm -f `docker ps -a | grep springdemo | awk '{print $1}' `
+#         - docker rmi `docker images | grep springdemo | awk '{print $3}' `
+#         - echo =======开始构建新镜像=======
+#         - cd /data/drone/helloDemo
+#         - docker build -t springdemo:v1 .
+#         - echo =======开始部署应用=======
+#         - docker run -d -p 8188:8180 --name springdemo springdemo:v1
+#         - echo =======清理构建文件=======
+#         - rm -rf *
+#         - echo =======部署成功=======
+
+#   # 3.钉钉通知
+#   - name: dingTalk notification
+#     pull: if-not-exists
+#     image: guoxudongdocker/drone-dingtalk:latest
+#     settings:
+#       token:
+#         from_secret: dingtalk_token
+#       type: markdown
+#       message_color: true
+#       message_pic: true
+#       sha_link: true
+#     when:
+#       status: [failure, success]
+
+# drone执行触发器
+trigger:
+  branch:
+    - master
+    - develop
